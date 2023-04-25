@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
+import { Asset } from 'expo-asset';
 import TimerItemBar from '../TimerItemBar';
 import { nanoid } from 'nanoid/non-secure';
 import { styles } from './TimersListBar.styles';
 
 const TimersList = () => {
+    const [ready, setReady] = useState(false);
+
     const timers = [
         {
             id: '1',
@@ -32,9 +35,16 @@ const TimersList = () => {
         }
     ];
 
+    useEffect(() => {
+        (async () => {
+            await Promise.all(timers.map(timer => Asset.loadAsync(timer.image)));
+            setReady(true);
+        })();
+    }, []);
+
     return (
         <View style={styles.timersListContainer}>
-            { timers.map(timer => <TimerItemBar key={nanoid()} { ...timer } />) }
+            { ready && timers.map(timer => <TimerItemBar key={nanoid()} { ...timer } />) }
         </View>
     );
 };
