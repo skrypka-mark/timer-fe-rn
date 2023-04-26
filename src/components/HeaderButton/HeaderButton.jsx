@@ -1,10 +1,10 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
-const HeaderRightButton = ({ onPress, children }) => (
+const HeaderButton = ({ onPress, children }) => (
     <TouchableOpacity onPressOut={onPress}>
         { children }
     </TouchableOpacity>
 );
 
-export default HeaderRightButton;
+export default HeaderButton;

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Asset } from 'expo-asset';
-import TimerItemBar from '../TimerItemBar';
+import EventsListItemBar from '../EventsListItemBar';
 import { nanoid } from 'nanoid/non-secure';
-import { styles } from './TimersListBar.styles';
+import { styles } from './EventsListBar.styles';
 
-const TimersList = () => {
+const EventsListBar = () => {
     const [ready, setReady] = useState(false);
 
     const timers = [
@@ -44,9 +44,9 @@ const TimersList = () => {
 
     return (
         <View style={styles.timersListContainer}>
-            { ready && timers.map(timer => <TimerItemBar key={nanoid()} { ...timer } />) }
+            { ready && timers.map(timer => <EventsListItemBar key={nanoid()} { ...timer } />) }
         </View>
     );
 };
 
-export default TimersList;
+export default EventsListBar;

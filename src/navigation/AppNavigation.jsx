@@ -3,15 +3,14 @@ import { Text } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import HeaderBackground from '../components/HeaderBackground';
 import HeaderLeft from '../components/HeaderLeft';
-import HeaderRightButton from '../components/HeaderRightButton';
+import HeaderButton from '../components/HeaderButton';
 
-import BarLayoutIcon from '../screens/TimersScreen/components/icons/BarLayoutIcon';
+import BarLayoutIcon from '../screens/EventsListScreen/components/icons/BarLayoutIcon';
 import HeaderCloseIcon from '../components/icons/HeaderCloseIcon';
 
-import TimersScreen from '../screens/TimersScreen';
-import TimerScreen from '../screens/TimerScreen';
+import EventsListScreen from '../screens/EventsListScreen';
+import EventScreen from '../screens/EventScreen';
 import NewEventScreen from '../screens/NewEventScreen';
 
 const Stack = createNativeStackNavigator();
@@ -21,7 +20,7 @@ const AppNavigation = () => {
 
     return (
         <Stack.Navigator
-            initialRouteName='timers-list'
+            initialRouteName='events-list'
             screenOptions={{
                 // headerShadowVisible: false,
                 // headerShown: false,
@@ -44,7 +43,7 @@ const AppNavigation = () => {
             }}
         >
             <Stack.Screen
-                name='timers-list'
+                name='events-list'
                 options={() => ({
                     title: null,
                     headerTransparent: true,
@@ -63,16 +62,16 @@ const AppNavigation = () => {
                         </Text>
                     ),
                     headerRight: () => (
-                        <HeaderRightButton onPress={() => null}>
+                        <HeaderButton onPress={() => null}>
                             <BarLayoutIcon color={colors.text} />
-                        </HeaderRightButton>
+                        </HeaderButton>
                     ),
                     headerBackButtonMenuEnabled: true
                 })}
-                component={TimersScreen}
+                component={EventsListScreen}
             />
             <Stack.Screen
-                name='timer'
+                name='event'
                 options={{
                     headerShown: false,
                     presentation: 'transparentModal',
@@ -83,7 +82,7 @@ const AppNavigation = () => {
                     contentStyle: { backgroundColor: 'transparent' }
                     // gestureDirection: 'vertical'
                 }}
-                component={TimerScreen}
+                component={EventScreen}
             />
             <Stack.Screen
                 name='new-event'
@@ -96,9 +95,9 @@ const AppNavigation = () => {
                     presentation: 'modal',
                     headerLeft: () => <HeaderLeft text='Save' onPress={() => navigation.goBack()} />,
                     headerRight: () => (
-                        <HeaderRightButton onPress={navigation.goBack}>
+                        <HeaderButton onPress={navigation.goBack}>
                             <HeaderCloseIcon color={colors.text} />
-                        </HeaderRightButton>
+                        </HeaderButton>
                     )
                 })}
                 component={NewEventScreen}

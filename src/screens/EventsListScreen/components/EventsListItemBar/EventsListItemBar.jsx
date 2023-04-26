@@ -2,12 +2,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import { TouchableWithoutFeedback, View, Text, Image, Animated, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import TimerTime from '../../../../components/TimerTime';
-import { styles } from './TimerItemBar.styles';
-import Timer from '../../../TimerScreen/components/Timer';
+import { styles } from './EventsListItemBar.styles';
+import Timer from '../../../EventScreen/components/Timer';
 
 const BORDER_RADIUS = 10;
 
-const TimerItemBar = ({ id, title, time, image }) => {
+const EventsListItemBar = ({ id, title, time, image }) => {
     const navigation = useNavigation();
 
     const imageRef = useRef(null);
@@ -17,7 +17,7 @@ const TimerItemBar = ({ id, title, time, image }) => {
     const timerItemPressHandler = () => {
         imageRef.current?.measure((x, y, width, height, pageX, pageY) => {
             const imageSpecs = { width, height, pageX, pageY, borderRadius: BORDER_RADIUS };
-            navigation.navigate('timer', { id, title, time, image, imageSpecs })
+            navigation.navigate('event', { id, title, time, image, imageSpecs })
         });
         setActiveTimerId(id);
     };
@@ -50,4 +50,4 @@ const TimerItemBar = ({ id, title, time, image }) => {
     );
 };
 
-export default TimerItemBar;
+export default EventsListItemBar;

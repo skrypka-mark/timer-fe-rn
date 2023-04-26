@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from 'react';
-import TimersScreen from './TimersScreen';
+import EventsListScreen from './EventsListScreen';
 
-const TimersContainer = ({ navigation }) => {
+const EventsListContainer = ({ navigation }) => {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerSearchBarOptions: {
@@ -10,7 +10,7 @@ const TimersContainer = ({ navigation }) => {
         });
     }, [navigation]);
 
-    return <TimersScreen />;
+    return <EventsListScreen />;
 };
 
-export default TimersContainer;
+export default EventsListContainer;
