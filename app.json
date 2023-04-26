@@ -1,4 +1,10 @@
 {
   "name": "Timer",
-  "displayName": "Timer"
+  "displayName": "Timer",
+  "extra": {
+    "eas": {
+      "projectId": "2f44258a-506a-42ba-a86f-0434bfc77b7e"
+    }
+  },
+  "owner": "markmark"
 }

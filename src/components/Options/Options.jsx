@@ -90,8 +90,8 @@ const Options = ({ isOpen, open, close }) => {
     const options = [
         { name: 'Create event', Icon: CreateIcon, onPress: () => navigation.navigate('new-event') },
         { name: 'Import event', Icon: ImportIcon, onPress: () => navigation.navigate('new-event') },
-        { name: 'Create event from template', Icon: ImportIcon, onPress: () => navigation.navigate('new-event') },
-        { name: 'Settings', Icon: SettingsIcon, onPress: () => console.log('xui') }
+        { name: 'Add event from template', Icon: ImportIcon, onPress: () => navigation.navigate('new-event') },
+        // { name: 'Settings', Icon: SettingsIcon, onPress: () => console.log('xui') }
     ];
 
     return (

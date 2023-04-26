@@ -32,7 +32,31 @@ const EventsListBar = () => {
             title: 'Rendezvous',
             time: { days: 324, hours: 7, minutes: 42, seconds: 13 },
             image: require('../../../../assets/images/rendezvous.jpg')
-        }
+        },
+        {
+            id: '5',
+            title: 'Wedding',
+            time: { days: 324, hours: 7, minutes: 42, seconds: 13 },
+            image: require('../../../../assets/images/wedding.jpg')
+        },
+        {
+            id: '6',
+            title: 'New Year',
+            time: { days: 324, hours: 7, minutes: 42, seconds: 13 },
+            image: require('../../../../assets/images/new-year.jpg')
+        },
+        {
+            id: '7',
+            title: 'Halloween',
+            time: { days: 324, hours: 7, minutes: 42, seconds: 13 },
+            image: require('../../../../assets/images/halloween.jpg')
+        },
+        {
+            id: '8',
+            title: 'Rendezvous',
+            time: { days: 324, hours: 7, minutes: 42, seconds: 13 },
+            image: require('../../../../assets/images/rendezvous.jpg')
+        },
     ];
 
     useEffect(() => {

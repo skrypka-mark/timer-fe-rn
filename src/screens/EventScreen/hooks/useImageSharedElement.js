@@ -6,16 +6,20 @@ import {
     useAnimatedStyle,
     useAnimatedGestureHandler,
     withTiming,
+    withSpring,
     interpolate,
     runOnJS
 } from 'react-native-reanimated';
+import { useHeaderHeight } from '../../../hooks/useHeaderHeight';
 import { SCREEN_PADDING } from '../../../theme';
 
 export const useImageSharedElement = imageSpecs => {
     const navigation = useNavigation();
+    const headerHeight = useHeaderHeight();
     const { width, height } = Dimensions.get('window');
 
     const animatedValue = useSharedValue(0);
+    const tapped = useSharedValue(1);
     const y = useSharedValue(0);
 
     useLayoutEffect(() => {
@@ -28,7 +32,7 @@ export const useImageSharedElement = imageSpecs => {
         top: interpolate(animatedValue.value, [0, 1], [imageSpecs.pageY, 0]),
         left: interpolate(animatedValue.value, [0, 1], [imageSpecs.pageX, 0]),
         width: interpolate(animatedValue.value, [0, 1], [imageSpecs.width, width]),
-        height: interpolate(animatedValue.value, [0, 1], [imageSpecs.height, height], 'clamp'),
+        height: interpolate(animatedValue.value, [0, 1], [imageSpecs.height, height]),
         borderRadius: interpolate(animatedValue.value, [0, 1], [imageSpecs.borderRadius, 0])
     }));
     const animatedTimerStyles = useAnimatedStyle(() => ({
@@ -36,11 +40,30 @@ export const useImageSharedElement = imageSpecs => {
         top: interpolate(animatedValue.value, [0, 1], [0, 200]),
         left: interpolate(animatedValue.value, [0, 1], [0, SCREEN_PADDING]),
         right: interpolate(animatedValue.value, [0, 1], [0, SCREEN_PADDING]),
-        height: interpolate(animatedValue.value, [0, 1], [imageSpecs.height, 130], 'clamp'),
+        height: interpolate(animatedValue.value, [0, 1], [imageSpecs.height, 130]),
         borderRadius: interpolate(animatedValue.value, [0, 1], [imageSpecs.borderRadius, 20])
     }));
+    const animatedHeaderStyles = useAnimatedStyle(() => ({
+        position: 'relative',
+        transform: [{ translateY: interpolate(animatedValue.value, [0, 1], [-headerHeight * 4, 0]) }]
+    }));
+    const pressHeaderAnimationStyles = useAnimatedStyle(() => ({
+        position: 'relative',
+        transform: [{ translateY: interpolate(tapped.value, [0, 1], [-headerHeight, 0]) }]
+    }));
 
-    const gestureEventHandler = useAnimatedGestureHandler({
+    const closeHandler = () => {
+        animatedValue.value = withTiming(0, { duration: 500 }, finished => finished && runOnJS(navigation.goBack)());
+        // damping?: number;
+        // mass?: number;
+        // stiffness?: number;
+        // overshootClamping?: boolean;
+        // restSpeedThreshold?: number;
+        // restDisplacementThreshold?: number;
+        // velocity?: number;
+    };
+
+    const panGestureEventHandler = useAnimatedGestureHandler({
         onStart: event => {
             y.value = event.translationY;
         },
@@ -48,7 +71,7 @@ export const useImageSharedElement = imageSpecs => {
             if(animatedValue.value < 0.1) {
                 animatedValue.value = withTiming(0, { duration: 500 }, finished => finished && runOnJS(navigation.goBack)());
             } else {
-                animatedValue.value = interpolate(Math.abs(event.translationY - y.value), [0, 1000], [1, 0]);
+                animatedValue.value = interpolate(Math.abs(event.translationY - y.value), [0, 800], [1, 0]);
             }
         },
         onEnd: () => {
@@ -59,6 +82,14 @@ export const useImageSharedElement = imageSpecs => {
             }
         }
     });
+    const tapGestureActiveHandler = () => {
+        // toggles the value from 1 to 0 and backwards
+        tapped.value = withTiming(Number(!Boolean(tapped.value)), { duration: 300 });
+    };
 
-    return { animatedImageStyles, animatedTimerStyles, gestureEventHandler };
+    return {
+        animatedHeaderStyles, animatedImageStyles,
+        animatedTimerStyles, pressHeaderAnimationStyles,
+        panGestureEventHandler, tapGestureActiveHandler, closeHandler
+    };
 };

@@ -38,7 +38,7 @@ const EventsListItemBar = ({ id, title, time, image }) => {
         <TouchableWithoutFeedback onPress={timerItemPressHandler}>
             <Animated.View style={[styles.container, { borderRadius: BORDER_RADIUS, opacity: animatedValue }]}>
                 <Image source={image} style={styles.image} resizeMode='cover' ref={imageRef} />
-                <Timer title={title} time={time} blurAmount={1} style={StyleSheet.absoluteFillObject} />
+                <Timer title={title} time={time} blurAmount={3} style={StyleSheet.absoluteFillObject} />
                     {/* <Text style={styles.title}>
                         { title }
                     </Text>

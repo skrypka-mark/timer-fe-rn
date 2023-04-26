@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
         width: '100%',
         height: 110,
 
-        marginBottom: 15,
+        marginBottom: 10,
         overflow: 'hidden'
     },
     image: {

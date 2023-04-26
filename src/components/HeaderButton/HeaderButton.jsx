@@ -1,8 +1,8 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
-const HeaderButton = ({ onPress, children }) => (
-    <TouchableOpacity onPressOut={onPress}>
+const HeaderButton = ({ style, onPress, children }) => (
+    <TouchableOpacity style={style} onPressOut={onPress}>
         { children }
     </TouchableOpacity>
 );

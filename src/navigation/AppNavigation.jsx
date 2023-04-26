@@ -57,12 +57,12 @@ const AppNavigation = () => {
                     headerShadowVisible: false,
                     // headerStyle: { backgroundColor: '#fff' },
                     headerLeft: () => (
-                        <Text style={{ fontSize: 25, fontWeight: '700', color: colors.text }}>
+                        <Text style={{ marginLeft: -5, fontSize: 25, fontWeight: '700', color: colors.text }}>
                             Timers
                         </Text>
                     ),
                     headerRight: () => (
-                        <HeaderButton onPress={() => null}>
+                        <HeaderButton style={{ marginRight: -5 }} onPress={() => null}>
                             <BarLayoutIcon color={colors.text} />
                         </HeaderButton>
                     ),

@@ -1,19 +1,21 @@
 import React from 'react';
-import { View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, Animated } from 'react-native';
+import { useHeaderHeight } from '../../hooks/useHeaderHeight';
 import { BlurView } from '@react-native-community/blur';
 import { styles } from './HeaderBackground.styles';
 
-const HeaderBackground = ({ leftButton, rightButton }) => {
-    const insets = useSafeAreaInsets();
+const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
+
+const HeaderBackground = ({ style, leftButton, rightButton }) => {
+    const headerHeight = useHeaderHeight();
 
     return (
-        <BlurView style={[styles.header, { height: insets.top + 50 }]} blurType='regular'>
+        <AnimatedBlurView style={[styles.header, style, { height: headerHeight }]} blurType='regular'>
             <View style={styles.headerWrapper}>
                 { leftButton && leftButton() }
                 { rightButton && rightButton() }
             </View>
-        </BlurView>
+        </AnimatedBlurView>
     );
 };
 
