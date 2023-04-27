@@ -12,14 +12,16 @@ import HeaderCloseIcon from '../components/icons/HeaderCloseIcon';
 import EventsListScreen from '../screens/EventsListScreen';
 import EventScreen from '../screens/EventScreen';
 import NewEventScreen from '../screens/NewEventScreen';
+import GradientBackground from '../components/GradientBackground';
+import { fontSizes, fontWeights } from '../theme/fonts';
 
-const Stack = createNativeStackNavigator();
+const NativeStack = createNativeStackNavigator();
 
 const AppNavigation = () => {
-    const { colors } = useTheme();
+    const theme = useTheme();
 
     return (
-        <Stack.Navigator
+        <NativeStack.Navigator
             initialRouteName='events-list'
             screenOptions={{
                 // headerShadowVisible: false,
@@ -42,7 +44,7 @@ const AppNavigation = () => {
                 // headerLargeTitle: true,
             }}
         >
-            <Stack.Screen
+            <NativeStack.Screen
                 name='events-list'
                 options={() => ({
                     title: null,
@@ -57,20 +59,22 @@ const AppNavigation = () => {
                     headerShadowVisible: false,
                     // headerStyle: { backgroundColor: '#fff' },
                     headerLeft: () => (
-                        <Text style={{ marginLeft: -5, fontSize: 25, fontWeight: '700', color: colors.text }}>
+                        <Text style={{ marginLeft: -5, fontSize: 25, fontWeight: '700', color: theme.colors.text }}>
                             Timers
                         </Text>
                     ),
                     headerRight: () => (
                         <HeaderButton style={{ marginRight: -5 }} onPress={() => null}>
-                            <BarLayoutIcon color={colors.text} />
+                            <BarLayoutIcon color={theme.colors.text} />
                         </HeaderButton>
                     ),
-                    headerBackButtonMenuEnabled: true
+                    headerBackButtonMenuEnabled: true,
+                    // contentStyle: { backgroundColor: theme.dark ? '#09061A' : 'white' },
+                    contentStyle: { backgroundColor: 'transparent' }
                 })}
                 component={EventsListScreen}
             />
-            <Stack.Screen
+            <NativeStack.Screen
                 name='event'
                 options={{
                     headerShown: false,
@@ -84,25 +88,26 @@ const AppNavigation = () => {
                 }}
                 component={EventScreen}
             />
-            <Stack.Screen
+            <NativeStack.Screen
                 name='new-event'
                 options={({ navigation }) => ({
-                    title: 'New event' || title,
+                    title: 'New event',
                     gestureDirection: 'vertical',
                     contentStyle: { backgroundColor: 'transparent' },
+                    presentation: 'modal',
                     headerTransparent: true,
                     headerBlurEffect: 'regular',
-                    presentation: 'modal',
-                    headerLeft: () => <HeaderLeft text='Save' onPress={() => navigation.goBack()} />,
-                    headerRight: () => (
+                    headerLeft: () => (
                         <HeaderButton onPress={navigation.goBack}>
-                            <HeaderCloseIcon color={colors.text} />
+                            <HeaderCloseIcon color={theme.colors.text} />
                         </HeaderButton>
-                    )
+                    ),
+                    headerRight: () => <HeaderLeft text='Save' onPress={() => navigation.goBack()} />,
+                    headerTitleStyle: { fontSize: fontSizes.font18, fontWeight: fontWeights.bold }
                 })}
                 component={NewEventScreen}
             />
-        </Stack.Navigator>
+        </NativeStack.Navigator>
     );
 };
 

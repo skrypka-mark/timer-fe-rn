@@ -1,5 +1,5 @@
 import { useLayoutEffect } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
     useSharedValue,
@@ -39,9 +39,12 @@ export const useImageSharedElement = imageSpecs => {
         position: 'absolute',
         top: interpolate(animatedValue.value, [0, 1], [0, 200]),
         left: interpolate(animatedValue.value, [0, 1], [0, SCREEN_PADDING]),
+        // top: 200,
+        // left: SCREEN_PADDING,
         right: interpolate(animatedValue.value, [0, 1], [0, SCREEN_PADDING]),
         height: interpolate(animatedValue.value, [0, 1], [imageSpecs.height, 130]),
-        borderRadius: interpolate(animatedValue.value, [0, 1], [imageSpecs.borderRadius, 20])
+        borderRadius: interpolate(animatedValue.value, [0, 1], [imageSpecs.borderRadius, 20]),
+        opacity: interpolate(animatedValue.value, [0, .1, 1], [0, .8, 1])
     }));
     const animatedHeaderStyles = useAnimatedStyle(() => ({
         position: 'relative',
@@ -53,7 +56,12 @@ export const useImageSharedElement = imageSpecs => {
     }));
 
     const closeHandler = () => {
-        animatedValue.value = withTiming(0, { duration: 500 }, finished => finished && runOnJS(navigation.goBack)());
+        const closeCallback = () => {
+            navigation.goBack();
+            StatusBar.setHidden(false, 'fade');
+        };
+        animatedValue.value = withTiming(0, { duration: 500 }, finished => finished && runOnJS(closeCallback)());
+
         // damping?: number;
         // mass?: number;
         // stiffness?: number;
@@ -69,14 +77,14 @@ export const useImageSharedElement = imageSpecs => {
         },
         onActive: event => {
             if(animatedValue.value < 0.1) {
-                animatedValue.value = withTiming(0, { duration: 500 }, finished => finished && runOnJS(navigation.goBack)());
+                runOnJS(closeHandler)();
             } else {
                 animatedValue.value = interpolate(Math.abs(event.translationY - y.value), [0, 800], [1, 0]);
             }
         },
         onEnd: () => {
             if(animatedValue.value < 0.9) {
-                animatedValue.value = withTiming(0, { duration: 500 }, finished => finished && runOnJS(navigation.goBack)());
+                runOnJS(closeHandler)();
             } else {
                 animatedValue.value = withTiming(1, { duration: 500 });
             }
@@ -85,6 +93,7 @@ export const useImageSharedElement = imageSpecs => {
     const tapGestureActiveHandler = () => {
         // toggles the value from 1 to 0 and backwards
         tapped.value = withTiming(Number(!Boolean(tapped.value)), { duration: 300 });
+        StatusBar.setHidden(tapped.value, 'fade');
     };
 
     return {

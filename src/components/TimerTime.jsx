@@ -40,8 +40,7 @@ const styles = StyleSheet.create({
     },
     timerUnitText: {
         fontSize: 16,
-        fontWeight: '300',
-        color: 'rgba(0, 0, 0, .8)'
+        fontWeight: '300'
     },
     separator: {
         width: 1,

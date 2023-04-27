@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, TouchableWithoutFeedback, Text, Animated } from 'react-native';
+import { TouchableWithoutFeedback, Text, Animated, StatusBar } from 'react-native';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from '@react-native-community/blur';
@@ -30,10 +30,8 @@ const OptionsButton = ({ name, Icon, open, duration, delay, style, color, onPres
     };
 
     useEffect(() => {
-        startAnimation(
-            open ? 1 : 0,
-            open ? DURATION - delay : delay
-        );
+        const animationDelay = open ? DURATION - delay : delay;
+        startAnimation(Number(open), animationDelay);
     }, [open]);
 
     return (
@@ -53,8 +51,8 @@ const OptionsButton = ({ name, Icon, open, duration, delay, style, color, onPres
                         }
                     ]}
                 >
-                    <BlurView style={styles.optionBtn} blurAmount={3} blurType='regular'>
-                        <Icon style={styles.optionIcon} color={color} />
+                    <BlurView style={styles.optionBtn} blurAmount={3} blurType='light'>
+                        <Icon style={styles.optionIcon} color={'black'} />
                     </BlurView>
                 </Animated.View>
             </Animated.View>
@@ -71,9 +69,15 @@ const Options = ({ isOpen, open, close }) => {
         inputRange: [0, 1],
         outputRange: ['0deg', '180deg']
     });
+    const optionButtonShadowOpacity = animatedValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0.27, 0]
+    });
     const [isOptionsVisible, setIsOptionsVisible] = useState(false);
 
     React.useLayoutEffect(() => {
+        StatusBar.setHidden(isOpen);
+        
         if(isOpen) setIsOptionsVisible(true);
         Animated.timing(animatedValue, {
             toValue: Number(isOpen),
@@ -90,8 +94,7 @@ const Options = ({ isOpen, open, close }) => {
     const options = [
         { name: 'Create event', Icon: CreateIcon, onPress: () => navigation.navigate('new-event') },
         { name: 'Import event', Icon: ImportIcon, onPress: () => navigation.navigate('new-event') },
-        { name: 'Add event from template', Icon: ImportIcon, onPress: () => navigation.navigate('new-event') },
-        // { name: 'Settings', Icon: SettingsIcon, onPress: () => console.log('xui') }
+        { name: 'Add event from template', Icon: ImportIcon, onPress: () => navigation.navigate('new-event') }
     ];
 
     return (
@@ -104,7 +107,7 @@ const Options = ({ isOpen, open, close }) => {
                         open={isOpen}
                         duration={DURATION / options.length}
                         delay={DURATION / options.length * index}
-                        color={theme.colors.text}
+                        // color={theme.colors.text}
                         { ...option }
                     />
                 )) }
@@ -118,7 +121,7 @@ const Options = ({ isOpen, open, close }) => {
                             width: 0,
                             height: 3,
                         },
-                        shadowOpacity: 0.27,
+                        shadowOpacity: optionButtonShadowOpacity,
                         shadowRadius: 4.65,
 
                         elevation: 6,

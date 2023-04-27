@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
         width: '100%',
         height: 110,
 
-        marginBottom: 10,
         overflow: 'hidden'
     },
     image: {
@@ -31,7 +30,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
 
-        paddingBottom: 10,
+        paddingBottom: 10
     },
     time: {
         fontWeight: 500,

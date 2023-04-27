@@ -1,3 +1,3 @@
-import EventContainer from './EventContainer';
+import EventScreenContainer from './EventScreenContainer';
 
-export default EventContainer;
+export default EventScreenContainer;

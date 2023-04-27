@@ -24,8 +24,8 @@ const Backdrop = ({ open, onPress }) => {
     }, [open]);
 
     return visible && (
-        <TouchableWithoutFeedback style={[styles.backdrop, { opacity: 1 }]} onPressOut={onPress}>
-            <AnimatedVibrancyView style={[styles.backdrop, { opacity: animatedValue }]} />
+        <TouchableWithoutFeedback style={styles.backdrop} onPressOut={onPress}>
+            <AnimatedVibrancyView style={[styles.backdrop, { backgroundColor: 'rgba(0, 0, 0, .5)', opacity: animatedValue }]} blurAmount={20} />
         </TouchableWithoutFeedback>
     );
 };

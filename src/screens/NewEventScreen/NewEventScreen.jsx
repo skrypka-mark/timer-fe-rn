@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, Text, TextInput, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BlurView } from '@react-native-community/blur';
-import { List, Row,  } from 'react-native-ios-list';
+// import { List, Row,  } from 'react-native-ios-list';
 import { fontSizes, fontWeights } from '../../theme/fonts';
 
 const NewEventScreen = () => {

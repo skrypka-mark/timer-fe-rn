@@ -1106,6 +1106,11 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@dominicstop/ts-event-emitter@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/@dominicstop/ts-event-emitter/-/ts-event-emitter-1.1.0.tgz"
+  integrity sha512-CcxmJIvUb1vsFheuGGVSQf4KdPZC44XolpUT34+vlal+LyQoBUOn31pjFET5M9ctOxEpt8xa0M3/2M7uUiAoJw==
+
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
   resolved "https://registry.npmjs.org/@egjs/hammerjs/-/hammerjs-2.0.17.tgz"
@@ -7501,10 +7506,12 @@ react-native-gradle-plugin@^0.71.17:
   resolved "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.17.tgz"
   integrity sha512-OXXYgpISEqERwjSlaCiaQY6cTY5CH6j73gdkWpK0hedxtiWMWgH+i5TOi4hIGYitm9kQBeyDu+wim9fA8ROFJA==
 
-react-native-ios-list@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/react-native-ios-list/-/react-native-ios-list-2.0.0.tgz"
-  integrity sha512-mhIDj/wf5vLkCK5uwgTqKYsrT91sNsg93ouZn4/Eqibr1/+T9OZs2rFhrDiEw+4fdrbAVeyDOqVTzV5fPj4u8g==
+react-native-ios-context-menu@^1.15.3:
+  version "1.15.3"
+  resolved "https://registry.npmjs.org/react-native-ios-context-menu/-/react-native-ios-context-menu-1.15.3.tgz"
+  integrity sha512-UNkVl7ocvSpNaEpvBvE1aHOfDy/DFdZ5I+ElfnTXFsRxrVZmxLtST0b1q2wSWGWDmd2Ig2AYd7GRbYtcY222Ag==
+  dependencies:
+    "@dominicstop/ts-event-emitter" "^1.1.0"
 
 react-native-reanimated@^3.1.0:
   version "3.1.0"

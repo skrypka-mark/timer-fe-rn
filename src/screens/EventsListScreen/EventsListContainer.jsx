@@ -5,8 +5,7 @@ const EventsListContainer = ({ navigation }) => {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerSearchBarOptions: {
-                placeholder: 'Search',
-                style: { marginLeft: -10 }
+                placeholder: 'Search'
             }
         });
     }, [navigation]);
