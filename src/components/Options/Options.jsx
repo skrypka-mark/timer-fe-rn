@@ -51,7 +51,7 @@ const OptionsButton = ({ name, Icon, open, duration, delay, style, color, onPres
                         }
                     ]}
                 >
-                    <BlurView style={styles.optionBtn} blurAmount={3} blurType='light'>
+                    <BlurView style={styles.optionBtn} blurAmount={10} blurType='light'>
                         <Icon style={styles.optionIcon} color={'black'} />
                     </BlurView>
                 </Animated.View>
@@ -77,7 +77,7 @@ const Options = ({ isOpen, open, close }) => {
 
     React.useLayoutEffect(() => {
         StatusBar.setHidden(isOpen);
-        
+
         if(isOpen) setIsOptionsVisible(true);
         Animated.timing(animatedValue, {
             toValue: Number(isOpen),

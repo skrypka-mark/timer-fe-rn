@@ -49,7 +49,7 @@ const AppNavigation = () => {
                 options={() => ({
                     title: null,
                     headerTransparent: true,
-                    headerBlurEffect: 'regular',
+                    // headerBlurEffect: 'regular',
     
                     // headerLargeTitle: true,
                     // headerLargeTitleStyle: { fontSize: 25, fontWeight: '700' },
