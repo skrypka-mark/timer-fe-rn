@@ -67,17 +67,17 @@ const EventsListBar = () => {
             setReady(true);
         })();
 
-        // const showKeyboardSubscription = Keyboard.addListener('keyboardDidShow', e => {
-        //     keyboardHeight.value = withTiming(e.endCoordinates.height, { duration: 200 });
-        // });
-        // const hideKeyboardSubscription = Keyboard.addListener('keyboardWillHide', () => {
-        //     keyboardHeight.value = withTiming(0, { duration: 200 });
-        // });
+        const showKeyboardSubscription = Keyboard.addListener('keyboardDidShow', e => {
+            keyboardHeight.value = withTiming(e.endCoordinates.height, { duration: 200 });
+        });
+        const hideKeyboardSubscription = Keyboard.addListener('keyboardWillHide', () => {
+            keyboardHeight.value = withTiming(0, { duration: 200 });
+        });
 
-        // return () => {
-        //     showKeyboardSubscription.remove();
-        //     hideKeyboardSubscription.remove();
-        // };
+        return () => {
+            showKeyboardSubscription.remove();
+            hideKeyboardSubscription.remove();
+        };
     }, []);
 
     const timersListContainerAnimatedStyles = useAnimatedStyle(() => ({
