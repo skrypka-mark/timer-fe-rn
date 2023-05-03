@@ -3,6 +3,7 @@ import { fontSizes, fontWeights } from '../../../../theme/fonts';
 
 export const styles = StyleSheet.create({
     timer: {
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: 15

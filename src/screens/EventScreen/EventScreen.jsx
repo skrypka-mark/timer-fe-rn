@@ -1,7 +1,7 @@
 import AnimatedEventScreen from '../../features/AnimatedEventScreen';
 
 const EventScreen = () => {
-    return <AnimatedEventScreen />
+    return <AnimatedEventScreen />;
 };
 
 export default EventScreen;

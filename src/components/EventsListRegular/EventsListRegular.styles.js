@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { SCREEN_PADDING } from '../../../../theme';
+import { SCREEN_PADDING } from '../../theme';
 
 export const styles = StyleSheet.create({
-    timersListContainer: {
+    eventsListRegularContainer: {
         flexDirection: 'column',
         height: '100%',
         paddingHorizontal: SCREEN_PADDING,

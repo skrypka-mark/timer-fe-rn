@@ -3,6 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import { useRoute, useTheme } from '@react-navigation/native';
 import Animated from 'react-native-reanimated';
 import { PanGestureHandler, TapGestureHandler } from 'react-native-gesture-handler';
+import { SFSymbol } from 'react-native-sfsymbols';
+import Share from 'react-native-share';
 import { useImageSharedElement } from './hooks/useImageSharedElement';
 import HeaderBackground from '../../components/HeaderBackground';
 import HeaderButton from '../../components/HeaderButton';
@@ -23,8 +25,15 @@ const EventScreen = () => {
         panGestureEventHandler, tapGestureActiveHandler, closeHandler
     } = useImageSharedElement(imageSpecs);
 
-    const editHandler = () => {
-        // Edit handler here...
+    const shareHandler = async () => {
+        await Share.open({
+            title: 'Share event',
+            message: 'Share your event',
+            // backgroundImage: image,
+            // social: Share.Social.INSTAGRAM_STORIES,
+            // backgroundBottomColor: '#fefefe',
+            // backgroundTopColor: '#906df4',
+        });
     };
 
     return (
@@ -54,10 +63,17 @@ const EventScreen = () => {
                             </HeaderButton>
                         )}
                         rightButton={() => (
-                            <HeaderButton onPress={editHandler}>
-                                <HeaderText color={theme.colors.primary}>
-                                    Edit
-                                </HeaderText>
+                            <HeaderButton onPress={shareHandler}>
+                                <SFSymbol
+                                    name='square.and.arrow.up'
+                                    // weight='heavy'
+                                    // scale='medium'
+                                    // color=''
+                                    size={20}
+                                    resizeMode="center"
+                                    // multicolor={false}
+                                    style={{ width: 32, height: 32 }}
+                                />
                             </HeaderButton>
                         )}
                     />

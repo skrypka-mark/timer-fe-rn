@@ -5,58 +5,21 @@
  * @format
  */
 
-import React, { useState } from 'react';
-import {
-  StatusBar,
-  StyleSheet,
-  useColorScheme,
-  View,
-} from 'react-native';
+import React from 'react';
+import { Provider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import AppNavigation from './src/navigation/AppNavigation';
-import Options from './src/components/Options';
-import GradientBackground from './src/components/GradientBackground';
+import { store } from './src/stores';
+
+import Navigation from './src/navigation';
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
-
-  const darkTheme = {
-    ...DarkTheme,
-    colors: {
-      ...DarkTheme.colors,
-      textSecondary: 'rgba(255, 255, 255, .5)',
-      card: 'rgb(43, 45, 51)'
-    }
-  };
-  const defaultTheme = {
-    ...DefaultTheme,
-    colors: {
-      ...DefaultTheme.colors,
-      textSecondary: 'rgba(0, 0, 0, .5)'
-    }
-  };
-
   return (
-    <SafeAreaProvider>
-      <NavigationContainer theme={isDarkMode ? darkTheme : defaultTheme}>
-        <StatusBar barStyle={ isDarkMode ? 'light-content' : 'dark-content' } />
-        <View style={{ height: '100%', flex: 1, position: 'relative' }}>
-          <GradientBackground />
-          <AppNavigation />
-          <Options
-            isOpen={isOptionsOpen}
-            open={() => setIsOptionsOpen(true)}
-            close={() => setIsOptionsOpen(false)}
-          />
-        </View>
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <Navigation />
+      </SafeAreaProvider>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-});
 
 export default App;

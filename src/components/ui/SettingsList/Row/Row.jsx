@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { View, Text, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
+import { SFSymbol } from 'react-native-sfsymbols';
 import { fontSizes, fontWeights } from '../../../../theme/fonts';
 
-const Row = ({
+const BORDER_RADIUS = 10;
+
+const Row = forwardRef(({
     title,
     titleInfo,
     leading,
@@ -12,15 +15,28 @@ const Row = ({
     editable,
     placeholder,
     hideDivider,
-    onPress
-}) => {
+    radiusTop,
+    radiusBottom,
+    style,
+    onPress,
+    onChange,
+    onBlur,
+    ...props
+}, forwardedRef) => {
     const theme = useTheme();
+
+    const getRadiusStyles = () => ({
+        ...(radiusTop && styles.radiusTop),
+        ...(radiusBottom && styles.radiusBottom),
+    });
 
     const renderRowContent = () => (
         editable ? (
             <TextInput
                 style={[StyleSheet.absoluteFillObject, styles.title, styles.editableText]}
                 placeholder={placeholder}
+                onChange={onChange}
+                onBlur={onBlur}
             />
         ) : (
             <View style={styles.contentContainer}>
@@ -34,25 +50,42 @@ const Row = ({
                     <Text style={[styles.titleInfo, { color: theme.colors.textSecondary }]}>
                         { titleInfo }
                     </Text>
-                    {/* Arrow icon { hasArrow && } */}
+                    { hasArrow && (
+                        <SFSymbol
+                            name='chevron.forward'
+                            scale='medium'
+                            size={14}
+                            color={theme.colors.textSecondary}
+                            style={{ marginLeft: 10 }}
+                        />
+                    ) }
                 </View>
                 { !hideDivider && <View style={styles.divider} /> }
             </View>
         )
     );
     const renderRow = () => (
-        <View style={[styles.container, { backgroundColor: theme.colors.card }]}>
+        <View
+            style={[
+                styles.container,
+                { backgroundColor: theme.colors.card },
+                getRadiusStyles(),
+                style
+            ]}
+            ref={forwardedRef}
+            { ...props }
+        >
             { leading ? leading : null }
             { renderRowContent() }
         </View>
     );
     if(onPress) return (
-        <TouchableHighlight onPress={onPress}>
+        <TouchableHighlight onPress={onPress} style={[style, getRadiusStyles()]}>
             { renderRow() }
         </TouchableHighlight>
     );
     return renderRow();
-};
+});
 
 const styles = StyleSheet.create({
     container: {
@@ -65,7 +98,7 @@ const styles = StyleSheet.create({
         paddingLeft: 15
     },
     contentContainer: {
-        position: 'relative',
+        // position: 'relative',
         flex: 1,
         height: '100%',
         flexDirection: 'row',
@@ -104,6 +137,15 @@ const styles = StyleSheet.create({
 
     editableText: {
         paddingHorizontal: 15
+    },
+
+    radiusTop: {
+        borderTopLeftRadius: BORDER_RADIUS,
+        borderTopRightRadius: BORDER_RADIUS
+    },
+    radiusBottom: {
+        borderBottomLeftRadius: BORDER_RADIUS,
+        borderBottomRightRadius: BORDER_RADIUS
     }
 });
 

@@ -7,12 +7,13 @@ const List = ({
     header,
     headerColor,
     hideDividers,
+    style,
     children
 }) => {
     const theme = useTheme();
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, style]}>
             { header && (
                 <View style={styles.headerContainer}>
                     <Text style={[styles.headerTitle, { color: theme.colors.text }]}>
@@ -22,8 +23,17 @@ const List = ({
             ) }
             <View style={styles.listContainer}>
                 { Children.map(children, (child, index) => {
-                    const hideDivider = hideDividers || index === Children.count(children) - 1;
-                    return cloneElement(child, { ...child.props, hideDivider });
+                    const isFirstRow = !index;
+                    const isLastRow = index === Children.count(children) - 1;
+                    const hideDivider = hideDividers || isLastRow;
+                    return cloneElement(
+                        child, {
+                            ...child.props,
+                            hideDivider,
+                            radiusTop: isFirstRow,
+                            radiusBottom: isLastRow
+                        }
+                    );
                 }) }
             </View>
         </View>
@@ -45,7 +55,7 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         borderRadius: 10,
-        overflow: 'hidden'
+        // overflow: 'hidden'
     }
 });
 

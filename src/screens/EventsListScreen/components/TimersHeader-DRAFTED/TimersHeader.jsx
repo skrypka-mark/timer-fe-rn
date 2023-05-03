@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from '@react-native-community/blur';
 
 import MagnifierIcon from '../../../../components/icons/MagnifierIcon';
-import BarLayoutIcon from '../icons/BarLayoutIcon';
+import BarLayoutIcon from '../icons/DetailLayoutIcon';
 
 import { styles } from './TimersHeader.styles';
 

@@ -3,7 +3,8 @@ import { TouchableWithoutFeedback, Text, Animated, StatusBar } from 'react-nativ
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from '@react-native-community/blur';
-import { nanoid } from 'nanoid/non-secure';
+import { nanoid } from 'nanoid/non-secure'
+import HapticFeedback from 'react-native-haptic-feedback';;
 import Backdrop from '../Backdrop';
 
 import OptionsIcon from '../icons/options/OptionsIcon';
@@ -37,20 +38,12 @@ const OptionsButton = ({ name, Icon, open, duration, delay, style, color, onPres
     return (
         <AnimatedTouchableWithoutFeedback onPressOut={onPress}>
             <Animated.View style={[styles.optionContainer, style, { opacity: animatedValue }]}>
-                {name && (
+                { name && (
                     <Text style={styles.optionName}>
                         { name }
                     </Text>
-                )}
-                <Animated.View
-                    style={[
-                        styles.optionBtnWrapper,
-                        {
-                            transform: [{ scale: animatedValue }],
-                            opacity: animatedValue
-                        }
-                    ]}
-                >
+                ) }
+                <Animated.View style={[styles.optionBtnWrapper, { transform: [{ scale: animatedValue }], opacity: animatedValue }]}>
                     <BlurView style={styles.optionBtn} blurAmount={10} blurType='light'>
                         <Icon style={styles.optionIcon} color={'black'} />
                     </BlurView>
@@ -79,17 +72,24 @@ const Options = ({ isOpen, open, close }) => {
         StatusBar.setHidden(isOpen);
 
         if(isOpen) setIsOptionsVisible(true);
-        Animated.timing(animatedValue, {
+        Animated.spring(animatedValue, {
             toValue: Number(isOpen),
-            duration: 300,
+            duration: 500,
+            damping: 20,
+            mass: 1.5,
+            stiffness: 1000,
+            restDisplacementThreshold: 0.001,
+            restSpeedThreshold: 0.001,
             useNativeDriver: false
         }).start(finished => {
             if(!isOpen && finished) setIsOptionsVisible(false);
         });
 
+        HapticFeedback.trigger('impactMedium');
+
         navigation.addListener('state', close);
         return () => navigation.removeListener('state', close);
-    });
+    }, [isOpen]);
 
     const options = [
         { name: 'Create event', Icon: CreateIcon, onPress: () => navigation.navigate('new-event') },

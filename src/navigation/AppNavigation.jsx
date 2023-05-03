@@ -1,24 +1,33 @@
 import React from 'react';
 import { Text } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { toggleListAppearence, listAppearences } from '../stores/events/events.reducer';
+import { eventsSelector } from '../stores/events/events.selector';
 
-import HeaderLeft from '../components/HeaderLeft';
 import HeaderButton from '../components/HeaderButton';
+import HeaderText from '../components/HeaderText';
 
-import BarLayoutIcon from '../screens/EventsListScreen/components/icons/BarLayoutIcon';
+import DetailLayoutIcon from '../screens/EventsListScreen/components/icons/DetailLayoutIcon';
+import RegularLayoutIcon from '../screens/EventsListScreen/components/icons/RegularLayoutIcon';
 import HeaderCloseIcon from '../components/icons/HeaderCloseIcon';
 
 import EventsListScreen from '../screens/EventsListScreen';
 import EventScreen from '../screens/EventScreen';
 import NewEventScreen from '../screens/NewEventScreen';
-import GradientBackground from '../components/GradientBackground';
+import EditEventTimerScreen from '../screens/EditEventTimerScreen';
+import EditSettingsRowScreen from '../screens/EditSettingsRowScreen';
+
 import { fontSizes, fontWeights } from '../theme/fonts';
 
 const NativeStack = createNativeStackNavigator();
 
 const AppNavigation = () => {
+    const dispatch = useDispatch();
     const theme = useTheme();
+
+    const { eventsListAppearence } = useSelector(eventsSelector);
 
     return (
         <NativeStack.Navigator
@@ -49,7 +58,7 @@ const AppNavigation = () => {
                 options={() => ({
                     title: null,
                     headerTransparent: true,
-                    // headerBlurEffect: 'regular',
+                    headerBlurEffect: 'regular',
     
                     // headerLargeTitle: true,
                     // headerLargeTitleStyle: { fontSize: 25, fontWeight: '700' },
@@ -64,8 +73,9 @@ const AppNavigation = () => {
                         </Text>
                     ),
                     headerRight: () => (
-                        <HeaderButton style={{ marginRight: -5 }} onPress={() => null}>
-                            <BarLayoutIcon color={theme.colors.text} />
+                        <HeaderButton style={{ marginRight: -5 }} onPress={() => dispatch(toggleListAppearence())}>
+                            { eventsListAppearence === listAppearences.DETAIL && <DetailLayoutIcon color={theme.colors.text} /> }
+                            { eventsListAppearence === listAppearences.REGULAR && <RegularLayoutIcon color={theme.colors.text} /> }
                         </HeaderButton>
                     ),
                     headerBackButtonMenuEnabled: true,
@@ -79,7 +89,6 @@ const AppNavigation = () => {
                 options={{
                     headerShown: false,
                     presentation: 'transparentModal',
-                    // presentation: 'card',
                     animation: 'fade',
                     animationDuration: 1000,
                     // customAnimationOnGesture: true,
@@ -99,13 +108,38 @@ const AppNavigation = () => {
                     headerBlurEffect: 'regular',
                     headerLeft: () => (
                         <HeaderButton onPress={navigation.goBack}>
-                            <HeaderCloseIcon color={theme.colors.text} />
+                            <HeaderText color={theme.colors.notification}>Cancel</HeaderText>
                         </HeaderButton>
                     ),
-                    headerRight: () => <HeaderLeft text='Save' onPress={() => navigation.goBack()} />,
+                    headerRight: () => (
+                        <HeaderButton onPress={() => navigation.goBack()}>
+                            <HeaderText color={theme.colors.primary}>Save</HeaderText>
+                        </HeaderButton>
+                    ),
                     headerTitleStyle: { fontSize: fontSizes.font18, fontWeight: fontWeights.bold }
                 })}
                 component={NewEventScreen}
+            />
+            <NativeStack.Screen
+                name='edit-event-timer'
+                options={{
+                    headerShown: false,
+                    presentation: 'transparentModal',
+                    gestureDirection: 'vertical',
+                    animation: 'fade',
+                    contentStyle: { backgroundColor: 'transparent' }
+                }}
+                component={EditEventTimerScreen}
+            />
+            <NativeStack.Screen
+                name='edit-settings-row'
+                options={{
+                    headerShown: false,
+                    presentation: 'transparentModal',
+                    animation: 'none',
+                    contentStyle: { backgroundColor: 'transparent' }
+                }}
+                component={EditSettingsRowScreen}
             />
         </NativeStack.Navigator>
     );
