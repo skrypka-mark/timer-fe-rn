@@ -2,40 +2,50 @@ import { Fragment } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const timeUnits = {
+    years: 'Years',
+    months: 'Months',
+    weeks: 'Weeks',
     days: 'Days',
     hours: 'Hour',
     minutes: 'Min',
     seconds: 'Sec'
 };
 const timeUnitsShort = {
+    years: 'Y',
+    months: 'Mo',
+    weeks: 'W',
     days: 'D',
     hours: 'H',
     minutes: 'M',
     seconds: 'S'
 };
 
-const RenderTimer = ({ time, style }) => Object.keys(time).map((timeFiled, index) => (
-    <View key={timeFiled} style={styles.timer}>
-        <View style={styles.timerTextBox}>
-            <Text style={[styles.timerText, style]}>
-                { time[timeFiled] }
-            </Text>
-            <Text style={[style, styles.timerUnitText]}>
-                { timeUnits[timeFiled] }
-            </Text>
-        </View>
-        { Object.keys(time).length !== index + 1 && <View style={styles.separator} /> }
-    </View>
-));
-
-export const RenderTimerShort = ({ time, style }) => (
-    <View style={[styles.timer, { gap: 8 }]}>
-        { Object.keys(time).map((timeFiled, index) => (
+const RenderTimer = ({ timer, style, color }) => (
+    <View style={styles.timer}>
+        { Object.keys(timer?.displayUnits || timer).filter(unit => unit).map((timeFiled, index) => (
             <Fragment key={timeFiled}>
-                <Text style={[styles.timerText, style]}>
-                    { `${time[timeFiled]}${timeUnitsShort[timeFiled]}` }
+                <View style={styles.timerTextBox}>
+                    <Text style={[styles.timerText, style, color && { color }]}>
+                        { timer[timeFiled] }
+                    </Text>
+                    <Text style={[style, styles.timerUnitText, color && { color }]}>
+                        { timeUnits[timeFiled] }
+                    </Text>
+                </View>
+                { Object.keys(timer?.displayUnits || timer).length !== index + 1 && <View style={styles.separator} /> }
+            </Fragment>
+        )) }
+    </View>
+);
+
+export const RenderTimerShort = ({ timer, containerStyle, style, color }) => (
+    <View style={[styles.timer, { width: 'auto' }, containerStyle]}>
+        { Object.keys(timer).map((timeFiled, index) => (
+            <Fragment key={timeFiled}>
+                <Text style={[styles.timerText, style, color && { color }]}>
+                    { `${timer[timeFiled]}${timeUnitsShort[timeFiled]}` }
                 </Text>
-                { Object.keys(time).length !== index + 1 && <View style={styles.separatorShort} /> }
+                { Object.keys(timer).length !== index + 1 && <Text style={[styles.timerText, style, color && { color }]}>·</Text> }
             </Fragment>
         )) }
     </View>
@@ -43,9 +53,11 @@ export const RenderTimerShort = ({ time, style }) => (
 
 const styles = StyleSheet.create({
     timer: {
-        alignItems: 'center',
         flexDirection: 'row',
-        gap: 30
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        width: '100%'
+        // gap: 30
     },
     timerTextBox: {
         alignItems: 'center',

@@ -1,9 +1,14 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Slider } from '@miblanchard/react-native-slider';
+import { useTheme } from '@react-navigation/native';
+// import { Slider } from '@miblanchard/react-native-slider';
+import Slider from '@react-native-community/slider';
 import { SCREEN_PADDING } from '../../../../theme';
+import { fontSizes, fontWeights } from '../../../../theme/fonts';
 
-const SliderPicker = ({ value, onChange }) => {
+const SliderPicker = ({ initialValue, value, onChange }) => {
+    const theme = useTheme();
+
     return (
         <View
             style={{
@@ -13,10 +18,15 @@ const SliderPicker = ({ value, onChange }) => {
                 paddingHorizontal: SCREEN_PADDING
             }}
         >
-            <Text>
-                { (Number(value) * 100).toFixed(0) }%
+            <Text style={{ color: theme.colors.text, fontSize: fontSizes.font16, fontWeight: fontWeights.low }}>
+                { (+value * 100).toFixed(0) }%
             </Text>
-            <Slider containerStyle={{ flex: 1 }} value={value} onValueChange={newValue => onChange(Number(newValue).toFixed(2))} animationType='spring' trackClickable />
+            <Slider
+                style={{ flex: 1 }}
+                value={initialValue}
+                onValueChange={onChange}
+                tapToSeek
+            />
         </View>
     );
 };

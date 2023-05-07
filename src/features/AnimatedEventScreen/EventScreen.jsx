@@ -1,44 +1,56 @@
-import React, { createRef } from 'react';
+import React, { createRef, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useRoute, useTheme } from '@react-navigation/native';
 import Animated from 'react-native-reanimated';
 import { PanGestureHandler, TapGestureHandler } from 'react-native-gesture-handler';
 import { SFSymbol } from 'react-native-sfsymbols';
+import { captureRef } from 'react-native-view-shot';
 import Share from 'react-native-share';
 import { useImageSharedElement } from './hooks/useImageSharedElement';
 import HeaderBackground from '../../components/HeaderBackground';
 import HeaderButton from '../../components/HeaderButton';
 import HeaderText from '../../components/HeaderText';
 import Timer from './components/Timer';
+import SharableEventShot from '../../components/SharableEventShot';
 
 const EventScreen = () => {
     const route = useRoute();
     const theme = useTheme();
 
+    const eventRef = useRef(null);
     const imagePan = createRef();
     const imageTap = createRef();
 
-    const { title, image, time, imageSpecs } = route.params;
+    const { title, image, timer, imageSpecs } = route.params;
     const {
         animatedHeaderStyles, animatedImageStyles,
         animatedTimerStyles, pressHeaderAnimationStyles,
-        panGestureEventHandler, tapGestureActiveHandler, closeHandler
+        panGestureEventHandler, tapGestureActiveHandler, closeHandler,
+
+        // animatedContainerStyles
     } = useImageSharedElement(imageSpecs);
 
     const shareHandler = async () => {
-        await Share.open({
-            title: 'Share event',
-            message: 'Share your event',
-            // backgroundImage: image,
-            // social: Share.Social.INSTAGRAM_STORIES,
-            // backgroundBottomColor: '#fefefe',
-            // backgroundTopColor: '#906df4',
-        });
+        try {
+            const url = await captureRef(eventRef, {
+                format: 'png',
+                quality: 0.7
+            });
+            await Share.open({
+                // title,
+                // message: 'Share your event',
+                url
+            });
+        } catch(error) {
+            console.log(error);
+        }
     };
 
     return (
         <View style={styles.container}>
-            <Animated.View>
+            <Animated.View
+                // style={animatedContainerStyles}
+            >
                 <PanGestureHandler ref={imagePan} simultaneousHandlers={imageTap} onGestureEvent={panGestureEventHandler}>
                     <Animated.View style={[animatedImageStyles, { overflow: 'hidden' }]}>
                         <TapGestureHandler ref={imageTap} simultaneousHandlers={imagePan} onActivated={tapGestureActiveHandler}>
@@ -48,7 +60,7 @@ const EventScreen = () => {
                                 resizeMode='cover'
                             />
                         </TapGestureHandler>
-                        <Timer title={title} time={time} style={animatedTimerStyles} />
+                        <Timer title={title} timer={timer} style={animatedTimerStyles} />
                     </Animated.View>
                 </PanGestureHandler>
             </Animated.View>
@@ -70,7 +82,7 @@ const EventScreen = () => {
                                     // scale='medium'
                                     // color=''
                                     size={20}
-                                    resizeMode="center"
+                                    resizeMode='center'
                                     // multicolor={false}
                                     style={{ width: 32, height: 32 }}
                                 />
@@ -79,6 +91,8 @@ const EventScreen = () => {
                     />
                 </Animated.View>
             </Animated.View>
+
+            <SharableEventShot title={title} image={image} timer={timer} ref={eventRef} />
         </View>
     );
 };

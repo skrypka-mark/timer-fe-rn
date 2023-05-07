@@ -67,17 +67,6 @@ const AppNavigation = () => {
                     // headerBackVisible: false,
                     headerShadowVisible: false,
                     // headerStyle: { backgroundColor: '#fff' },
-                    headerLeft: () => (
-                        <Text style={{ marginLeft: -5, fontSize: 25, fontWeight: '700', color: theme.colors.text }}>
-                            Timers
-                        </Text>
-                    ),
-                    headerRight: () => (
-                        <HeaderButton style={{ marginRight: -5 }} onPress={() => dispatch(toggleListAppearence())}>
-                            { eventsListAppearence === listAppearences.DETAIL && <DetailLayoutIcon color={theme.colors.text} /> }
-                            { eventsListAppearence === listAppearences.REGULAR && <RegularLayoutIcon color={theme.colors.text} /> }
-                        </HeaderButton>
-                    ),
                     headerBackButtonMenuEnabled: true,
                     // contentStyle: { backgroundColor: theme.dark ? '#09061A' : 'white' },
                     contentStyle: { backgroundColor: 'transparent' }
@@ -106,16 +95,6 @@ const AppNavigation = () => {
                     presentation: 'modal',
                     headerTransparent: true,
                     headerBlurEffect: 'regular',
-                    headerLeft: () => (
-                        <HeaderButton onPress={navigation.goBack}>
-                            <HeaderText color={theme.colors.notification}>Cancel</HeaderText>
-                        </HeaderButton>
-                    ),
-                    headerRight: () => (
-                        <HeaderButton onPress={() => navigation.goBack()}>
-                            <HeaderText color={theme.colors.primary}>Save</HeaderText>
-                        </HeaderButton>
-                    ),
                     headerTitleStyle: { fontSize: fontSizes.font18, fontWeight: fontWeights.bold }
                 })}
                 component={NewEventScreen}

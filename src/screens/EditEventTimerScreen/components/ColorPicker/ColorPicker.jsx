@@ -52,11 +52,11 @@ const ColorPicker = ({ value, onChange, opacity = false }) => {
     );
 
     const colorPickerChangeHandler = ({ hex }) => {
-        if(opacity !== false) {
-            const rgbaObject = colorKit.RGB(hex).object();
-            rgbaObject.a = opacity;
-            return onChange(colorKit.HEX(rgbaObject));
-        }
+        // if(opacity !== false) {
+        //     const rgbaObject = colorKit.RGB(hex).object();
+        //     rgbaObject.a = opacity;
+        //     return onChange(colorKit.HEX(rgbaObject));
+        // }
         return onChange(hex);
     };
     return (

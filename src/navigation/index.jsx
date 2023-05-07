@@ -24,12 +24,12 @@ export default () => {
         colors: {
             ...DefaultTheme.colors,
             textSecondary: 'rgba(0, 0, 0, .5)',
-            backgroundOpacity: 'rgba(222, 222, 222, .7)'
+            backgroundOpacity: 'rgba(222, 222, 222, .8)'
         }
     };
     return (
         <NavigationContainer theme={isDarkMode ? darkTheme : defaultTheme}>
-            <StatusBar barStyle={ isDarkMode ? 'light-content' : 'dark-content' } />
+            <StatusBar barStyle={ isDarkMode ? 'light-content' : 'dark-content' } animated />
             <View style={{ height: '100%', flex: 1, position: 'relative' }}>
                 <GradientBackground />
                 <AppNavigation />

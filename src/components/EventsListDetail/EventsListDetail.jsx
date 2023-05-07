@@ -4,10 +4,10 @@ import { nanoid } from 'nanoid/non-secure';
 import EventsListItemDetail from '../EventsListItemDetail';
 import { styles } from './EventsListDetail.styles';
 
-const EventsListDetail = ({ events, style }) => {
+const EventsListDetail = ({ events, style, share }) => {
     return (
         <Animated.View style={[styles.eventsListDetailContainer, style]}>
-            { events.map(event => <EventsListItemDetail key={nanoid()} { ...event } />) }
+            { events.map(event => <EventsListItemDetail key={nanoid()} { ...event } share={share} />) }
         </Animated.View>
     );
 };

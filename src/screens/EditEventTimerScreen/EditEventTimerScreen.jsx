@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, StyleSheet, StatusBar } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation, useRoute, useTheme } from '@react-navigation/native';
 import Animated, {
     useSharedValue,
@@ -9,18 +9,20 @@ import Animated, {
     interpolate,
     withTiming
 } from 'react-native-reanimated';
-import { editEvent } from '../../stores/events/events.reducer';
+import { editNewEvent } from '../../stores/events/events.reducer';
+import { eventsSelector } from '../../stores/events/events.selector';
 import Timer from '../../features/AnimatedEventScreen/components/Timer';
 import EditTimerBottomBar from '../../components/EditTimerBottomBar';
 import FontPicker from './components/FontPicker';
+import SliderPicker from './components/SliderPicker';
+import ColorPicker from './components/ColorPicker';
+import { convertColorWithAlpha } from '../../utils/convertColorWithAlpha';
 import {
     CHANGE_FONT_FAMILY, CHANGE_FONT_COLOR,
     CHANGE_BACKGROUND_COLOR, CHANGE_BACKGROUND_OPACITY,
     fontFamilies
 } from '../../constants';
 import { SCREEN_PADDING } from '../../theme';
-import SliderPicker from './components/SliderPicker';
-import ColorPicker from './components/ColorPicker';
 
 const EditEventTimerScreen = () => {
     const dispatch = useDispatch();
@@ -30,15 +32,20 @@ const EditEventTimerScreen = () => {
     const animatedValue = useSharedValue(0);
 
     const { actionType, event } = route.params;
+    const { emptyEvent: newEvent } = useSelector(eventsSelector);
 
-    const [fontFamily, setFontFamily] = useState(fontFamilies[0]);
-    const [fontColor, setFontColor] = useState(theme.colors.text);
-    const [backgroundOpacity, setBackgroundOpacity] = useState(0.2);
-    const [backgroundColor, setBackgroundColor] = useState(`rgba(0, 0, 0, ${backgroundOpacity})`);
+    const [fontFamily, setFontFamily] = useState(newEvent?.timer.fontFamily);
+    const [fontColor, setFontColor] = useState(newEvent?.timer.fontColor);
+    const [backgroundOpacity, setBackgroundOpacity] = useState(newEvent?.timer.backgroundOpacity);
+    const [backgroundColor, setBackgroundColor] = useState(newEvent?.timer.backgroundColor);
+
+    const [backgroundColorWithAlpha, setBackgroundColorWithAlpha] = useState(convertColorWithAlpha(backgroundColor, Number(backgroundOpacity)));
+
+    // const backgroundColorObject = useMemo(() => colorKit.RGB(newEvent.timer?.backgroundColor).object(), [newEvent.timer.backgroundColor]);
 
     useEffect(() => {
-        setBackgroundColor(`rgba(0, 0, 0, ${backgroundOpacity})`);
-    }, [backgroundOpacity]);
+        setBackgroundColorWithAlpha(convertColorWithAlpha(backgroundColor, Number(backgroundOpacity)));
+    }, [backgroundColor, backgroundOpacity]);
 
     useEffect(() => {
         // StatusBar.setHidden(true, 'fade');
@@ -51,17 +58,19 @@ const EditEventTimerScreen = () => {
         animatedValue.value = withTiming(0, { duration: 300 }, finished => finished && runOnJS(navigation.goBack)());
     };
     const saveHandler = () => {
-        dispatch(editEvent({
+        dispatch(editNewEvent({
             type: actionType,
             value: {
                 fontFamily,
                 fontColor,
                 backgroundOpacity,
-                backgroundColor
+                backgroundColor: backgroundColorWithAlpha
             }
         }));
         closeHandler();
     };
+
+    const changeBackgroundOpacityHandler = value => setBackgroundOpacity(+Number(value).toFixed(2));
 
     const getEditElement = () => {
         switch(actionType) {
@@ -72,7 +81,7 @@ const EditEventTimerScreen = () => {
             case CHANGE_BACKGROUND_COLOR:
                 return <ColorPicker value={backgroundColor} onChange={setBackgroundColor} opacity={backgroundOpacity} />;
             case CHANGE_BACKGROUND_OPACITY:
-                return <SliderPicker value={backgroundOpacity} onChange={setBackgroundOpacity} />;
+                return <SliderPicker initialValue={newEvent?.timer.backgroundOpacity} value={backgroundOpacity} onChange={changeBackgroundOpacityHandler} />;
             default:
                 return null;
         }
@@ -88,9 +97,9 @@ const EditEventTimerScreen = () => {
             <Image source={event.image} style={{ width: '100%', height: '100%' }} resizeMode='cover' />
             <Timer
                 title={event.title}
-                time={event.timer.time}
+                timer={newEvent.timer}
                 fontColor={fontColor}
-                backgroundColor={backgroundColor}
+                backgroundColor={backgroundColorWithAlpha}
                 style={{
                     position: 'absolute',
                     top: 200,

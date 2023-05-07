@@ -15,6 +15,7 @@ const Row = forwardRef(({
     editable,
     placeholder,
     hideDivider,
+    checked,
     radiusTop,
     radiusBottom,
     style,
@@ -33,7 +34,7 @@ const Row = forwardRef(({
     const renderRowContent = () => (
         editable ? (
             <TextInput
-                style={[StyleSheet.absoluteFillObject, styles.title, styles.editableText]}
+                style={[StyleSheet.absoluteFillObject, styles.title, styles.editableText, { color: theme.colors.text }]}
                 placeholder={placeholder}
                 onChange={onChange}
                 onBlur={onBlur}
@@ -50,13 +51,23 @@ const Row = forwardRef(({
                     <Text style={[styles.titleInfo, { color: theme.colors.textSecondary }]}>
                         { titleInfo }
                     </Text>
+                    { checked && (
+                        <SFSymbol
+                            name='checkmark'
+                            scale='medium'
+                            weight='semibold'
+                            size={18}
+                            resizeMode='center'
+                            style={{ marginLeft: 10, width: 18, height: 18 }}
+                        />
+                    ) }
                     { hasArrow && (
                         <SFSymbol
                             name='chevron.forward'
                             scale='medium'
                             size={14}
                             color={theme.colors.textSecondary}
-                            style={{ marginLeft: 10 }}
+                            style={{ marginLeft: 10, width: 14, height: 14 }}
                         />
                     ) }
                 </View>
@@ -110,8 +121,7 @@ const styles = StyleSheet.create({
     titleBox: {},
     title: {
         fontSize: fontSizes.font16,
-        fontWeight: fontWeights.low,
-        color: 'white'
+        fontWeight: fontWeights.low
     },
 
     rightSideBox: {

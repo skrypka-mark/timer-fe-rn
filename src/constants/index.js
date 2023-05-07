@@ -11,9 +11,14 @@ export const fontFamilies = [
     'Snell Roundhand'
 ];
 
+export const repeatPickerValues = {
+    amounts: Array(101).fill('').map((_, index) => `${index}`),
+    labels: ['Seconds', 'Minutes', 'Hours', 'Days', 'Weeks', 'Months', 'Years']
+};
+
 export const eventContextMenuItems = [
     {
-        actionKey: 'key-01',
+        actionKey: 'edit',
         actionTitle: 'Edit',
         icon: {
             type: 'IMAGE_SYSTEM',
@@ -23,7 +28,7 @@ export const eventContextMenuItems = [
         }
     },
     {
-        actionKey: 'key-02',
+        actionKey: 'share',
         actionTitle: 'Share',
         icon: {
             type: 'IMAGE_SYSTEM',
@@ -36,7 +41,7 @@ export const eventContextMenuItems = [
         menuTitle: '',
         menuOptions: ['displayInline'],
         menuItems: [{
-            actionKey: 'key-03',
+            actionKey: 'delete',
             actionTitle: 'Delete',
             menuAttributes: ['destructive'],
             icon: {
