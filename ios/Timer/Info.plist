@@ -36,7 +36,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -55,5 +55,19 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Typewriter.otf</string>
+		<string>Countryhouse.ttf</string>
+		<string>EightBits.ttf</string>
+		<string>Georgia.ttf</string>
+		<string>NoteWorthy.ttf</string>
+		<string>Papyrus.ttf</string>
+		<string>AkrisLancead.otf</string>
+		<string>SnellRoundhandBold.otf</string>
+		<string>CourierNew.ttf</string>
+		<string>LeapingTypewriter.ttf</string>
+		<string>SanFrancisco.ttf</string>
+	</array>
 </dict>
 </plist>

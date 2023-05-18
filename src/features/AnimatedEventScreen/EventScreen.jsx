@@ -1,19 +1,23 @@
 import React, { createRef, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { useRoute, useTheme } from '@react-navigation/native';
 import Animated from 'react-native-reanimated';
 import { PanGestureHandler, TapGestureHandler } from 'react-native-gesture-handler';
 import { SFSymbol } from 'react-native-sfsymbols';
 import { captureRef } from 'react-native-view-shot';
 import Share from 'react-native-share';
+import { editEvent } from '../../stores/events/events.reducer';
 import { useImageSharedElement } from './hooks/useImageSharedElement';
 import HeaderBackground from '../../components/HeaderBackground';
 import HeaderButton from '../../components/HeaderButton';
 import HeaderText from '../../components/HeaderText';
 import Timer from './components/Timer';
 import SharableEventShot from '../../components/SharableEventShot';
+import { CHANGE_NAME } from '../../constants';
 
 const EventScreen = () => {
+    const dispatch = useDispatch();
     const route = useRoute();
     const theme = useTheme();
 
@@ -21,7 +25,7 @@ const EventScreen = () => {
     const imagePan = createRef();
     const imageTap = createRef();
 
-    const { title, image, timer, imageSpecs } = route.params;
+    const { id, title, image, timer, imageSpecs } = route.params;
     const {
         animatedHeaderStyles, animatedImageStyles,
         animatedTimerStyles, pressHeaderAnimationStyles,
@@ -46,6 +50,8 @@ const EventScreen = () => {
         }
     };
 
+    const titleBlurHandler = ({ nativeEvent }) => dispatch(editEvent({ type: CHANGE_NAME, value: nativeEvent.text }));
+
     return (
         <View style={styles.container}>
             <Animated.View
@@ -60,7 +66,7 @@ const EventScreen = () => {
                                 resizeMode='cover'
                             />
                         </TapGestureHandler>
-                        <Timer title={title} timer={timer} style={animatedTimerStyles} />
+                        <Timer title={title} timer={timer} style={animatedTimerStyles} onTitleBlur={titleBlurHandler} isTitleEditable />
                     </Animated.View>
                 </PanGestureHandler>
             </Animated.View>

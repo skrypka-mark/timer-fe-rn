@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import defaultBackgroundImage from '../../assets/images/default.jpg';
+import { getRandomId } from '../../utils/getRandomId';
 import {
+    EDIT_EVENT, EDIT_EMPTY_EVENT,
     CHANGE_NAME, CHANGE_DATE, CHANGE_TIME,
     CHANGE_REPEAT_AMOUNT, CHANGE_REPEAT_LABEL,
     TOGGLE_NOTIFICATION, CHANGE_BACKGROUND_IMAGE,
@@ -16,6 +18,7 @@ export const listAppearences = {
 
 const initialState = {
     emptyEvent: {
+        id: undefined,
         title: '',
         timer: {
             date: null,
@@ -25,7 +28,7 @@ const initialState = {
                 label: repeatPickerValues.labels[2]
             },
             // time: { days: null, hours: null, minutes: null, seconds: null },
-            fontFamily: '',
+            fontFamily: fontFamilies[0],
             fontColor: '',
             backgroundColor: '',
             backgroundOpacity: 0.1,
@@ -52,12 +55,20 @@ const eventsSlice = createSlice({
                 id: '1',
                 title: 'Wedding',
                 timer: {
-                    date: JSON.stringify(new Date()),
-                    time: JSON.stringify(new Date()),
+                    date: JSON.stringify(new Date('2023-06-25')),
+                    time: JSON.stringify(new Date('2023-06-25T03:24:00')),
+                    repeat: {
+                        amount: repeatPickerValues.amounts[0],
+                        label: repeatPickerValues.labels[2]
+                    },
+                    fontFamily: fontFamilies[0],
+                    fontColor: '#000',
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    backgroundOpacity: 0.1,
                     displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
+                        years: true,
+                        months: true,
+                        weeks: true,
                         days: true,
                         hours: true,
                         minutes: true,
@@ -70,8 +81,16 @@ const eventsSlice = createSlice({
                 id: '2',
                 title: 'New Year',
                 timer: {
-                    date: JSON.stringify(new Date()),
-                    time: JSON.stringify(new Date()),
+                    date: JSON.stringify(new Date('2023-12-30')),
+                    time: JSON.stringify(new Date('2023-12-30T24:00:00')),
+                    repeat: {
+                        amount: repeatPickerValues.amounts[0],
+                        label: repeatPickerValues.labels[2]
+                    },
+                    fontFamily: fontFamilies[5],
+                    fontColor: '#fff',
+                    backgroundColor: 'rgba(0, 0, 0, .1)',
+                    backgroundOpacity: 0.1,
                     displayUnits: {
                         years: false,
                         months: false,
@@ -88,8 +107,16 @@ const eventsSlice = createSlice({
                 id: '3',
                 title: 'Halloween',
                 timer: {
-                    date: JSON.stringify(new Date()),
-                    time: JSON.stringify(new Date()),
+                    date: JSON.stringify(new Date('2023-07-25')),
+                    time: JSON.stringify(new Date('2023-07-25T03:24:00')),
+                    repeat: {
+                        amount: repeatPickerValues.amounts[0],
+                        label: repeatPickerValues.labels[2]
+                    },
+                    fontFamily: fontFamilies[4],
+                    fontColor: '#fff',
+                    backgroundColor: 'rgba(22, 252, 222, .1)',
+                    backgroundOpacity: 0.1,
                     displayUnits: {
                         years: false,
                         months: false,
@@ -138,60 +165,77 @@ const eventsSlice = createSlice({
     },
     reducers: {
         addEvent: (state, { payload }) => {
+            payload.id = getRandomId();
             state.events = [...state.events, payload];
         },
-        addEmptyEvent: state => {
-            state.emptyEvent = initialState.emptyEvent
+        addEmptyEvent: (state, { payload }) => {
+            if(payload) {
+                state.emptyEvent = payload;
+                return;
+            }
+            state.emptyEvent = initialState.emptyEvent;
         },
-        editNewEvent: (state, { payload }) => {
+        editEvent: (state, { payload }) => {
+            const eventToEdit = state.emptyEvent;
+
             switch(payload.type) {
                 case CHANGE_NAME:
-                    state.emptyEvent.title = payload.value;
+                    eventToEdit.title = payload.value;
                     break;
                 case CHANGE_DATE:
-                    state.emptyEvent.timer.date = payload.value;
+                    eventToEdit.timer.date = payload.value;
                     break;
                 case CHANGE_TIME:
-                    state.emptyEvent.timer.time = payload.value;
+                    eventToEdit.timer.time = payload.value;
                     break;
                 case CHANGE_REPEAT_AMOUNT:
-                    state.emptyEvent.timer.repeat.amount = payload.value;
+                    eventToEdit.timer.repeat.amount = payload.value;
                     break;
                 case CHANGE_REPEAT_LABEL:
-                    state.emptyEvent.timer.repeat.label = payload.value;
+                    eventToEdit.timer.repeat.label = payload.value;
                     break;
                 case TOGGLE_NOTIFICATION:
-                    state.emptyEvent.notification = !state.emptyEvent.notification;
+                    eventToEdit.notification = !eventToEdit.notification;
                     break;
                 case CHANGE_BACKGROUND_IMAGE:
-                    state.emptyEvent.image = payload.value;
+                    eventToEdit.image = payload.value;
                     break;
                 case CHANGE_FONT_FAMILY:
-                    state.emptyEvent.timer.fontFamily = payload.value.fontFamily;
+                    eventToEdit.timer.fontFamily = payload.value.fontFamily;
                     break;
                 case CHANGE_FONT_COLOR:
-                    state.emptyEvent.timer.fontColor = payload.value.fontColor;
+                    eventToEdit.timer.fontColor = payload.value.fontColor;
                     break;
                 case CHANGE_BACKGROUND_COLOR:
-                    state.emptyEvent.timer.backgroundColor = payload.value.backgroundColor;
+                    eventToEdit.timer.backgroundColor = payload.value.backgroundColor;
                     break;
                 case CHANGE_BACKGROUND_OPACITY:
-                    state.emptyEvent.timer.backgroundOpacity = payload.value.backgroundOpacity;
-                    state.emptyEvent.timer.backgroundColor = payload.value.backgroundColor;
+                    eventToEdit.timer.backgroundOpacity = payload.value.backgroundOpacity;
+                    eventToEdit.timer.backgroundColor = payload.value.backgroundColor;
                     break;
                 case CHANGE_DISPLAY_UNIT:
-                    state.emptyEvent.timer.displayUnits = { ...state.emptyEvent.timer.displayUnits, ...payload.value };
+                    eventToEdit.timer.displayUnits = {
+                        ...eventToEdit.timer.displayUnits,
+                        ...payload.value
+                    };
                     break;
                 default:
                     break;
             }
         },
-        saveNewEvent: state => {
-            state.events = [...state.events, state.emptyEvent];
+        saveEmptyEvent: (state, { payload }) => {
+            const { id } = payload;
+            const eventToSaveIndex = state.events.findIndex(event => event.id === id);
+            if(eventToSaveIndex !== -1) {
+                state.events[eventToSaveIndex] = state.emptyEvent;
+            } else {
+                state.events = [...state.events, state.emptyEvent];
+            }
         },
-        resetNewEvent: state => {
+        resetEmptyEvent: state => {
             state.emptyEvent = initialState.emptyEvent;
         },
+
         updateListAppearence: (state, { payload }) => {
             state.eventsListAppearence = payload;
         },
@@ -206,9 +250,10 @@ const eventsSlice = createSlice({
 export const {
     addEvent,
     addEmptyEvent,
-    editNewEvent,
-    saveNewEvent,
-    resetNewEvent,
+    editEvent,
+    editEmptyEvent,
+    saveEmptyEvent,
+    resetEmptyEvent,
     updateListAppearence,
     toggleListAppearence
 } = eventsSlice.actions;

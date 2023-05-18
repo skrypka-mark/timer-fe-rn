@@ -8,7 +8,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { BlurView } from 'expo-blur';
 import moment from 'moment';
 import { useKeyboardAwareStyles } from '../../hooks/useKeyboardAwareStyles';
-import { editNewEvent } from '../../stores/events/events.reducer';
+import { editEvent } from '../../stores/events/events.reducer';
 import SettingsList from '../../components/ui/SettingsList';
 
 import {
@@ -32,11 +32,11 @@ const NewEventScreen = ({ newEvent }) => {
 
     const settingsList = [];
 
-    const nameInputBlurHandler = ({ nativeEvent }) => dispatch(editNewEvent({ type: CHANGE_NAME, value: nativeEvent.text }));
-    const toggleNotification = () => dispatch(editNewEvent({ type: TOGGLE_NOTIFICATION }));
+    const nameInputBlurHandler = ({ nativeEvent }) => dispatch(editEvent({ type: CHANGE_NAME, value: nativeEvent.text }));
+    const toggleNotification = () => dispatch(editEvent({ type: TOGGLE_NOTIFICATION }));
     const backgroundImagePressHandler = async () => {
-        const { assets } = await launchImageLibrary({ quality: 0.7 });
-        dispatch(editNewEvent({ type: CHANGE_BACKGROUND_IMAGE, value: { uri: assets[0].uri } }));
+        const { assets } = await launchImageLibrary({ quality: 0.3 });
+        dispatch(editEvent({ type: CHANGE_BACKGROUND_IMAGE, value: { uri: assets[0].uri } }));
     };
 
     const editEventTimerAppearencePressHandler = actionType => {
@@ -46,12 +46,12 @@ const NewEventScreen = ({ newEvent }) => {
     const changeDatePressHandler = ({ title, actionType, ref }) => {
         ref?.current?.measure((x, y, width, height, pageX, pageY) => {
             const rowSpecs = { width, height, pageX, pageY };
-            navigation.navigate('edit-settings-row', { title, actionType, rowSpecs });
+            navigation.navigate('edit-settings-row', { title, actionType, rowSpecs, event: newEvent });
         });
     };
 
     const changeDisplayUnit = value => {
-        dispatch(editNewEvent({ type: CHANGE_DISPLAY_UNIT, value }))
+        dispatch(editEvent({ type: CHANGE_DISPLAY_UNIT, value }))
     };
 
     return (

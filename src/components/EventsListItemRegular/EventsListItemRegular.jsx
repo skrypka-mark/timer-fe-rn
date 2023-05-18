@@ -11,10 +11,9 @@ import { styles } from './EventsListItemRegular.styles';
 
 const BORDER_RADIUS = 5;
 
-const EventsListItemRegular = ({ id, title, timer, image, share }) => {
+const EventsListItemRegular = ({ event, share }) => {
     const navigation = useNavigation();
     const theme = useTheme();
-    // const countdownTimer = useCountdownTimer(timer);
 
     const eventRef = useRef(null);
     const imageRef = useRef(null);
@@ -24,10 +23,10 @@ const EventsListItemRegular = ({ id, title, timer, image, share }) => {
 
     const timerItemPressHandler = () => {
         imageRef.current?.measure((x, y, width, height, pageX, pageY) => {
-            const imageSpecs = { width, height, pageX, pageY, borderRadius: BORDER_RADIUS, opacity: 0 };
-            navigation.navigate('event', { id, title, timer, image, imageSpecs });
+            const imageSpecs = { width, height, pageX, pageY, borderRadius: 10, opacity: 0 };
+            navigation.navigate('event', { id: event?.id, title: event?.title, timer: event?.timer, image: event?.image, imageSpecs });
         });
-        setActiveTimerId(id);
+        setActiveTimerId(event?.id);
     };
 
     useEffect(() => {
@@ -36,11 +35,11 @@ const EventsListItemRegular = ({ id, title, timer, image, share }) => {
     }, []);
 
     const renderContextMenuPreview = () => (
-        <Animated.View style={{ position: 'relative' }}>
-            <Image source={image} style={{ width: '100%', height: '100%' }} resizeMode='cover' />
+        <View style={{ position: 'relative' }}>
+            <Image source={event?.image} style={{ width: '100%', height: '100%' }} resizeMode='cover' />
             <Timer
-                title={title}
-                timer={timer}
+                title={event?.title}
+                timer={event?.timer}
                 style={[
                     StyleSheet.absoluteFillObject,
                     {
@@ -52,12 +51,13 @@ const EventsListItemRegular = ({ id, title, timer, image, share }) => {
                     }
                 ]}
             />
-        </Animated.View>
+        </View>
     );
 
     const pressContextMenuItemHandler = ({ nativeEvent }) => {
         switch(nativeEvent.actionKey) {
             case 'edit':
+                navigation.navigate('edit-event', { event });
                 break;
             case 'share':
                 share(eventRef);
@@ -87,19 +87,19 @@ const EventsListItemRegular = ({ id, title, timer, image, share }) => {
                 onMenuWillShow={() => StatusBar.setHidden(true, 'fade')}
                 onMenuWillHide={() => StatusBar.setHidden(false, 'fade')}
             >
-                <Animated.View style={[styles.container, { opacity: animatedValue }]}>
+                <View style={styles.container}>
                     <Pressable style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }} onPress={timerItemPressHandler}>
                         <Image
-                            source={image}
+                            source={event?.image}
                             style={[styles.image, { borderRadius: BORDER_RADIUS }]}
                             resizeMode='cover'
                         />
                         <View style={styles.textContainer} ref={imageRef}>
                             <Text style={[styles.title, { color: theme.colors.text }]}>
-                                { title }
+                                { event?.title }
                             </Text>
                             <Timer
-                                timer={timer}
+                                timer={event?.timer}
                                 containerStyle={styles.timer}
                                 style={styles.timerText}
                                 short
@@ -128,10 +128,10 @@ const EventsListItemRegular = ({ id, title, timer, image, share }) => {
                             />
                         </View>
                     </ContextMenuButton>
-                </Animated.View>
+                </View>
             </ContextMenuView>
 
-            <SharableEventShot title={title} image={image} timer={timer} ref={eventRef} />
+            <SharableEventShot title={event?.title} image={event?.image} timer={event?.timer} ref={eventRef} />
         </Fragment>
     );
 };

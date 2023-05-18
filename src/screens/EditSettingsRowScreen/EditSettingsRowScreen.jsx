@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { StyleSheet, View, Pressable, StatusBar } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation, useRoute, useTheme } from '@react-navigation/native';
@@ -14,7 +14,7 @@ import HapticFeedback from 'react-native-haptic-feedback';
 import { BlurView } from 'expo-blur';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { editNewEvent } from '../../stores/events/events.reducer';
+import { editEvent } from '../../stores/events/events.reducer';
 import { eventsSelector } from '../../stores/events/events.selector';
 import SettingsList from '../../components/ui/SettingsList';
 import {
@@ -32,12 +32,33 @@ const EditSettingsRowScreen = () => {
     const theme = useTheme();
     const animatedValue = useSharedValue(0);
 
-    const { title, actionType, rowSpecs } = route.params;
-    const { emptyEvent: newEvent } = useSelector(eventsSelector);
+    const { title, actionType, rowSpecs, event } = route.params;
+    // const { emptyEvent: newEvent } = useSelector(eventsSelector);
+
+    const [repeat, updateRepeat] = useReducer(
+        (prev, next) => {
+            const newRepeat = { ...prev };
+
+            switch(next.type) {
+                case CHANGE_REPEAT_AMOUNT:
+                    newRepeat.amount = next.value;
+                    break;
+                case CHANGE_REPEAT_LABEL:
+                    newRepeat.label = next.value;
+                    break;
+                default:
+                    break;
+            }
+
+            return newRepeat;
+        },
+        { amount: `repeat-amount_${event.timer?.repeat.amount}`, label: `repeat-label_${event.timer?.repeat.label}` }
+    );
 
     useEffect(() => {
         animatedValue.value = 0;
         animatedValue.value = withSpring(1, { mass: 1.2 });
+
         HapticFeedback.trigger('impactMedium');
         StatusBar.setHidden(true, 'fade');
     }, []);
@@ -69,10 +90,10 @@ const EditSettingsRowScreen = () => {
     };
 
     const dateChangeHandler = (_, date) => {
-        dispatch(editNewEvent({ type: CHANGE_DATE, value: JSON.stringify(date) }));
+        dispatch(editEvent({ type: CHANGE_DATE, value: JSON.stringify(date) }));
     };
     const timeChangeHandler = (_, time) => {
-        dispatch(editNewEvent({ type: CHANGE_TIME, value: JSON.stringify(time) }));
+        dispatch(editEvent({ type: CHANGE_TIME, value: JSON.stringify(time) }));
     };
     const repeatChangeHandler = value => ({
         actionType: '',
@@ -87,7 +108,8 @@ const EditSettingsRowScreen = () => {
             return this._setActionType(CHANGE_REPEAT_LABEL);
         },
         dispatch: function() {
-            dispatch(editNewEvent({ type: this.actionType, value: value?.split('_').at(-1) }));
+            updateRepeat({ type: this.actionType, value });
+            dispatch(editEvent({ type: this.actionType, value: value?.split('_').at(-1) }));
         }
     });
 
@@ -95,7 +117,7 @@ const EditSettingsRowScreen = () => {
         [CHANGE_DATE]: (
             <DateTimePicker
                 display='inline'
-                value={newEvent.timer?.date ? new Date(JSON.parse(newEvent.timer.date)) : new Date()}
+                value={event.timer?.date ? new Date(JSON.parse(event.timer.date)) : new Date()}
                 minimumDate={new Date()}
                 onChange={dateChangeHandler}
                 positiveButton={{ label: 'Okay' }}
@@ -107,8 +129,7 @@ const EditSettingsRowScreen = () => {
                 mode='time'
                 display='spinner'
                 style={{ width: 210 }}
-                value={newEvent.timer?.time ? new Date(JSON.parse(newEvent.timer.time)) : new Date()}
-                minimumDate={new Date()}
+                value={event.timer?.time ? new Date(JSON.parse(event.timer.time)) : new Date()}
                 onChange={timeChangeHandler}
                 positiveButton={{ label: 'Okay' }}
                 negativeButton={{ label: 'Cancel' }}
@@ -118,7 +139,7 @@ const EditSettingsRowScreen = () => {
             <View style={{ width: 250, flexDirection: 'row' }}>
                 <Picker
                     style={{ width: '40%', marginRight: -5 }}
-                    selectedValue={`repeat-amount_${newEvent.timer?.repeat.amount}`}
+                    selectedValue={repeat.amount}
                     itemStyle={{ color: theme.colors.text }}
                     onValueChange={key => repeatChangeHandler(key).amount().dispatch()}
                 >
@@ -128,7 +149,7 @@ const EditSettingsRowScreen = () => {
                 </Picker>
                 <Picker
                     style={{ width: '65%', marginLeft: -5 }}
-                    selectedValue={`repeat-label_${newEvent.timer?.repeat.label}`}
+                    selectedValue={repeat.label}
                     itemStyle={{ color: theme.colors.text }}
                     onValueChange={key => repeatChangeHandler(key).label().dispatch()}
                 >

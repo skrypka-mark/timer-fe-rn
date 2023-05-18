@@ -11,8 +11,8 @@ export const styles = StyleSheet.create({
         // minHeight: 130
     },
     timerTitle: {
-        fontSize: fontSizes.font24,
-        fontWeight: fontWeights.low
+        fontSize: fontSizes.font20,
+        // fontWeight: fontWeights.low
     },
     timeContainer: {
         width: '100%',

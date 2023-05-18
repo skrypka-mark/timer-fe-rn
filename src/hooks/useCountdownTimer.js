@@ -2,36 +2,59 @@ import moment from 'moment';
 
 export const useCountdownTimer = timer => {
     const displayUnits = timer?.displayUnits;
-    const convertedDate = timer?.date ? moment(JSON.parse(timer.date)) : moment();
-    const convertedTime = timer?.time ? moment(JSON.parse(timer.time)) : moment();
-
+    const eventDate = timer?.date ? moment(JSON.parse(timer.date)) : moment();
+    const eventTime = timer?.time ? moment(JSON.parse(timer.time)) : moment();
     const now = moment();
 
-    const timerObject = {
-        years: convertedDate.diff(now, 'years'),
-        months: convertedDate.diff(now, 'months'),
-        weeks: convertedDate.diff(now, 'weeks'),
-        days: convertedDate.diff(now, 'days'),
-    };
-
-    const hours = convertedTime;
-    const minutes = hours.clone().subtract(hours.diff(now, 'hours'), 'hours');
-    const seconds = minutes.clone().subtract(minutes.diff(now, 'minutes'), 'minutes');
-
-    timerObject.hours = hours.diff(now, 'hours');
-    timerObject.minutes = minutes.diff(now, 'minutes');
-    timerObject.seconds = seconds.diff(now, 'seconds');
-
-    // if(Object.values(timerObject).reduce((prev, cur) => prev + cur, 0) <= 0) return null;
-
-    const timerFiltered = {};
-    Object.keys(displayUnits).forEach(key => {
-        // const isShown = displayUnits[key] && !!timerObject[key];
-        const isShown = displayUnits[key];
-        if(isShown) {
-            timerFiltered[key] = timerObject[key];
-        }
+    eventDate.set({
+        hours: eventTime.get('hours'),
+        minutes: eventTime.get('minutes'),
+        seconds: eventTime.get('seconds')
     });
 
-    return timerFiltered;
+    // const filterTimerUnits = duration => {
+    //     const timerDateFiltered = {};
+    //     Object.keys(displayUnits).forEach(key => {
+    //         // const isShown = displayUnits[key] && !!timerDate[key];
+    //         const isShown = displayUnits[key];
+    //         if(!isShown) return;
+
+    //         timerDateFiltered[key] = duration[key]();
+    //     });
+
+    //     return timerDateFiltered;
+    // };
+
+    const diff = eventDate.diff(now);
+
+    // const [timerDate, setTimerDate] = useState(filterTimerUnits({
+    //     years: diff.years(),
+    //     months: diff.months(),
+    //     weeks: diff.weeks(),
+    //     days: diff.days(),
+    //     hours: diff.hours(),
+    //     minutes: diff.minutes(),
+    //     seconds: diff.seconds()
+    // }));
+
+    const duration = moment.duration(diff);
+
+    // if(duration.asSeconds() <= 0) return clearInterval(interval);
+
+    const remainingTime = {};
+
+    Object.keys(displayUnits).forEach(unit => {
+        const value = Math.floor(duration.as(unit));
+
+        // const isShown = displayUnits[key] && !!timerDate[key];
+        const isShown = displayUnits[unit];
+        if(!isShown) return;
+
+        if(value < 0) return remainingTime[unit] = 0;
+        remainingTime[unit] = value;
+
+        duration.subtract(value, unit);
+    });
+
+    return { timeLeft: remainingTime, duration: duration.asSeconds() };
 };

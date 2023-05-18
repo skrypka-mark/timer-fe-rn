@@ -1,27 +1,29 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { PickerIOS } from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
+import { fontFamilies } from '../../../../constants';
 
-const FontPicker = ({ value, onChange, fontFamilies }) => {
+const FontPicker = ({ value, onChange }) => {
     const theme = useTheme();
 
     return (
-        <PickerIOS
+        <Picker
             style={styles.picker}
             itemStyle={styles.pickerItem}
             selectedValue={value}
-            onValueChange={newFont => onChange(newFont)}
+            onValueChange={onChange}
         >
             { fontFamilies.map(font => (
-                <PickerIOS.Item
+                <Picker.Item
                     key={font}
+                    fontFamily={font}
                     color={theme.colors.text}
                     label={font}
                     value={font}
                 />
             )) }
-        </PickerIOS>
+        </Picker>
     );
 };
 

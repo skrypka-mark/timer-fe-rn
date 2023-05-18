@@ -1,0 +1,49 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/AkrisLancead.otf",
+      "sha1": "66cc210fdbf2003bf1d7693d243a4f53daf0ffd1"
+    },
+    {
+      "path": "src/assets/fonts/Countryhouse.ttf",
+      "sha1": "73cc7b61f7fedbbc2fd338edce8bbc37acf5e50d"
+    },
+    {
+      "path": "src/assets/fonts/CourierNew.ttf",
+      "sha1": "9dbf69d22db9372a89757e8ad67e4553af43a12c"
+    },
+    {
+      "path": "src/assets/fonts/EightBits.ttf",
+      "sha1": "d0f2a35fd5024a1391423a64d0923f25586a9a16"
+    },
+    {
+      "path": "src/assets/fonts/Georgia.ttf",
+      "sha1": "3c1422b1ca7e6be5daa7bface578712d718f1cde"
+    },
+    {
+      "path": "src/assets/fonts/LeapingTypewriter.ttf",
+      "sha1": "5744b5a84f9c5d29ff2b345a85884343d21ba73f"
+    },
+    {
+      "path": "src/assets/fonts/NoteWorthy.ttf",
+      "sha1": "060b01ced477c6b6108d8afe4f8ce28a8561e586"
+    },
+    {
+      "path": "src/assets/fonts/Papyrus.ttf",
+      "sha1": "c10eaeb2a6c72bf39abcffc2033c4ae85cfd2e26"
+    },
+    {
+      "path": "src/assets/fonts/SanFrancisco.ttf",
+      "sha1": "8fc4279ddebaa3e983bca0e45ad104dcda04189d"
+    },
+    {
+      "path": "src/assets/fonts/SnellRoundhandBold.otf",
+      "sha1": "75b0c3e7a4febf1eed85f55d5d80265cfca6e113"
+    },
+    {
+      "path": "src/assets/fonts/Typewriter.otf",
+      "sha1": "4b1507cfd5bbd677c9cca1b56d229aba307ea0b2"
+    }
+  ]
+}

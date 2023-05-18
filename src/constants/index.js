@@ -1,10 +1,13 @@
 export * from './editEventTimerActions';
 
 export const fontFamilies = [
-    'San Francisco',
-    'Typewriter',
-    'Avenir Next',
+    // 'San Francisco',
+    // 'Akris Lancead',
+    'EightBits',
+    // 'Typewriter',
+    // 'Leaping Typewriter',
     'Courier New',
+    // 'Countryhouse',
     'Noteworthy',
     'Georgia',
     'Papyrus',

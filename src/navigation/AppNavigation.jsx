@@ -1,34 +1,18 @@
 import React from 'react';
-import { Text } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { toggleListAppearence, listAppearences } from '../stores/events/events.reducer';
-import { eventsSelector } from '../stores/events/events.selector';
-
-import HeaderButton from '../components/HeaderButton';
-import HeaderText from '../components/HeaderText';
-
-import DetailLayoutIcon from '../screens/EventsListScreen/components/icons/DetailLayoutIcon';
-import RegularLayoutIcon from '../screens/EventsListScreen/components/icons/RegularLayoutIcon';
-import HeaderCloseIcon from '../components/icons/HeaderCloseIcon';
 
 import EventsListScreen from '../screens/EventsListScreen';
 import EventScreen from '../screens/EventScreen';
 import NewEventScreen from '../screens/NewEventScreen';
 import EditEventTimerScreen from '../screens/EditEventTimerScreen';
 import EditSettingsRowScreen from '../screens/EditSettingsRowScreen';
+import EditEventScreen from '../screens/EditEventScreen';
 
 import { fontSizes, fontWeights } from '../theme/fonts';
 
 const NativeStack = createNativeStackNavigator();
 
 const AppNavigation = () => {
-    const dispatch = useDispatch();
-    const theme = useTheme();
-
-    const { eventsListAppearence } = useSelector(eventsSelector);
-
     return (
         <NativeStack.Navigator
             initialRouteName='events-list'
@@ -119,6 +103,19 @@ const AppNavigation = () => {
                     contentStyle: { backgroundColor: 'transparent' }
                 }}
                 component={EditSettingsRowScreen}
+            />
+            <NativeStack.Screen
+                name='edit-event'
+                options={{
+                    title: 'Edit event',
+                    gestureDirection: 'vertical',
+                    contentStyle: { backgroundColor: 'transparent' },
+                    presentation: 'modal',
+                    headerTransparent: true,
+                    headerBlurEffect: 'regular',
+                    headerTitleStyle: { fontSize: fontSizes.font18, fontWeight: fontWeights.bold }
+                }}
+                component={EditEventScreen}
             />
         </NativeStack.Navigator>
     );

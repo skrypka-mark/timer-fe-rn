@@ -1,3 +1,6 @@
+export const EDIT_EVENT = 'EDIT_EVENT';
+export const EDIT_EMPTY_EVENT = 'EDIT_EMPTY_EVENT';
+
 export const CHANGE_NAME = 'CHANGE_NAME';
 export const CHANGE_DATE = 'CHANGE_DATE';
 export const CHANGE_TIME = 'CHANGE_TIME';

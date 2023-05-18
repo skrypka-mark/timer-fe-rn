@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { Dimensions, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -23,8 +23,9 @@ export const useImageSharedElement = imageSpecs => {
     const tapped = useSharedValue(1);
     const y = useSharedValue(0);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         animatedValue.value = 0;
+        // animatedValue.value = withSpring(1, { stiffness: 1.5 });
         animatedValue.value = withTiming(1, { duration: 500 });
     }, []);
 
@@ -38,11 +39,11 @@ export const useImageSharedElement = imageSpecs => {
     // }));
     const animatedImageStyles = useAnimatedStyle(() => ({
         position: 'absolute',
-        top: interpolate(animatedValue.value, [0, 1], [imageSpecs.pageY, 0]),
+        top: interpolate(animatedValue.value, [0, .3, 1], [imageSpecs.pageY, imageSpecs.pageY, 0]),
         left: interpolate(animatedValue.value, [0, 1], [imageSpecs.pageX, 0]),
         width: interpolate(animatedValue.value, [0, 1], [imageSpecs.width, width]),
         height: interpolate(animatedValue.value, [0, 1], [imageSpecs.height, height]),
-        borderRadius: interpolate(animatedValue.value, [0, .9, 1], [imageSpecs.borderRadius, imageSpecs.borderRadius / 2, 0]),
+        borderRadius: interpolate(animatedValue.value, [0, .9, 1], [imageSpecs.borderRadius, Math.floor(imageSpecs.borderRadius / 2), 0]),
         opacity: imageSpecs?.opacity !== undefined ? interpolate(animatedValue.value, [0, 1], [imageSpecs.opacity, 1]) : 1
     }));
     const animatedTimerStyles = useAnimatedStyle(() => ({
@@ -58,7 +59,7 @@ export const useImageSharedElement = imageSpecs => {
     }));
     const animatedHeaderStyles = useAnimatedStyle(() => ({
         position: 'relative',
-        transform: [{ translateY: interpolate(animatedValue.value, [0, 1], [-headerHeight * 4, 0]) }]
+        transform: [{ translateY: interpolate(animatedValue.value, [0, 1], [-(headerHeight * 4), 0]) }]
     }));
     const pressHeaderAnimationStyles = useAnimatedStyle(() => ({
         position: 'relative',
@@ -81,7 +82,7 @@ export const useImageSharedElement = imageSpecs => {
             if(animatedValue.value < 0.1) {
                 runOnJS(closeHandler)();
             } else {
-                animatedValue.value = interpolate(Math.abs(event.translationY - y.value), [0, 800], [1, 0]);
+                animatedValue.value = interpolate(Math.abs(Math.floor(event.translationY - y.value)), [0, 800], [1, 0]);
                 // containerAnimatedValue.value = interpolate(event.translationY - y.value, [0, 100], [0, 1]);
             }
         },

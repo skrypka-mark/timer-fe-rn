@@ -1,8 +1,9 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation, useTheme } from '@react-navigation/native';
 // import { editNewEvent, saveNewEvent, setNewEvent, resetNewEvent } from '../../stores/new-event/new-event.reducer';
-import { addEmptyEvent, editNewEvent, saveNewEvent, resetNewEvent } from '../../stores/events/events.reducer';
+import { addEmptyEvent, editEvent, saveEmptyEvent, resetEmptyEvent } from '../../stores/events/events.reducer';
 import { eventsSelector } from '../../stores/events/events.selector';
 import NewEventScreen from './NewEventScreen';
 import HeaderButton from '../../components/HeaderButton';
@@ -16,29 +17,33 @@ const NewEventContainer = () => {
     const theme = useTheme();
 
     const { emptyEvent: newEvent } = useSelector(eventsSelector);
-
-    const saveNewEventHandler = () => {
-        dispatch(saveNewEvent());
-        navigation.goBack();
-    };
+    const [error, setError] = useState({ message: '' });
     
     useEffect(() => {
         dispatch(addEmptyEvent());
 
-        dispatch(editNewEvent({ type: CHANGE_DATE, value: JSON.stringify(new Date()) }));
-        dispatch(editNewEvent({ type: CHANGE_TIME, value: JSON.stringify(new Date()) }));
-        dispatch(editNewEvent({
+        dispatch(editEvent({ type: CHANGE_DATE, value: JSON.stringify(new Date()) }));
+        dispatch(editEvent({ type: CHANGE_TIME, value: JSON.stringify(new Date()) }));
+        dispatch(editEvent({ type: CHANGE_FONT_COLOR, value: { fontColor: theme.colors.text } }));
+
+        return () => {
+            dispatch(resetEmptyEvent());
+        };
+    }, []);
+    useEffect(() => {
+        dispatch(editEvent({
             type: CHANGE_BACKGROUND_COLOR,
             value: {
                 backgroundColor: convertColorWithAlpha(theme.colors.background, newEvent?.timer?.backgroundOpacity)
             }
         }));
-        dispatch(editNewEvent({ type: CHANGE_FONT_COLOR, value: { fontColor: theme.colors.text } }));
-
-        return () => {
-            dispatch(resetNewEvent());
-        };
-    }, []);
+    }, [newEvent]);
+    useEffect(() => {
+        if(error.message) {
+            Alert.alert('Error', error.message);
+            setError({ message: '' });
+        }
+    }, [error]);
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -52,7 +57,14 @@ const NewEventContainer = () => {
                 </HeaderButton>
             )
         });
-    }, [navigation]);
+    }, [navigation, newEvent]);
+
+    const saveNewEventHandler = event => {
+        if(!event.title) return setError({ message: 'Name must be specified' });
+
+        dispatch(saveEmptyEvent(event));
+        navigation.goBack();
+    };
 
     const NewEventScreenProps = { newEvent };
     return <NewEventScreen { ...NewEventScreenProps } />;

@@ -13,6 +13,7 @@ const Row = forwardRef(({
     trailing,
     hasArrow,
     editable,
+    value,
     placeholder,
     hideDivider,
     checked,
@@ -35,6 +36,7 @@ const Row = forwardRef(({
         editable ? (
             <TextInput
                 style={[StyleSheet.absoluteFillObject, styles.title, styles.editableText, { color: theme.colors.text }]}
+                value={value}
                 placeholder={placeholder}
                 onChange={onChange}
                 onBlur={onBlur}

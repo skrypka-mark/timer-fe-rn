@@ -12,10 +12,21 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		17F23FD1EC7546519EF3DD0D /* CourierNew.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B949C6B672B4A0D97E2B95D /* CourierNew.ttf */; };
+		333CFA0D08DC47A380D18140 /* NoteWorthy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2CA71BB62E414FE88113D450 /* NoteWorthy.ttf */; };
+		453D3247DA304BB6B7A986A7 /* EightBits.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CBD972A102D14E41998E8CBF /* EightBits.ttf */; };
+		45EA7F009A564FC681EDDB44 /* Typewriter.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4A67E7427FFE4826BC0C55FC /* Typewriter.otf */; };
+		7197D022A11B4A2EB0017A5B /* SnellRoundhandBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = BBC3391A3AED46A3A1FF3563 /* SnellRoundhandBold.otf */; };
 		7699B88040F8A987B510C191 /* libPods-Timer-TimerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Timer-TimerTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9951E9F4C9A94817B4578852 /* Countryhouse.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 287FA02F77BF4326AE6E0400 /* Countryhouse.ttf */; };
+		B69A7F0FEA624294A5ED1AF6 /* Georgia.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96646EA735E94EF89F76B110 /* Georgia.ttf */; };
 		B9BC3AA854C1ED8B1288B28D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACC45E0431132BB8BAED5CA /* ExpoModulesProvider.swift */; };
 		BC19EF7056EE4DEEDDE94143 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1079FA44627CD4DA95C87CAB /* ExpoModulesProvider.swift */; };
+		CCC75009C3DD42D58F8BF70A /* Papyrus.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84AC83F70604265AFEC01FC /* Papyrus.ttf */; };
+		DEBB324D2C934D8FA52CC871 /* AkrisLancead.otf in Resources */ = {isa = PBXBuildFile; fileRef = 90CD780114964FF094E467FE /* AkrisLancead.otf */; };
+		E2BAB040374A4912915D7BAD /* LeapingTypewriter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D39515B02B24844996FDA9B /* LeapingTypewriter.ttf */; };
+		EF3E923B3A774DD0A2B2F2DD /* SanFrancisco.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76E010C73B5145659C2A9AE5 /* SanFrancisco.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +38,19 @@
 			remoteInfo = Timer;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		842F676E2A0A8309007274F3 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* TimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -40,14 +64,27 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Timer/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Timer/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-Timer-TimerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Timer-TimerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		287FA02F77BF4326AE6E0400 /* Countryhouse.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Countryhouse.ttf; path = ../src/assets/fonts/Countryhouse.ttf; sourceTree = "<group>"; };
+		2CA71BB62E414FE88113D450 /* NoteWorthy.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NoteWorthy.ttf; path = ../src/assets/fonts/NoteWorthy.ttf; sourceTree = "<group>"; };
+		2D39515B02B24844996FDA9B /* LeapingTypewriter.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = LeapingTypewriter.ttf; path = ../src/assets/fonts/LeapingTypewriter.ttf; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-Timer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Timer.debug.xcconfig"; path = "Target Support Files/Pods-Timer/Pods-Timer.debug.xcconfig"; sourceTree = "<group>"; };
+		4A67E7427FFE4826BC0C55FC /* Typewriter.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Typewriter.otf; path = ../src/assets/fonts/Typewriter.otf; sourceTree = "<group>"; };
+		4B949C6B672B4A0D97E2B95D /* CourierNew.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = CourierNew.ttf; path = ../src/assets/fonts/CourierNew.ttf; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-Timer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Timer.release.xcconfig"; path = "Target Support Files/Pods-Timer/Pods-Timer.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-Timer-TimerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Timer-TimerTests.debug.xcconfig"; path = "Target Support Files/Pods-Timer-TimerTests/Pods-Timer-TimerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-Timer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Timer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		76E010C73B5145659C2A9AE5 /* SanFrancisco.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SanFrancisco.ttf; path = ../src/assets/fonts/SanFrancisco.ttf; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Timer/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		842F67592A0A8304007274F3 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		842F675B2A0A8304007274F3 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Timer-TimerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Timer-TimerTests.release.xcconfig"; path = "Target Support Files/Pods-Timer-TimerTests/Pods-Timer-TimerTests.release.xcconfig"; sourceTree = "<group>"; };
 		8ACC45E0431132BB8BAED5CA /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Timer-TimerTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		90CD780114964FF094E467FE /* AkrisLancead.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AkrisLancead.otf; path = ../src/assets/fonts/AkrisLancead.otf; sourceTree = "<group>"; };
+		96646EA735E94EF89F76B110 /* Georgia.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Georgia.ttf; path = ../src/assets/fonts/Georgia.ttf; sourceTree = "<group>"; };
+		BBC3391A3AED46A3A1FF3563 /* SnellRoundhandBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SnellRoundhandBold.otf; path = ../src/assets/fonts/SnellRoundhandBold.otf; sourceTree = "<group>"; };
+		CBD972A102D14E41998E8CBF /* EightBits.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EightBits.ttf; path = ../src/assets/fonts/EightBits.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F84AC83F70604265AFEC01FC /* Papyrus.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Papyrus.ttf; path = ../src/assets/fonts/Papyrus.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +152,8 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-Timer.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-Timer-TimerTests.a */,
+				842F67592A0A8304007274F3 /* WidgetKit.framework */,
+				842F675B2A0A8304007274F3 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -144,6 +183,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
 				2D12FBE16DD6087B7AB27D33 /* ExpoModulesProviders */,
+				F0C288D4A1DF4FFE829ECE4F /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -176,6 +216,24 @@
 				1079FA44627CD4DA95C87CAB /* ExpoModulesProvider.swift */,
 			);
 			name = Timer;
+			sourceTree = "<group>";
+		};
+		F0C288D4A1DF4FFE829ECE4F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4A67E7427FFE4826BC0C55FC /* Typewriter.otf */,
+				287FA02F77BF4326AE6E0400 /* Countryhouse.ttf */,
+				CBD972A102D14E41998E8CBF /* EightBits.ttf */,
+				96646EA735E94EF89F76B110 /* Georgia.ttf */,
+				2CA71BB62E414FE88113D450 /* NoteWorthy.ttf */,
+				F84AC83F70604265AFEC01FC /* Papyrus.ttf */,
+				90CD780114964FF094E467FE /* AkrisLancead.otf */,
+				BBC3391A3AED46A3A1FF3563 /* SnellRoundhandBold.otf */,
+				4B949C6B672B4A0D97E2B95D /* CourierNew.ttf */,
+				2D39515B02B24844996FDA9B /* LeapingTypewriter.ttf */,
+				76E010C73B5145659C2A9AE5 /* SanFrancisco.ttf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -214,6 +272,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				842F676E2A0A8309007274F3 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -230,6 +289,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -274,6 +334,17 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				45EA7F009A564FC681EDDB44 /* Typewriter.otf in Resources */,
+				9951E9F4C9A94817B4578852 /* Countryhouse.ttf in Resources */,
+				453D3247DA304BB6B7A986A7 /* EightBits.ttf in Resources */,
+				B69A7F0FEA624294A5ED1AF6 /* Georgia.ttf in Resources */,
+				333CFA0D08DC47A380D18140 /* NoteWorthy.ttf in Resources */,
+				CCC75009C3DD42D58F8BF70A /* Papyrus.ttf in Resources */,
+				DEBB324D2C934D8FA52CC871 /* AkrisLancead.otf in Resources */,
+				7197D022A11B4A2EB0017A5B /* SnellRoundhandBold.otf in Resources */,
+				17F23FD1EC7546519EF3DD0D /* CourierNew.ttf in Resources */,
+				E2BAB040374A4912915D7BAD /* LeapingTypewriter.ttf in Resources */,
+				EF3E923B3A774DD0A2B2F2DD /* SanFrancisco.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,6 +592,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Timer/Timer.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WC5J3FC7J4;
 				ENABLE_BITCODE = NO;
@@ -550,6 +622,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Timer/Timer.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WC5J3FC7J4;
 				INFOPLIST_FILE = Timer/Info.plist;

@@ -15,7 +15,7 @@ const EventsListContainer = () => {
     const navigation = useNavigation();
     const theme = useTheme();
 
-    const [ready, setReady] = useState(false);
+    // const [ready, setReady] = useState(false);
     const { events, eventsListAppearence } = useSelector(eventsSelector);
 
     const renderLayoutSFSymbol = name => (
@@ -26,12 +26,12 @@ const EventsListContainer = () => {
         />
     );
 
-    useEffect(() => {
-        (async () => {
-            await Promise.all(events.map(timer => Asset.loadAsync(timer.image)));
-            setReady(true);
-        })();
-    }, [events]);
+    // useEffect(() => {
+    //     (async () => {
+    //         await Promise.all(events.map(timer => Asset.loadAsync(timer.image)));
+    //         setReady(true);
+    //     })();
+    // }, [events]);
     useLayoutEffect(() => {
         navigation.setOptions({
             headerSearchBarOptions: {
@@ -57,7 +57,7 @@ const EventsListContainer = () => {
     }, [navigation, eventsListAppearence]);
 
     // TODO: Here Loader must be shown instead of null when assets are loading
-    if(!ready) return <ActivityIndicator style={{ marginTop: 160 }} animating />;
+    // if(!ready) return <ActivityIndicator style={{ marginTop: 160 }} animating />;
     return <EventsListScreen events={events} appearence={eventsListAppearence} />;
 };
 

@@ -9,7 +9,7 @@ import Animated, {
     interpolate,
     withTiming
 } from 'react-native-reanimated';
-import { editNewEvent } from '../../stores/events/events.reducer';
+import { editEvent } from '../../stores/events/events.reducer';
 import { eventsSelector } from '../../stores/events/events.selector';
 import Timer from '../../features/AnimatedEventScreen/components/Timer';
 import EditTimerBottomBar from '../../components/EditTimerBottomBar';
@@ -19,8 +19,7 @@ import ColorPicker from './components/ColorPicker';
 import { convertColorWithAlpha } from '../../utils/convertColorWithAlpha';
 import {
     CHANGE_FONT_FAMILY, CHANGE_FONT_COLOR,
-    CHANGE_BACKGROUND_COLOR, CHANGE_BACKGROUND_OPACITY,
-    fontFamilies
+    CHANGE_BACKGROUND_COLOR, CHANGE_BACKGROUND_OPACITY
 } from '../../constants';
 import { SCREEN_PADDING } from '../../theme';
 
@@ -32,16 +31,16 @@ const EditEventTimerScreen = () => {
     const animatedValue = useSharedValue(0);
 
     const { actionType, event } = route.params;
-    const { emptyEvent: newEvent } = useSelector(eventsSelector);
+    // const { emptyEvent: newEvent } = useSelector(eventsSelector);
 
-    const [fontFamily, setFontFamily] = useState(newEvent?.timer.fontFamily);
-    const [fontColor, setFontColor] = useState(newEvent?.timer.fontColor);
-    const [backgroundOpacity, setBackgroundOpacity] = useState(newEvent?.timer.backgroundOpacity);
-    const [backgroundColor, setBackgroundColor] = useState(newEvent?.timer.backgroundColor);
+    const [fontFamily, setFontFamily] = useState(event?.timer.fontFamily);
+    const [fontColor, setFontColor] = useState(event?.timer.fontColor);
+    const [backgroundOpacity, setBackgroundOpacity] = useState(event?.timer.backgroundOpacity);
+    const [backgroundColor, setBackgroundColor] = useState(event?.timer.backgroundColor);
 
     const [backgroundColorWithAlpha, setBackgroundColorWithAlpha] = useState(convertColorWithAlpha(backgroundColor, Number(backgroundOpacity)));
 
-    // const backgroundColorObject = useMemo(() => colorKit.RGB(newEvent.timer?.backgroundColor).object(), [newEvent.timer.backgroundColor]);
+    // const backgroundColorObject = useMemo(() => colorKit.RGB(event.timer?.backgroundColor).object(), [event.timer.backgroundColor]);
 
     useEffect(() => {
         setBackgroundColorWithAlpha(convertColorWithAlpha(backgroundColor, Number(backgroundOpacity)));
@@ -58,7 +57,7 @@ const EditEventTimerScreen = () => {
         animatedValue.value = withTiming(0, { duration: 300 }, finished => finished && runOnJS(navigation.goBack)());
     };
     const saveHandler = () => {
-        dispatch(editNewEvent({
+        dispatch(editEvent({
             type: actionType,
             value: {
                 fontFamily,
@@ -75,13 +74,13 @@ const EditEventTimerScreen = () => {
     const getEditElement = () => {
         switch(actionType) {
             case CHANGE_FONT_FAMILY:
-                return <FontPicker value={fontFamily} onChange={setFontFamily} fontFamilies={fontFamilies} />;
+                return <FontPicker value={fontFamily} onChange={setFontFamily} />;
             case CHANGE_FONT_COLOR:
                 return <ColorPicker value={fontColor} onChange={setFontColor} />;
             case CHANGE_BACKGROUND_COLOR:
                 return <ColorPicker value={backgroundColor} onChange={setBackgroundColor} opacity={backgroundOpacity} />;
             case CHANGE_BACKGROUND_OPACITY:
-                return <SliderPicker initialValue={newEvent?.timer.backgroundOpacity} value={backgroundOpacity} onChange={changeBackgroundOpacityHandler} />;
+                return <SliderPicker initialValue={event?.timer.backgroundOpacity} value={backgroundOpacity} onChange={changeBackgroundOpacityHandler} />;
             default:
                 return null;
         }
@@ -97,7 +96,8 @@ const EditEventTimerScreen = () => {
             <Image source={event.image} style={{ width: '100%', height: '100%' }} resizeMode='cover' />
             <Timer
                 title={event.title}
-                timer={newEvent.timer}
+                timer={event.timer}
+                fontFamily={fontFamily}
                 fontColor={fontColor}
                 backgroundColor={backgroundColorWithAlpha}
                 style={{

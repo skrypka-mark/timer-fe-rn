@@ -7,7 +7,7 @@ import { styles } from './EventsListRegular.styles';
 const EventsListRegular = ({ events, style, share }) => {
     return (
         <Animated.View style={[styles.eventsListRegularContainer, style]}>
-            { events.map(event => <EventsListItemRegular key={nanoid()} { ...event } share={share} />) }
+            { events.map(event => <EventsListItemRegular key={nanoid()} event={event} share={share} />) }
         </Animated.View>
     );
 };
