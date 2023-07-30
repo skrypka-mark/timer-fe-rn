@@ -53,8 +53,8 @@ const EventTimerDetail = ({
                             color: fontColor ? fontColor : timer?.fontColor || theme.colors.text
                         }
                     ]}
-                    numberOfLines={1}
-                    adjustsFontSizeToFit
+                    // numberOfLines={1}
+                    // adjustsFontSizeToFit
                 >
                     { title }
                 </Text>

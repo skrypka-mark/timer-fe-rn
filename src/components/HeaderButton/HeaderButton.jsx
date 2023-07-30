@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
 const HeaderButton = ({ style, onPress, children }) => (
-    <TouchableOpacity style={style} onPressOut={onPress}>
+    <TouchableOpacity style={style} onPress={onPress}>
         { children }
     </TouchableOpacity>
 );

@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import React, { useState, useMemo, memo } from 'react';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import Animated from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
-import { useCountdownTimer } from '../../../../hooks/useCountdownTimer';
 import TimerUnits from '../../../../components/TimerUnits';
-import { styles } from './Timer.styles';
+import { convertColorWithAlpha } from '../../../../utils/convertColorWithAlpha';
 import { fontSizes } from '../../../../theme/fonts';
+import { styles } from './Timer.styles';
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
 const Timer = ({
     title,
     timer,
-    fontFamily,
-    fontColor,
-    backgroundColor,
+    backgroundColor: backgroundColorProp,
+    fontColor: fontColorProp,
+    fontFamily: fontFamilyProp,
     blurAmount = 30,
     isTitleEditable,
     short,
@@ -25,24 +25,24 @@ const Timer = ({
 }) => {
     const theme = useTheme();
 
-    const [timerData, setTimerData] = useState(useCountdownTimer(timer).timeLeft);
+    const backgroundColor = useMemo(() => {
+        return backgroundColorProp
+            ? backgroundColorProp
+            : convertColorWithAlpha(timer?.backgroundColor, Number(timer?.backgroundOpacity))
+    }, [backgroundColorProp, timer]);
+    const fontColor = useMemo(() => {
+        return fontColorProp
+            ? fontColorProp
+            : timer?.fontColor || theme.colors.text
+    }, [fontColorProp, timer, theme]);
+    const fontFamily = useMemo(() => {
+        return fontFamilyProp
+            ? fontFamilyProp
+            : timer?.fontFamily
+    }, [fontFamilyProp, timer]);
 
     // const blurType = theme.dark ? 'dark' : 'light';
     // const AnimatedComponent = props => blurAmount ? <AnimatedBlurView { ...props } /> : <Animated.View { ...props } />;
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const { timeLeft, duration } = useCountdownTimer(timer);
-
-            if(duration <= 0) return clearInterval(interval);
-
-            setTimerData(timeLeft);
-        }, 1000);
-
-        return () => {
-            clearInterval(interval);
-        };
-    }, []);
 
     const renderTitle = () => {
         const [editableTitle, setEditableTitle] = useState(title);
@@ -50,14 +50,8 @@ const Timer = ({
         if(isTitleEditable) {
             return (
                 <TextInput
-                    style={[
-                        styles.timerTitle,
-                        {
-                            fontFamily: fontFamily ? fontFamily : timer?.fontFamily,
-                            color: fontColor ? fontColor : timer?.fontColor || theme.colors.text
-                        }
-                    ]}
-                    numberOfLines={1}
+                    style={[styles.timerTitle, { fontFamily, color: fontColor }]}
+                    // numberOfLines={1}
                     value={editableTitle}
                     onBlur={onTitleBlur}
                     onChange={({ nativeEvent }) => setEditableTitle(nativeEvent.text)}
@@ -67,15 +61,9 @@ const Timer = ({
 
         return (
             <Text
-                style={[
-                    styles.timerTitle,
-                    {
-                        fontFamily: fontFamily ? fontFamily : timer?.fontFamily,
-                        color: fontColor ? fontColor : timer?.fontColor || theme.colors.text
-                    }
-                ]}
-                numberOfLines={1}
-                adjustsFontSizeToFit
+                style={[ styles.timerTitle, { fontFamily, color: fontColor }]}
+                // numberOfLines={1}
+                // adjustsFontSizeToFit
             >
                 { title }
             </Text>
@@ -84,7 +72,7 @@ const Timer = ({
 
     if(short && !title) return (
         <TimerUnits
-            timer={timerData}
+            timer={timer}
             containerStyle={containerStyle}
             style={style}
             color={theme.colors.textSecondary}
@@ -93,15 +81,15 @@ const Timer = ({
     );
     if(short && title) return (
         <Animated.View style={[style, { overflow: 'hidden' }]}>
-            <View style={[styles.timer, { backgroundColor: backgroundColor ? backgroundColor : timer?.backgroundColor || 'transparent' }]}>
+            <View style={[styles.timer, { backgroundColor }]}>
                 { renderTitle() }
                 <View style={styles.timeContainer}>
                     <TimerUnits
-                        timer={timerData}
+                        timer={timer}
                         containerStyle={{ width: '100%' }}
                         unitStyle={{ alignSelf: 'flex-end', marginLeft: 5, fontSize: fontSizes.font16, fontWeight: '400' }}
                         style={styles.time}
-                        color={ fontColor ? fontColor : timer?.fontColor || theme.colors.text }
+                        color={fontColor}
                         short
                         dividers={false}
                     />
@@ -111,19 +99,14 @@ const Timer = ({
     );
     return (
         <Animated.View style={[style, { overflow: 'hidden' }]}>
-            <BlurView
-                style={[
-                    styles.timer,
-                    { backgroundColor: backgroundColor ? backgroundColor : timer?.backgroundColor || 'transparent' }
-                ]}
-                intensity={blurAmount}
-            >
+            <BlurView style={styles.timer} intensity={blurAmount}>
+                <View style={[StyleSheet.absoluteFillObject, { backgroundColor }]} />
                 { renderTitle() }
                 <View style={styles.timeContainer}>
                     <TimerUnits
-                        timer={timerData}
+                        timer={timer}
                         style={styles.time}
-                        color={ fontColor ? fontColor : timer?.fontColor || theme.colors.text }
+                        color={fontColor}
                     />
                 </View>
             </BlurView>
@@ -131,4 +114,4 @@ const Timer = ({
     );
 };
 
-export default Timer;
+export default memo(Timer);

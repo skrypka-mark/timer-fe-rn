@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, StyleSheet, StatusBar } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation, useRoute, useTheme } from '@react-navigation/native';
 import Animated, {
@@ -11,6 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { editEvent } from '../../stores/events/events.reducer';
 import { eventsSelector } from '../../stores/events/events.selector';
+import FastImage from 'react-native-fast-image';
 import Timer from '../../features/AnimatedEventScreen/components/Timer';
 import EditTimerBottomBar from '../../components/EditTimerBottomBar';
 import FontPicker from './components/FontPicker';
@@ -93,7 +94,7 @@ const EditEventTimerScreen = () => {
 
     return (
         <Animated.View style={[StyleSheet.absoluteFillObject, screenAnimatedStyles]}>
-            <Image source={event.image} style={{ width: '100%', height: '100%' }} resizeMode='cover' />
+            <FastImage source={event.image} style={{ width: '100%', height: '100%' }} resizeMode='cover' />
             <Timer
                 title={event.title}
                 timer={event.timer}

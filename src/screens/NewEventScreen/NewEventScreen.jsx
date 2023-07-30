@@ -19,7 +19,7 @@ import {
     CHANGE_BACKGROUND_OPACITY, CHANGE_DISPLAY_UNIT
 } from '../../constants';
 
-const NewEventScreen = ({ newEvent }) => {
+const NewEventScreen = ({ newEvent, scrollHandler }) => {
     const dispatch = useDispatch();
     const insets = useSafeAreaInsets();
     const navigation = useNavigation();
@@ -70,6 +70,9 @@ const NewEventScreen = ({ newEvent }) => {
                 }}
                 contentInsetAdjustmentBehavior='automatic'
                 keyboardDismissMode='on-drag'
+                showsVerticalScrollIndicator={false}
+                scrollEventThrottle={16}
+                onScroll={scrollHandler}
             >
                 <SettingsList style={keyboardAwareAnimatedStyles}>
                     <SettingsList.List>
@@ -78,7 +81,7 @@ const NewEventScreen = ({ newEvent }) => {
                     <SettingsList.List>
                         <SettingsList.Row
                             title='Date'
-                            titleInfo={newEvent?.timer?.date ? moment(JSON.parse(newEvent.timer.date)).format('L') : ''}
+                            titleInfo={newEvent?.timer?.date ? moment(JSON.parse(newEvent.timer.date)).format('LL') : ''}
                             // trailing={}
                             onPress={() => changeDatePressHandler({ title: 'Date', actionType: CHANGE_DATE, ref: dateRowRef })}
                             hasArrow

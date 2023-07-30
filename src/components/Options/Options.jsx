@@ -1,51 +1,51 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { TouchableWithoutFeedback, Text, Animated, StatusBar } from 'react-native';
-import { useNavigation, useTheme } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { TouchableWithoutFeedback, Text, StatusBar } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, {
+    useSharedValue, useAnimatedStyle, interpolate,
+    withTiming, withSpring, withDelay, runOnJS
+} from 'react-native-reanimated';
 import { BlurView } from '@react-native-community/blur';
 import { nanoid } from 'nanoid/non-secure'
 import HapticFeedback from 'react-native-haptic-feedback';;
 import Backdrop from '../Backdrop';
 
-import OptionsIcon from '../icons/options/OptionsIcon';
-import CloseIcon from '../icons/options/CloseIcon';
-import CreateIcon from '../icons/options/CreateIcon';
-import ImportIcon from '../icons/options/ImportIcon';
-import SettingsIcon from '../icons/options/SettingsIcon';
 import { SCREEN_PADDING } from '../../theme';
 import { styles } from './Options.styles';
+import { SFSymbol } from 'react-native-sfsymbols';
 
 const DURATION = 400;
 const AnimatedTouchableWithoutFeedback = Animated.createAnimatedComponent(TouchableWithoutFeedback);
 
-const OptionsButton = ({ name, Icon, open, duration, delay, style, color, onPress }) => {
-    const animatedValue = useRef(new Animated.Value(open ? 0 : 1)).current;
-
-    const startAnimation = (toValue, delay) => {
-        Animated.timing(animatedValue, {
-            toValue,
-            duration,
-            delay,
-            useNativeDriver: false
-        }).start();
-    };
+const OptionsButton = ({ name, systemName, open, delay, style, onPress, onLayout }) => {
+    const animatedValue = useSharedValue(open ? 0 : 1);
 
     useEffect(() => {
-        const animationDelay = open ? DURATION - delay : delay;
-        startAnimation(Number(open), animationDelay);
+        const animationDelay = open ? DURATION - delay : delay || 0;
+
+        animatedValue.value = withDelay(animationDelay, withSpring(Number(open)));
     }, [open]);
 
+    const optionContainerAnimatedStyles = useAnimatedStyle(() => ({
+        opacity: animatedValue.value
+    }));
+    const optionButtonAnimatedStyles = useAnimatedStyle(() => ({
+        transform: [{ scale: animatedValue.value }],
+        opacity: animatedValue.value
+    }));
+
     return (
-        <AnimatedTouchableWithoutFeedback onPressOut={onPress}>
-            <Animated.View style={[styles.optionContainer, style, { opacity: animatedValue }]}>
+        <AnimatedTouchableWithoutFeedback onPressOut={onPress} onLayout={onLayout}>
+            <Animated.View style={[styles.optionContainer, style ? style : optionContainerAnimatedStyles]}>
                 { name && (
                     <Text style={styles.optionName}>
                         { name }
                     </Text>
                 ) }
-                <Animated.View style={[styles.optionBtnWrapper, { transform: [{ scale: animatedValue }], opacity: animatedValue }]}>
+                <Animated.View style={[styles.optionBtnWrapper, optionButtonAnimatedStyles]}>
                     <BlurView style={styles.optionBtn} blurAmount={10} blurType='light'>
-                        <Icon style={styles.optionIcon} color={'black'} />
+                        <SFSymbol name={systemName} style={styles.optionIcon} size={18} color='black' />
                     </BlurView>
                 </Animated.View>
             </Animated.View>
@@ -53,81 +53,77 @@ const OptionsButton = ({ name, Icon, open, duration, delay, style, color, onPres
     );
 };
 
-const Options = ({ isOpen, open, close }) => {
+const Options = () => {
     const insets = useSafeAreaInsets();
-    const theme = useTheme();
     const navigation = useNavigation();
-    const animatedValue = useRef(new Animated.Value(Number(!isOpen))).current;
-    const optionButtonRotate = animatedValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '180deg']
-    });
-    const optionButtonShadowOpacity = animatedValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0.27, 0]
-    });
+
+    const animatedValue = useSharedValue(Number(!isOpen));
+    const [isOpen, setIsOpen] = useState(false);
     const [isOptionsVisible, setIsOptionsVisible] = useState(false);
 
-    React.useLayoutEffect(() => {
-        StatusBar.setHidden(isOpen);
+    const openOptions = () => setIsOpen(true);
+    const closeOptions = () => setIsOpen(false);
+
+    useEffect(() => {
+        StatusBar.setHidden(isOpen, 'fade');
 
         if(isOpen) setIsOptionsVisible(true);
-        Animated.spring(animatedValue, {
-            toValue: Number(isOpen),
-            duration: 500,
+
+        animatedValue.value = withTiming(Number(isOpen), {
             damping: 20,
             mass: 1.5,
             stiffness: 1000,
             restDisplacementThreshold: 0.001,
-            restSpeedThreshold: 0.001,
-            useNativeDriver: false
-        }).start(finished => {
-            if(!isOpen && finished) setIsOptionsVisible(false);
+            restSpeedThreshold: 0.001
+        }, finished => {
+            if(finished && isOptionsVisible) runOnJS(setIsOptionsVisible)(false);
         });
 
         HapticFeedback.trigger('impactMedium');
-
-        navigation.addListener('state', close);
-        return () => navigation.removeListener('state', close);
     }, [isOpen]);
 
+    const mainOptionButtonAnimatedStyles = useAnimatedStyle(() => ({
+        transform: [{ rotate: `${interpolate(animatedValue.value, [0, 1], [0, 180])}deg` }],
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: interpolate(animatedValue.value, [0, 1], [0.27, 0]),
+        shadowRadius: 4.65,
+
+        elevation: 6
+    }));
+
+    const optionPressHandler = routeName => () => {
+        closeOptions();
+        navigation.navigate(routeName);
+    };
+
     const options = [
-        { name: 'Create event', Icon: CreateIcon, onPress: () => navigation.navigate('new-event') },
-        { name: 'Import event', Icon: ImportIcon, onPress: () => navigation.navigate('new-event') },
-        { name: 'Add event from template', Icon: ImportIcon, onPress: () => navigation.navigate('new-event') }
+        { name: 'New event', systemName: 'plus', onPress: optionPressHandler('new-event') },
+        { name: 'Import event', systemName: 'square.and.arrow.down', onPress: optionPressHandler('new-event') },
+        { name: 'Built-in events', systemName: 'rectangle.badge.plus', onPress: optionPressHandler('builtin-events-list') }
     ];
 
     return (
         <>
-            <Backdrop open={isOpen} onPress={close} />
+            <Backdrop open={isOpen} onPress={closeOptions} />
             <Animated.View style={[styles.optionsListContainer, { bottom: 60, right: SCREEN_PADDING }]} pointerEvents='box-none'>
                 { isOptionsVisible && options.map((option, index) => (
                     <OptionsButton
                         key={nanoid()}
                         open={isOpen}
-                        duration={DURATION / options.length}
                         delay={DURATION / options.length * index}
-                        // color={theme.colors.text}
                         { ...option }
                     />
                 )) }
                 <OptionsButton
-                    Icon={isOpen ? CloseIcon : OptionsIcon}
+                    systemName={isOpen ? 'xmark' : 'ellipsis'}
                     open={true}
-                    style={{
-                        transform: [{ rotate: optionButtonRotate }],
-                        shadowColor: '#000',
-                        shadowOffset: {
-                            width: 0,
-                            height: 3,
-                        },
-                        shadowOpacity: optionButtonShadowOpacity,
-                        shadowRadius: 4.65,
-
-                        elevation: 6,
-                    }}
-                    color={theme.colors.text}
-                    onPress={isOpen ? close : open}
+                    delay={DURATION}
+                    style={mainOptionButtonAnimatedStyles}
+                    onPress={isOpen ? closeOptions : openOptions}
                 />
             </Animated.View>
         </>

@@ -28,5 +28,8 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    optionIcon: {}
+    optionIcon: {
+        width: '100%',
+        height: '100%'
+    }
 });

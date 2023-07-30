@@ -1,20 +1,20 @@
-import React, { createRef, useRef } from 'react';
+import React, { createRef, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useRoute, useTheme } from '@react-navigation/native';
 import Animated from 'react-native-reanimated';
 import { PanGestureHandler, TapGestureHandler } from 'react-native-gesture-handler';
 import { SFSymbol } from 'react-native-sfsymbols';
+import FastImage from 'react-native-fast-image';
 import { captureRef } from 'react-native-view-shot';
 import Share from 'react-native-share';
-import { editEvent } from '../../stores/events/events.reducer';
+import { updateEvent } from '../../stores/events/events.reducer';
 import { useImageSharedElement } from './hooks/useImageSharedElement';
-import HeaderBackground from '../../components/HeaderBackground';
+import EventHeaderBackground from '../../components/EventHeaderBackground';
 import HeaderButton from '../../components/HeaderButton';
 import HeaderText from '../../components/HeaderText';
 import Timer from './components/Timer';
 import SharableEventShot from '../../components/SharableEventShot';
-import { CHANGE_NAME } from '../../constants';
 
 const EventScreen = () => {
     const dispatch = useDispatch();
@@ -25,13 +25,17 @@ const EventScreen = () => {
     const imagePan = createRef();
     const imageTap = createRef();
 
-    const { id, title, image, timer, imageSpecs } = route.params;
-    const {
-        animatedHeaderStyles, animatedImageStyles,
-        animatedTimerStyles, pressHeaderAnimationStyles,
-        panGestureEventHandler, tapGestureActiveHandler, closeHandler,
+    const [isImageLoading, setIsImageLoading] = useState(true);
 
-        // animatedContainerStyles
+    const { event, imageSpecs, isTitleEditable } = route.params;
+    const {
+        animatedHeaderStyles, animatedEventContainerStyles,
+        animatedImageStyles, animatedTimerStyles,
+        animatedBlurredTimerStyles, pressHeaderAnimationStyles,
+        panGestureEventHandler, tapGestureActiveHandler, closeHandler,
+        onLayout,
+
+        animatedContainerStyles, clipContainerAnimatedStyles
     } = useImageSharedElement(imageSpecs);
 
     const shareHandler = async () => {
@@ -41,7 +45,7 @@ const EventScreen = () => {
                 quality: 0.7
             });
             await Share.open({
-                // title,
+                // title: event.title,
                 // message: 'Share your event',
                 url
             });
@@ -50,29 +54,49 @@ const EventScreen = () => {
         }
     };
 
-    const titleBlurHandler = ({ nativeEvent }) => dispatch(editEvent({ type: CHANGE_NAME, value: nativeEvent.text }));
+    const titleBlurHandler = ({ nativeEvent }) => dispatch(updateEvent({ ...event, title: nativeEvent.text }));
+
+    const imageLoadHandler = isImageLoading ? () => {
+        setIsImageLoading(false);
+        onLayout();
+    } : () => {};
 
     return (
         <View style={styles.container}>
-            <Animated.View
-                // style={animatedContainerStyles}
-            >
-                <PanGestureHandler ref={imagePan} simultaneousHandlers={imageTap} onGestureEvent={panGestureEventHandler}>
-                    <Animated.View style={[animatedImageStyles, { overflow: 'hidden' }]}>
-                        <TapGestureHandler ref={imageTap} simultaneousHandlers={imagePan} onActivated={tapGestureActiveHandler}>
-                            <Animated.Image
-                                source={image}
-                                style={styles.image}
-                                resizeMode='cover'
+            <Animated.View style={clipContainerAnimatedStyles}>
+                <Animated.View style={animatedContainerStyles}>
+                    <PanGestureHandler ref={imagePan} simultaneousHandlers={imageTap} onGestureEvent={panGestureEventHandler}>
+                        <Animated.View style={animatedEventContainerStyles}>
+                            <TapGestureHandler ref={imageTap} simultaneousHandlers={imagePan} onActivated={tapGestureActiveHandler}>
+                                <Animated.View style={animatedImageStyles}>
+                                    <FastImage
+                                        source={event.image}
+                                        style={styles.image}
+                                        resizeMode='cover'
+                                        onLoad={imageLoadHandler}
+                                    />
+                                </Animated.View>
+                            </TapGestureHandler>
+                            <Timer
+                                title={event.title}
+                                timer={event.timer}
+                                style={animatedBlurredTimerStyles}
+                                isTitleEditable={isTitleEditable}
+                                onTitleBlur={titleBlurHandler}
                             />
-                        </TapGestureHandler>
-                        <Timer title={title} timer={timer} style={animatedTimerStyles} onTitleBlur={titleBlurHandler} isTitleEditable />
-                    </Animated.View>
-                </PanGestureHandler>
+                            <Timer
+                                title={event.title}
+                                timer={event.timer}
+                                style={animatedTimerStyles}
+                                short
+                            />
+                        </Animated.View>
+                    </PanGestureHandler>
+                </Animated.View>
             </Animated.View>
             <Animated.View style={pressHeaderAnimationStyles}>
                 <Animated.View style={animatedHeaderStyles}>
-                    <HeaderBackground
+                    <EventHeaderBackground
                         leftButton={() => (
                             <HeaderButton onPress={closeHandler}>
                                 <HeaderText color={theme.colors.notification}>
@@ -98,7 +122,7 @@ const EventScreen = () => {
                 </Animated.View>
             </Animated.View>
 
-            <SharableEventShot title={title} image={image} timer={timer} ref={eventRef} />
+            <SharableEventShot title={event.title} image={event.image} timer={event.timer} ref={eventRef} />
         </View>
     );
 };

@@ -1,5 +1,7 @@
-import React, { Fragment, useMemo } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
+import { useCountdownTimer } from '../../hooks/useCountdownTimer';
+import TimerUnit from './TimerUnit';
 import { styles } from './TimerUnits.styles';
 
 const timeUnits = {
@@ -30,43 +32,49 @@ const TimerUnits = ({
     short,
     dividers = true
 }) => {
-    // const units = useMemo(() => Object.keys(timer?.displayUnits || timer).filter(unit => unit), [timer]);
+    const [timerData, setTimerData] = useState(useCountdownTimer(timer).timeLeft);
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const { timeLeft, duration } = useCountdownTimer(timer);
 
-    // if(short) return (
-    return (
+            if(duration <= 0) return clearInterval(interval);
+
+            setTimerData(timeLeft);
+        }, 1000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
+
+    if(short) return (
         <View style={[styles.timer, { width: 'auto' }, containerStyle]}>
-            { Object.keys(timer?.displayUnits || timer).map((timeFiled, index) => (
+            { Object.keys(timerData).map((timeFiled, index) => (
                 <Fragment key={timeFiled}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={[styles.timerText, style, color && { color }]}>
-                            { timer[timeFiled] }
-                        </Text>
-                        <Text style={[styles.timerText, style, color && { color }, unitStyle]}>
-                            { timeUnitsShort[timeFiled] }
-                        </Text>
-                    </View>
-                    { dividers && Object.keys(timer?.displayUnits || timer).length !== index + 1 && <Text style={[styles.timerText, style, color && { color }]}>·</Text> }
+                    <TimerUnit
+                        value={timerData[timeFiled]}
+                        unit={timeUnitsShort[timeFiled]}
+                        short={short}
+                        style={style}
+                        unitStyle={unitStyle}
+                        color={color}
+                    />
+                    { (dividers && Object.keys(timerData).length !== index + 1) && <Text style={[styles.timerText, style, color && { color }]}>·</Text> }
                 </Fragment>
             )) }
         </View>
     );
-    // return (
-        // <View style={styles.timer}>
-        //     { units.map((timeFiled, index) => (
-        //         <Fragment key={timeFiled}>
-        //             <View style={styles.timerTextBox}>
-        //                 <Text style={[styles.timerText, style, color && { color }]} numberOfLines={1} adjustsFontSizeToFit>
-        //                     { timer[timeFiled] }
-        //                 </Text>
-        //                 <Text style={[style, styles.timerUnitText, color && { color }]} numberOfLines={1} adjustsFontSizeToFit>
-        //                     { timeUnits[timeFiled] }
-        //                 </Text>
-        //             </View>
-        //             { dividers && units.length !== index + 1 && <View style={styles.separator} /> }
-        //         </Fragment>
-        //     )) }
-        // </View>
-    // );
+    return (
+        <View style={styles.timer}>
+            { Object.keys(timerData).map((timeFiled, index) => (
+                <Fragment key={timeFiled}>
+                    <TimerUnit value={timerData[timeFiled]} unit={timeUnits[timeFiled]} style={style} color={color} />
+                    { (dividers && Object.keys(timerData).length !== index + 1) ? <View style={styles.separator} /> : null }
+                </Fragment>
+            )) }
+        </View>
+    );
 
 
 

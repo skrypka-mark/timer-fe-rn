@@ -19,7 +19,7 @@ import {
     CHANGE_BACKGROUND_OPACITY, CHANGE_DISPLAY_UNIT
 } from '../../constants';
 
-const EditEventScreen = ({ event }) => {
+const EditEventScreen = ({ event, scrollHandler }) => {
     const dispatch = useDispatch();
     const insets = useSafeAreaInsets();
     const navigation = useNavigation();
@@ -76,6 +76,8 @@ const EditEventScreen = ({ event }) => {
                 }}
                 contentInsetAdjustmentBehavior='automatic'
                 keyboardDismissMode='on-drag'
+                scrollEventThrottle={16}
+                onScroll={scrollHandler}
             >
                 <SettingsList style={keyboardAwareAnimatedStyles}>
                     <SettingsList.List>

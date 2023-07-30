@@ -1,22 +1,93 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import React, { useEffect, useLayoutEffect, useState, useRef } from 'react';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation, useTheme } from '@react-navigation/native';
+import { useHeaderHeight } from '@react-navigation/elements';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, {
+    useSharedValue,
+    useAnimatedStyle,
+    useAnimatedRef,
+    useAnimatedScrollHandler,
+    interpolate,
+    withSequence,
+    withTiming,
+    withSpring,
+    Extrapolate,
+    scrollTo
+} from 'react-native-reanimated';
+import _ from 'lodash';
 import { Asset } from 'expo-asset';
 import { SFSymbol } from 'react-native-sfsymbols';
+import { BlurView } from 'expo-blur';
+import SearchBar from 'react-native-search-bar';
+import { useSearch } from '../../hooks/useSearch';
 import EventsListScreen from './EventsListScreen';
 import { listAppearences, toggleListAppearence } from '../../stores/events/events.reducer';
 import { eventsSelector } from '../../stores/events/events.selector';
 import HeaderButton from '../../components/HeaderButton';
-import HeaderText from '../../components/HeaderText';
+import { SCREEN_PADDING } from '../../theme';
+
+const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
+const { width } = Dimensions.get('window');
 
 const EventsListContainer = () => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const theme = useTheme();
+    const headerHeight = useHeaderHeight();
+    const insets = useSafeAreaInsets();
 
     // const [ready, setReady] = useState(false);
     const { events, eventsListAppearence } = useSelector(eventsSelector);
+    const prevEventsSearchRef = useRef(events);
+
+    const scrollViewAnimatedRef = useAnimatedRef(null);
+
+    const [eventsSearch, setEventsSearchValue] = useSearch(events, 'title');
+
+    const sharedValue = useSharedValue(1);
+    const headerSharedValue = useSharedValue(0);
+    const headerTitleSharedValue = useSharedValue(0);
+    const scrollY = useSharedValue(0);
+    const momentumEndScrollY = useSharedValue(0);
+
+    const [titleWidth, setTitleWidth] = useState();
+
+    const titleTextSpecs = {
+        fontSize: 18,
+        fontWeight: '500'
+    };
+
+    const scrollReleaseCallback = e => {
+        'worklet';
+        if(e.contentOffset.y > 0 && e.contentOffset.y < insets.top / 2) {
+            scrollTo(scrollViewAnimatedRef, 0, 0, true);
+        }
+        else if(e.contentOffset.y > insets.top / 2 && e.contentOffset.y < insets.top + SCREEN_PADDING) {
+            scrollTo(scrollViewAnimatedRef, 0, insets.top, true);
+        }
+    };
+    const scrollHandler = useAnimatedScrollHandler({
+        onEndDrag: e => {
+            if(e.contentOffset.y < insets.top + SCREEN_PADDING && (!e.velocity?.y || e.velocity?.y > 0)) return;
+            scrollReleaseCallback(e);
+            // momentumEndScrollY.value = 0;
+        },
+        onMomentumEnd: e => {
+            momentumEndScrollY.value = e.contentOffset.y;
+            scrollReleaseCallback(e);
+        },
+        onScroll: e => {
+            scrollY.value = e.contentOffset.y;
+            headerSharedValue.value = e.contentOffset.y;
+            if(e.contentOffset.y > insets.top + SCREEN_PADDING) {
+                headerTitleSharedValue.value = withSpring(1, { stiffness: 120, damping: 25 });
+            } else {
+                headerTitleSharedValue.value = withSpring(0, { stiffness: 120, damping: 25 });
+            }
+        }
+    });
 
     const renderLayoutSFSymbol = name => (
         <SFSymbol
@@ -26,6 +97,43 @@ const EventsListContainer = () => {
         />
     );
 
+    const headerAnimatedStyles = useAnimatedStyle(() => ({
+        opacity: interpolate(headerSharedValue.value, [insets.top, insets.top + 10], [0, 1], Extrapolate.CLAMP),
+        borderBottomWidth: interpolate(headerSharedValue.value, [insets.top, insets.top + 10], [0, 0.5], Extrapolate.CLAMP),
+        borderBottomColor: 'rgba(255, 255, 255, .1)'
+    }));
+    const titleAnimatedStyles = useAnimatedStyle(() => {
+        const translateX = interpolate(headerTitleSharedValue.value, [0, 1], [0, (width / 2) - (titleWidth / 2) - SCREEN_PADDING], Extrapolate.CLAMP);
+        const scale = interpolate(headerTitleSharedValue.value, [0, 1], [1, 0.65], Extrapolate.CLAMP);
+        return {
+            // fontSize: interpolate(scrollY.value, [-(insets.top * 2), -insets.top], [26, titleTextSpecs.fontSize], Extrapolate.CLAMP),
+            fontSize: 26,
+            fontWeight: titleTextSpecs.fontWeight,
+            // opacity: interpolate(scrollY.value, [-(insets.top + SCREEN_PADDING * 2), -(insets.top + SCREEN_PADDING * 1.5), -(insets.top + SCREEN_PADDING * 0.2), 0], [1, 1, 0.1, 1], Extrapolate.CLAMP),
+            transform: titleWidth ? [{ translateX }, { scale }] : []
+        };
+    }, [titleWidth]);
+    const titleContainerAnimatedStyles = useAnimatedStyle(() => {
+        return {
+            transform: [
+                { translateX: interpolate(
+                    headerSharedValue.value,
+                    [-insets.top, 0],
+                    [SCREEN_PADDING / 3, 0],
+                    Extrapolate.CLAMP
+                ) },
+                { scale: interpolate(headerSharedValue.value, [-insets.top, 0], [1.1, 1], Extrapolate.CLAMP) }
+            ]
+        };
+    }, [titleWidth]);
+    const searchBarContainerAnimatedStyles = useAnimatedStyle(() => ({
+        opacity: interpolate(scrollY.value, [0, headerHeight / 2], [1, 0], Extrapolate.CLAMP),
+        transform: [
+            { scale: interpolate(scrollY.value, [0, headerHeight], [1, 0.9], Extrapolate.CLAMP) },
+            { translateY: interpolate(scrollY.value, [0, headerHeight], [0, headerHeight], Extrapolate.CLAMP) },
+        ]
+    }));
+
     // useEffect(() => {
     //     (async () => {
     //         await Promise.all(events.map(timer => Asset.loadAsync(timer.image)));
@@ -34,31 +142,78 @@ const EventsListContainer = () => {
     // }, [events]);
     useLayoutEffect(() => {
         navigation.setOptions({
-            headerSearchBarOptions: {
-                placeholder: 'Search'
-            },
+            // headerSearchBarOptions: {
+            //     placeholder: 'Search',
+            //     onChangeText: event => setEventsSearchValue(event.nativeEvent.text)
+            // },
             headerLeft: () => (
-                <Text style={{ marginLeft: -5, fontSize: 25, fontWeight: '700', color: theme.colors.text }}>
-                    Timers
-                </Text>
+                <Animated.Text style={{ marginLeft: -5 }}>
+                    <View style={{ justifyContent: 'center' }} onLayout={({ nativeEvent }) => !titleWidth && setTitleWidth(nativeEvent.layout.width)}>
+                        <Animated.View style={titleContainerAnimatedStyles}>
+                            <Animated.Text style={[{ color: theme.colors.text }, titleAnimatedStyles]}>
+                                Events
+                            </Animated.Text>
+                        </Animated.View>
+                    </View>
+                </Animated.Text>
             ),
             headerRight: () => (
-                <View style={{ flexDirection: 'row', gap: 15, marginRight: -5 }}>
-                    <HeaderButton>
-                        <HeaderText color={theme.colors.primary}>Edit</HeaderText>
-                    </HeaderButton>
-                    <HeaderButton onPress={() => dispatch(toggleListAppearence())}>
-                        { eventsListAppearence === listAppearences.REGULAR && renderLayoutSFSymbol('rectangle.grid.1x2') }
-                        { eventsListAppearence === listAppearences.DETAIL && renderLayoutSFSymbol('square.fill.text.grid.1x2') }
-                    </HeaderButton>
+                <HeaderButton onPress={() => dispatch(toggleListAppearence())} style={{ marginRight: -5 }}>
+                    { eventsListAppearence === listAppearences.REGULAR && renderLayoutSFSymbol('rectangle.grid.1x2') }
+                    { eventsListAppearence === listAppearences.DETAIL && renderLayoutSFSymbol('square.fill.text.grid.1x2') }
+                </HeaderButton>
+            ),
+            headerBackground: () => (
+                <View style={{ width: '100%', height: '100%' }}>
+                    <AnimatedBlurView intensity={40} style={[StyleSheet.absoluteFillObject, headerAnimatedStyles]}>
+                        <View style={[StyleSheet.absoluteFillObject, { backgroundColor: theme.dark ? 'rgba(0, 0, 0, .6)' : 'rgba(255, 255, 255, .6)' }]} />
+                    </AnimatedBlurView>
                 </View>
             )
         });
     }, [navigation, eventsListAppearence]);
+    useEffect(() => {
+        if(!_.isEqual(prevEventsSearchRef.current.map(({ title }) => title), eventsSearch.map(({ title }) => title)) && eventsSearch?.length)
+            sharedValue.value = withSequence(withTiming(0, { duration: 100 }), withTiming(1));
+        if(!eventsSearch?.length)
+            sharedValue.value = withTiming(0, { duration: 200 });
+        prevEventsSearchRef.current = eventsSearch;
+    }, [eventsSearch]);
 
+    const eventsListContainerAnimatedStyles = useAnimatedStyle(() => ({
+        opacity: sharedValue.value,
+        paddingBottom: headerHeight + insets.bottom
+    }));
+    const eventsListAnimatedStyles = useAnimatedStyle(() => ({
+        height: '100%',
+        paddingTop: headerHeight
+    }));
+
+    const EventsListScreenProps = {
+        events: [...eventsSearch].reverse(),
+        appearence: eventsListAppearence,
+        scrollViewRef: scrollViewAnimatedRef,
+        scrollViewStyle: eventsListAnimatedStyles,
+        style: eventsListContainerAnimatedStyles,
+        scrollHandler
+    };
     // TODO: Here Loader must be shown instead of null when assets are loading
     // if(!ready) return <ActivityIndicator style={{ marginTop: 160 }} animating />;
-    return <EventsListScreen events={events} appearence={eventsListAppearence} />;
+    return (
+        <View>
+            <EventsListScreen { ...EventsListScreenProps }>
+                <Animated.View style={searchBarContainerAnimatedStyles}>
+                    <View>
+                        <SearchBar
+                            placeholder='Search'
+                            hideBackground={true}
+                            onChangeText={setEventsSearchValue}
+                        />
+                    </View>
+                </Animated.View>
+            </EventsListScreen>
+        </View>
+    );
 };
 
 export default EventsListContainer;

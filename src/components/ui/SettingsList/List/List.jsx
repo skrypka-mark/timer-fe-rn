@@ -2,6 +2,7 @@ import React, { Children, cloneElement } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { fontSizes, fontWeights } from '../../../../theme/fonts';
+import { SCREEN_PADDING } from '../../../../theme';
 
 const List = ({
     header,
@@ -42,7 +43,7 @@ const List = ({
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 15
+        marginHorizontal: SCREEN_PADDING
     },
     headerContainer: {
         marginHorizontal: 15,

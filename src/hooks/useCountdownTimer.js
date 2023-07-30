@@ -38,6 +38,7 @@ export const useCountdownTimer = timer => {
     // }));
 
     const duration = moment.duration(diff);
+    const durationInSeconds = moment.duration(diff).asSeconds();
 
     // if(duration.asSeconds() <= 0) return clearInterval(interval);
 
@@ -56,5 +57,5 @@ export const useCountdownTimer = timer => {
         duration.subtract(value, unit);
     });
 
-    return { timeLeft: remainingTime, duration: duration.asSeconds() };
+    return { timeLeft: remainingTime, duration: durationInSeconds > 0 ? +durationInSeconds.toFixed() : 0 };
 };

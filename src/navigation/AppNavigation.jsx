@@ -7,8 +7,7 @@ import NewEventScreen from '../screens/NewEventScreen';
 import EditEventTimerScreen from '../screens/EditEventTimerScreen';
 import EditSettingsRowScreen from '../screens/EditSettingsRowScreen';
 import EditEventScreen from '../screens/EditEventScreen';
-
-import { fontSizes, fontWeights } from '../theme/fonts';
+import BuiltInEventsListScreen from '../screens/BuiltInEventsListScreen';
 
 const NativeStack = createNativeStackNavigator();
 
@@ -25,6 +24,8 @@ const AppNavigation = () => {
                 // headerBlurEffect: true,
                 // headerLargeTitle: true,
                 // headerLargeTitleStyle: { fontSize: 25, fontWeight: '700' },
+
+                // freezeOnBlur: true,
     
                 // headerTranslucent: true,
                 // headerStyle: {
@@ -39,31 +40,45 @@ const AppNavigation = () => {
         >
             <NativeStack.Screen
                 name='events-list'
-                options={() => ({
+                options={{
                     title: null,
                     headerTransparent: true,
-                    headerBlurEffect: 'regular',
+                    // headerBlurEffect: 'regular',
+
+                    // freezeOnBlur: true,
     
                     // headerLargeTitle: true,
+                    // headerLargeStyle: { backgroundColor: 'transparent' },
                     // headerLargeTitleStyle: { fontSize: 25, fontWeight: '700' },
                     // headerTitleStyle: { fontSize: 25, fontWeight: '700' },
     
                     // headerBackVisible: false,
-                    headerShadowVisible: false,
-                    // headerStyle: { backgroundColor: '#fff' },
-                    headerBackButtonMenuEnabled: true,
+                    // headerShadowVisible: false,
                     // contentStyle: { backgroundColor: theme.dark ? '#09061A' : 'white' },
                     contentStyle: { backgroundColor: 'transparent' }
-                })}
+                }}
                 component={EventsListScreen}
+            />
+            <NativeStack.Screen
+                name='builtin-events-list'
+                options={{
+                    title: null,
+                    gestureDirection: 'vertical',
+                    contentStyle: { backgroundColor: 'transparent' },
+                    presentation: 'modal',
+                    headerTransparent: true,
+                    // headerBlurEffect: 'regular',
+                    // headerTitleStyle: { fontSize: fontSizes.font18, fontWeight: fontWeights.bold }
+                }}
+                component={BuiltInEventsListScreen}
             />
             <NativeStack.Screen
                 name='event'
                 options={{
                     headerShown: false,
                     presentation: 'transparentModal',
-                    animation: 'fade',
-                    animationDuration: 1000,
+                    animation: 'none',
+                    // animationDuration: 1000,
                     // customAnimationOnGesture: true,
                     contentStyle: { backgroundColor: 'transparent' }
                     // gestureDirection: 'vertical'
@@ -72,15 +87,19 @@ const AppNavigation = () => {
             />
             <NativeStack.Screen
                 name='new-event'
-                options={({ navigation }) => ({
-                    title: 'New event',
-                    gestureDirection: 'vertical',
+                options={{
+                    title: null,
+                    // gestureDirection: 'vertical',
+                    // fullScreenGestureEnabled: true,
+                    // customAnimationOnGesture: true,
                     contentStyle: { backgroundColor: 'transparent' },
                     presentation: 'modal',
                     headerTransparent: true,
-                    headerBlurEffect: 'regular',
-                    headerTitleStyle: { fontSize: fontSizes.font18, fontWeight: fontWeights.bold }
-                })}
+                    headerBackButtonMenuEnabled: false,
+                    gestureEnabled: false,
+                    // headerBlurEffect: 'regular',
+                    // headerTitleStyle: { fontSize: fontSizes.font18, fontWeight: fontWeights.bold }
+                }}
                 component={NewEventScreen}
             />
             <NativeStack.Screen
@@ -88,7 +107,7 @@ const AppNavigation = () => {
                 options={{
                     headerShown: false,
                     presentation: 'transparentModal',
-                    gestureDirection: 'vertical',
+                    // gestureDirection: 'vertical',
                     animation: 'fade',
                     contentStyle: { backgroundColor: 'transparent' }
                 }}
@@ -107,13 +126,15 @@ const AppNavigation = () => {
             <NativeStack.Screen
                 name='edit-event'
                 options={{
-                    title: 'Edit event',
+                    title: null,
                     gestureDirection: 'vertical',
                     contentStyle: { backgroundColor: 'transparent' },
                     presentation: 'modal',
+                    // headerStyle: { backgroundColor: 'transparent' },
                     headerTransparent: true,
-                    headerBlurEffect: 'regular',
-                    headerTitleStyle: { fontSize: fontSizes.font18, fontWeight: fontWeights.bold }
+                    gestureEnabled: false,
+                    // headerBlurEffect: 'regular',
+                    // headerTitleStyle: { fontSize: fontSizes.font18, fontWeight: fontWeights.bold },
                 }}
                 component={EditEventScreen}
             />

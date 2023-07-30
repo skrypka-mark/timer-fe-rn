@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 const BackgroundBox = ({ color, image }) => (
     <View
@@ -11,7 +12,7 @@ const BackgroundBox = ({ color, image }) => (
             overflow: 'hidden'
         }}
     >
-        { image && <Image source={image} style={{ width: '100%', height: '100%' }} resizeMode='cover' /> }
+        { image && <FastImage source={image} style={{ width: '100%', height: '100%' }} resizeMode='cover' /> }
     </View>
 );
 

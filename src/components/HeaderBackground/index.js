@@ -1,3 +1,1 @@
-import HeaderBackground from './HeaderBackground';
-
-export default HeaderBackground;
+export { default } from './HeaderBackground';

@@ -6,6 +6,9 @@ export const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
+
+        position: 'relative',
+        
         padding: 15,
         borderRadius: 15,
         // minHeight: 130

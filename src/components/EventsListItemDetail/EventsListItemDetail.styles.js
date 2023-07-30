@@ -3,11 +3,12 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
+        alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'space-between',
 
         width: '100%',
-        height: 110,
+        height: '100%',
 
         overflow: 'hidden'
     },
@@ -19,7 +20,7 @@ export const styles = StyleSheet.create({
     title: {
         paddingTop: 10,
 
-        fontWeight: 500,
+        fontWeight: '500',
         fontSize: 22,
         lineHeight: 27,
         color: '#252525'

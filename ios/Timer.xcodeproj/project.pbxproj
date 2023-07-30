@@ -19,6 +19,16 @@
 		7197D022A11B4A2EB0017A5B /* SnellRoundhandBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = BBC3391A3AED46A3A1FF3563 /* SnellRoundhandBold.otf */; };
 		7699B88040F8A987B510C191 /* libPods-Timer-TimerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Timer-TimerTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		841641DA2A228A0F0089245E /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842F67592A0A8304007274F3 /* WidgetKit.framework */; };
+		841641DB2A228A0F0089245E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842F675B2A0A8304007274F3 /* SwiftUI.framework */; };
+		841641DE2A228A0F0089245E /* EventWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841641DD2A228A0F0089245E /* EventWidgetBundle.swift */; };
+		841641E02A228A0F0089245E /* EventWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841641DF2A228A0F0089245E /* EventWidget.swift */; };
+		841641E32A228A140089245E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 841641E22A228A140089245E /* Assets.xcassets */; };
+		841641E52A228A140089245E /* EventWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 841641E12A228A0F0089245E /* EventWidget.intentdefinition */; };
+		841641E62A228A140089245E /* EventWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 841641E12A228A0F0089245E /* EventWidget.intentdefinition */; };
+		841641E92A228A140089245E /* EventWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 841641D92A228A0F0089245E /* EventWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		841641EF2A228C6E0089245E /* RNSharedWidget.m in Sources */ = {isa = PBXBuildFile; fileRef = 841641EE2A228C6E0089245E /* RNSharedWidget.m */; };
+		841641F92A22914A0089245E /* WidgetKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841641F82A22914A0089245E /* WidgetKitHelper.swift */; };
 		9951E9F4C9A94817B4578852 /* Countryhouse.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 287FA02F77BF4326AE6E0400 /* Countryhouse.ttf */; };
 		B69A7F0FEA624294A5ED1AF6 /* Georgia.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96646EA735E94EF89F76B110 /* Georgia.ttf */; };
 		B9BC3AA854C1ED8B1288B28D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACC45E0431132BB8BAED5CA /* ExpoModulesProvider.swift */; };
@@ -37,6 +47,13 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = Timer;
 		};
+		841641E72A228A140089245E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 841641D82A228A0F0089245E;
+			remoteInfo = EventWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +63,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				841641E92A228A140089245E /* EventWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -75,6 +93,18 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-Timer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Timer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		76E010C73B5145659C2A9AE5 /* SanFrancisco.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SanFrancisco.ttf; path = ../src/assets/fonts/SanFrancisco.ttf; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Timer/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		841641D92A228A0F0089245E /* EventWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = EventWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		841641DD2A228A0F0089245E /* EventWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventWidgetBundle.swift; sourceTree = "<group>"; };
+		841641DF2A228A0F0089245E /* EventWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventWidget.swift; sourceTree = "<group>"; };
+		841641E12A228A0F0089245E /* EventWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = EventWidget.intentdefinition; sourceTree = "<group>"; };
+		841641E22A228A140089245E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		841641E42A228A140089245E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		841641ED2A228A400089245E /* EventWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EventWidgetExtension.entitlements; sourceTree = "<group>"; };
+		841641EE2A228C6E0089245E /* RNSharedWidget.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNSharedWidget.m; sourceTree = "<group>"; };
+		841641F02A228CAF0089245E /* RNSharedWidget.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNSharedWidget.h; sourceTree = "<group>"; };
+		841641F82A22914A0089245E /* WidgetKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetKitHelper.swift; sourceTree = "<group>"; };
+		841641FA2A2291850089245E /* Timer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Timer-Bridging-Header.h"; sourceTree = "<group>"; };
+		841641FB2A229BC50089245E /* Timer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Timer.entitlements; path = Timer/Timer.entitlements; sourceTree = "<group>"; };
 		842F67592A0A8304007274F3 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		842F675B2A0A8304007274F3 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Timer-TimerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Timer-TimerTests.release.xcconfig"; path = "Target Support Files/Pods-Timer-TimerTests/Pods-Timer-TimerTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -104,6 +134,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		841641D62A228A0F0089245E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				841641DB2A228A0F0089245E /* SwiftUI.framework in Frameworks */,
+				841641DA2A228A0F0089245E /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -127,12 +166,17 @@
 		13B07FAE1A68108700A75B9A /* Timer */ = {
 			isa = PBXGroup;
 			children = (
+				841641FB2A229BC50089245E /* Timer.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				841641EE2A228C6E0089245E /* RNSharedWidget.m */,
+				841641F02A228CAF0089245E /* RNSharedWidget.h */,
+				841641F82A22914A0089245E /* WidgetKitHelper.swift */,
+				841641FA2A2291850089245E /* Timer-Bridging-Header.h */,
 			);
 			name = Timer;
 			sourceTree = "<group>";
@@ -176,9 +220,11 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				841641ED2A228A400089245E /* EventWidgetExtension.entitlements */,
 				13B07FAE1A68108700A75B9A /* Timer */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* TimerTests */,
+				841641DC2A228A0F0089245E /* EventWidget */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -195,8 +241,21 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* Timer.app */,
 				00E356EE1AD99517003FC87E /* TimerTests.xctest */,
+				841641D92A228A0F0089245E /* EventWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		841641DC2A228A0F0089245E /* EventWidget */ = {
+			isa = PBXGroup;
+			children = (
+				841641DD2A228A0F0089245E /* EventWidgetBundle.swift */,
+				841641DF2A228A0F0089245E /* EventWidget.swift */,
+				841641E12A228A0F0089245E /* EventWidget.intentdefinition */,
+				841641E22A228A140089245E /* Assets.xcassets */,
+				841641E42A228A140089245E /* Info.plist */,
+			);
+			path = EventWidget;
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -277,11 +336,29 @@
 			buildRules = (
 			);
 			dependencies = (
+				841641E82A228A140089245E /* PBXTargetDependency */,
 			);
 			name = Timer;
 			productName = Timer;
 			productReference = 13B07F961A680F5B00A75B9A /* Timer.app */;
 			productType = "com.apple.product-type.application";
+		};
+		841641D82A228A0F0089245E /* EventWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 841641EC2A228A140089245E /* Build configuration list for PBXNativeTarget "EventWidgetExtension" */;
+			buildPhases = (
+				841641D52A228A0F0089245E /* Sources */,
+				841641D62A228A0F0089245E /* Frameworks */,
+				841641D72A228A0F0089245E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EventWidgetExtension;
+			productName = EventWidgetExtension;
+			productReference = 841641D92A228A0F0089245E /* EventWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -289,7 +366,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1420;
+				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -298,6 +375,9 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
+					};
+					841641D82A228A0F0089245E = {
+						CreatedOnToolsVersion = 14.3;
 					};
 				};
 			};
@@ -316,6 +396,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* Timer */,
 				00E356ED1AD99517003FC87E /* TimerTests */,
+				841641D82A228A0F0089245E /* EventWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -345,6 +426,14 @@
 				17F23FD1EC7546519EF3DD0D /* CourierNew.ttf in Resources */,
 				E2BAB040374A4912915D7BAD /* LeapingTypewriter.ttf in Resources */,
 				EF3E923B3A774DD0A2B2F2DD /* SanFrancisco.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		841641D72A228A0F0089245E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				841641E32A228A140089245E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,7 +605,20 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				841641F92A22914A0089245E /* WidgetKitHelper.swift in Sources */,
 				BC19EF7056EE4DEEDDE94143 /* ExpoModulesProvider.swift in Sources */,
+				841641EF2A228C6E0089245E /* RNSharedWidget.m in Sources */,
+				841641E62A228A140089245E /* EventWidget.intentdefinition in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		841641D52A228A0F0089245E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				841641E02A228A0F0089245E /* EventWidget.swift in Sources */,
+				841641E52A228A140089245E /* EventWidget.intentdefinition in Sources */,
+				841641DE2A228A0F0089245E /* EventWidgetBundle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,6 +629,11 @@
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* Timer */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
+		};
+		841641E82A228A140089245E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 841641D82A228A0F0089245E /* EventWidgetExtension */;
+			targetProxy = 841641E72A228A140089245E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -553,7 +660,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Timer.app/Timer";
@@ -590,13 +697,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-Timer.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Timer/Timer.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WC5J3FC7J4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Timer/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Event Tracker";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -607,9 +718,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.mark-developer.--PRODUCT-NAME-rfc1034identifier-";
 				PRODUCT_NAME = Timer;
+				SWIFT_OBJC_BRIDGING_HEADER = "Timer-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -620,12 +732,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-Timer.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Timer/Timer.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WC5J3FC7J4;
 				INFOPLIST_FILE = Timer/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Event Tracker";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -639,6 +755,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.mark-developer.--PRODUCT-NAME-rfc1034identifier-";
 				PRODUCT_NAME = Timer;
+				SWIFT_OBJC_BRIDGING_HEADER = "Timer-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -781,6 +898,90 @@
 			};
 			name = Release;
 		};
+		841641EA2A228A140089245E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = EventWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = WC5J3FC7J4;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EventWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = EventWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.mark-developer.--PRODUCT-NAME-rfc1034identifier-.EventWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		841641EB2A228A140089245E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = EventWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = WC5J3FC7J4;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EventWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = EventWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.mark-developer.--PRODUCT-NAME-rfc1034identifier-.EventWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -807,6 +1008,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		841641EC2A228A140089245E /* Build configuration list for PBXNativeTarget "EventWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				841641EA2A228A140089245E /* Debug */,
+				841641EB2A228A140089245E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

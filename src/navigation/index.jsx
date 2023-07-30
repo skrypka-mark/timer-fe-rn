@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StatusBar, useColorScheme, View } from 'react-native';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import AppNavigation from './AppNavigation';
@@ -7,7 +7,6 @@ import GradientBackground from '../components/GradientBackground';
 
 export default () => {
     const isDarkMode = useColorScheme() === 'dark';
-    const [isOptionsOpen, setIsOptionsOpen] = useState(false);
 
     const darkTheme = {
         ...DarkTheme,
@@ -33,11 +32,7 @@ export default () => {
             <View style={{ height: '100%', flex: 1, position: 'relative' }}>
                 <GradientBackground />
                 <AppNavigation />
-                <Options
-                    isOpen={isOptionsOpen}
-                    open={() => setIsOptionsOpen(true)}
-                    close={() => setIsOptionsOpen(false)}
-                />
+                <Options />
             </View>
         </NavigationContainer>
     );

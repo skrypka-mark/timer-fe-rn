@@ -1,13 +1,14 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import { Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme, UNSTABLE_usePreventRemove, usePreventRemoveContext } from '@react-navigation/native';
+import { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
+import moment from 'moment';
 // import { editNewEvent, saveNewEvent, setNewEvent, resetNewEvent } from '../../stores/new-event/new-event.reducer';
 import { addEmptyEvent, editEvent, saveEmptyEvent, resetEmptyEvent } from '../../stores/events/events.reducer';
 import { eventsSelector } from '../../stores/events/events.selector';
+import HeaderBackground from '../../components/HeaderBackground';
 import NewEventScreen from './NewEventScreen';
-import HeaderButton from '../../components/HeaderButton';
-import HeaderText from '../../components/HeaderText';
 import { convertColorWithAlpha } from '../../utils/convertColorWithAlpha';
 import { CHANGE_DATE, CHANGE_TIME, CHANGE_BACKGROUND_COLOR, CHANGE_FONT_COLOR } from '../../constants';
 
@@ -18,7 +19,41 @@ const NewEventContainer = () => {
 
     const { emptyEvent: newEvent } = useSelector(eventsSelector);
     const [error, setError] = useState({ message: '' });
+    const [isPreventRemove, setIsPreventRemove] = useState(true);
+    const scrollY = useSharedValue(0);
+
+    const scrollHandler = useAnimatedScrollHandler(e => {
+        scrollY.value = e.contentOffset.y;
+    });
     
+    // usePreventRemoveContext();
+    // UNSTABLE_usePreventRemove(isPreventRemove, ({ data }) => {
+    //     const { action } = data;
+    //     console.log('====================================');
+    //     console.log(action);
+    //     console.log('====================================');
+    //     setIsPreventRemove(!isPreventRemove);
+    //     if(action.type === 'GO_BACK') navigation.goBack();
+    //     if(action.type === 'NAVIGATE') {
+    //         navigation.navigate(action.payload.name);
+    //     }
+    //     if(action.type === 'POP') {
+    //         setTimeout(() => {
+    //             Alert.alert('Are you sure?', 'You are about to reset changes.', [
+    //                 {
+    //                     text: 'Reset',
+    //                     style: 'destructive',
+    //                     onPress: navigation.goBack
+    //                 },
+    //                 {
+    //                     text: 'Save',
+    //                     isPreferred: true,
+    //                     onPress: () => console.log('OK Pressed')
+    //                 }
+    //             ]);
+    //         }, 500);
+    //     }
+    // });
     useEffect(() => {
         dispatch(addEmptyEvent());
 
@@ -46,15 +81,26 @@ const NewEventContainer = () => {
     }, [error]);
     useLayoutEffect(() => {
         navigation.setOptions({
-            headerLeft: () => (
-                <HeaderButton onPress={navigation.goBack}>
-                    <HeaderText color={theme.colors.notification}>Cancel</HeaderText>
-                </HeaderButton>
-            ),
-            headerRight: () => (
-                <HeaderButton onPress={() => saveNewEventHandler(newEvent)}>
-                    <HeaderText color={theme.colors.primary}>Save</HeaderText>
-                </HeaderButton>
+            // headerLeft: () => (
+            //     <HeaderButton onPress={navigation.goBack}>
+            //         <HeaderText color={theme.colors.notification}>Cancel</HeaderText>
+            //     </HeaderButton>
+            // ),
+            // headerRight: () => (
+            //     <HeaderButton onPress={() => saveNewEventHandler(newEvent)}>
+            //         <HeaderText color={theme.colors.primary}>Save</HeaderText>
+            //     </HeaderButton>
+            // ),
+            headerBackground: () => (
+                <HeaderBackground
+                    title='New event'
+                    leftTitle='Cancel'
+                    rightTitle='Save'
+                    scrollY={scrollY}
+                    modal
+                    onLeft={navigation.goBack}
+                    onRight={() => saveNewEventHandler(newEvent)}
+                />
             )
         });
     }, [navigation, newEvent]);
@@ -62,11 +108,12 @@ const NewEventContainer = () => {
     const saveNewEventHandler = event => {
         if(!event.title) return setError({ message: 'Name must be specified' });
 
+        event.createdAt = moment().format('DD-MM-YYYY');
         dispatch(saveEmptyEvent(event));
         navigation.goBack();
     };
 
-    const NewEventScreenProps = { newEvent };
+    const NewEventScreenProps = { newEvent, scrollHandler };
     return <NewEventScreen { ...NewEventScreenProps } />;
 };
 
