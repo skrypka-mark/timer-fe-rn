@@ -15,7 +15,7 @@ const BuiltInEventsListScreen = ({ events, appearence, style, scrollHandler, chi
     const ListComponent = appearence === listAppearences.REGULAR ? EventsListRegular : EventsListDetail;
 
     return (
-        <BlurView style={{ height: '100%' }} intensity={35}>
+        <BlurView style={{ height: '100%' }} intensity={40}>
             <StatusBar barStyle='light-content' animated />
 
             <Animated.ScrollView

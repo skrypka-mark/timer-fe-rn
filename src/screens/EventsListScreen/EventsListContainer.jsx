@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme, useFocusEffect } from '@react-navigation/native';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, {
@@ -16,7 +16,6 @@ import Animated, {
     Extrapolate,
     scrollTo
 } from 'react-native-reanimated';
-import _ from 'lodash';
 import { Asset } from 'expo-asset';
 import { SFSymbol } from 'react-native-sfsymbols';
 import { BlurView } from 'expo-blur';
@@ -40,16 +39,17 @@ const EventsListContainer = () => {
 
     // const [ready, setReady] = useState(false);
     const { events, eventsListAppearence } = useSelector(eventsSelector);
-    const prevEventsSearchRef = useRef(events);
+    // const prevEventsSearchRef = useRef(events);
 
     const scrollViewAnimatedRef = useAnimatedRef(null);
+    const searchBarRef = useRef(null);
 
-    const [eventsSearch, setEventsSearchValue] = useSearch(events, 'title');
+    // const [eventsSearch, setEventsSearchValue] = useSearch(events, 'title');
 
-    const sharedValue = useSharedValue(1);
     const headerSharedValue = useSharedValue(0);
     const headerTitleSharedValue = useSharedValue(0);
     const scrollY = useSharedValue(0);
+    const searchBarOpacity = useSharedValue(1);
     const momentumEndScrollY = useSharedValue(0);
 
     const [titleWidth, setTitleWidth] = useState();
@@ -70,7 +70,7 @@ const EventsListContainer = () => {
     };
     const scrollHandler = useAnimatedScrollHandler({
         onEndDrag: e => {
-            if(e.contentOffset.y < insets.top + SCREEN_PADDING && (!e.velocity?.y || e.velocity?.y > 0)) return;
+            // if(e.contentOffset.y < insets.top + SCREEN_PADDING && (!e.velocity?.y || e.velocity?.y > 0)) return;
             scrollReleaseCallback(e);
             // momentumEndScrollY.value = 0;
         },
@@ -82,12 +82,21 @@ const EventsListContainer = () => {
             scrollY.value = e.contentOffset.y;
             headerSharedValue.value = e.contentOffset.y;
             if(e.contentOffset.y > insets.top + SCREEN_PADDING) {
-                headerTitleSharedValue.value = withSpring(1, { stiffness: 120, damping: 25 });
+                headerTitleSharedValue.value = withTiming(1);
             } else {
-                headerTitleSharedValue.value = withSpring(0, { stiffness: 120, damping: 25 });
+                headerTitleSharedValue.value = withTiming(0);
             }
         }
     });
+
+    const searchBarPressHandler = () => {
+        searchBarRef.current?.measure((x, y, width, height, pageX, pageY) => {
+            searchBarOpacity.value = withTiming(0, { duration: 100 });
+
+            const searchBarSpecs = { pageX, pageY };
+            navigation.navigate('search', { data: events, searchBarSpecs });
+        });
+    };
 
     const renderLayoutSFSymbol = name => (
         <SFSymbol
@@ -127,12 +136,17 @@ const EventsListContainer = () => {
         };
     }, [titleWidth]);
     const searchBarContainerAnimatedStyles = useAnimatedStyle(() => ({
-        opacity: interpolate(scrollY.value, [0, headerHeight / 2], [1, 0], Extrapolate.CLAMP),
+        // opacity: interpolate(scrollY.value, [0, headerHeight / 2], [1, 0], Extrapolate.CLAMP),
         transform: [
             { scale: interpolate(scrollY.value, [0, headerHeight], [1, 0.9], Extrapolate.CLAMP) },
             { translateY: interpolate(scrollY.value, [0, headerHeight], [0, headerHeight], Extrapolate.CLAMP) },
-        ]
+        ],
+        opacity: searchBarOpacity.value
     }));
+
+    useFocusEffect(() => {
+        searchBarOpacity.value = withTiming(1, { duration: 100 });
+    });
 
     // useEffect(() => {
     //     (async () => {
@@ -165,23 +179,15 @@ const EventsListContainer = () => {
             ),
             headerBackground: () => (
                 <View style={{ width: '100%', height: '100%' }}>
-                    <AnimatedBlurView intensity={40} style={[StyleSheet.absoluteFillObject, headerAnimatedStyles]}>
-                        <View style={[StyleSheet.absoluteFillObject, { backgroundColor: theme.dark ? 'rgba(0, 0, 0, .6)' : 'rgba(255, 255, 255, .6)' }]} />
+                    <AnimatedBlurView intensity={60} style={[StyleSheet.absoluteFillObject, headerAnimatedStyles]}>
+                        <View style={[StyleSheet.absoluteFillObject, { backgroundColor: theme.dark ? 'rgba(0, 0, 0, .8)' : 'rgba(255, 255, 255, .8)' }]} />
                     </AnimatedBlurView>
                 </View>
             )
         });
     }, [navigation, eventsListAppearence]);
-    useEffect(() => {
-        if(!_.isEqual(prevEventsSearchRef.current.map(({ title }) => title), eventsSearch.map(({ title }) => title)) && eventsSearch?.length)
-            sharedValue.value = withSequence(withTiming(0, { duration: 100 }), withTiming(1));
-        if(!eventsSearch?.length)
-            sharedValue.value = withTiming(0, { duration: 200 });
-        prevEventsSearchRef.current = eventsSearch;
-    }, [eventsSearch]);
 
     const eventsListContainerAnimatedStyles = useAnimatedStyle(() => ({
-        opacity: sharedValue.value,
         paddingBottom: headerHeight + insets.bottom
     }));
     const eventsListAnimatedStyles = useAnimatedStyle(() => ({
@@ -190,7 +196,7 @@ const EventsListContainer = () => {
     }));
 
     const EventsListScreenProps = {
-        events: [...eventsSearch].reverse(),
+        events: [...events].reverse(),
         appearence: eventsListAppearence,
         scrollViewRef: scrollViewAnimatedRef,
         scrollViewStyle: eventsListAnimatedStyles,
@@ -203,13 +209,15 @@ const EventsListContainer = () => {
         <View>
             <EventsListScreen { ...EventsListScreenProps }>
                 <Animated.View style={searchBarContainerAnimatedStyles}>
-                    <View>
+                    <Pressable onPress={searchBarPressHandler} ref={searchBarRef}>
                         <SearchBar
                             placeholder='Search'
                             hideBackground={true}
-                            onChangeText={setEventsSearchValue}
+                            editable={false}
+                            // showsCancelButtonWhileEditing={false}
+                            // onChangeText={setEventsSearchValue}
                         />
-                    </View>
+                    </Pressable>
                 </Animated.View>
             </EventsListScreen>
         </View>

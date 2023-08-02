@@ -1,4 +1,4 @@
-import React, { createRef, useRef, useState } from 'react';
+import React, { createRef, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useRoute, useTheme } from '@react-navigation/native';
@@ -25,17 +25,13 @@ const EventScreen = () => {
     const imagePan = createRef();
     const imageTap = createRef();
 
-    const [isImageLoading, setIsImageLoading] = useState(true);
-
     const { event, imageSpecs, isTitleEditable } = route.params;
     const {
-        animatedHeaderStyles, animatedEventContainerStyles,
-        animatedImageStyles, animatedTimerStyles,
+        animatedHeaderStyles, animatedHeaderContentStyles,
+        animatedEventContainerStyles, animatedImageStyles, animatedTimerStyles,
         animatedBlurredTimerStyles, pressHeaderAnimationStyles,
-        panGestureEventHandler, tapGestureActiveHandler, closeHandler,
-        onLayout,
-
-        animatedContainerStyles, clipContainerAnimatedStyles
+        animatedContainerStyles, clipContainerAnimatedStyles,
+        panGestureEventHandler, tapGestureActiveHandler, closeHandler
     } = useImageSharedElement(imageSpecs);
 
     const shareHandler = async () => {
@@ -56,11 +52,6 @@ const EventScreen = () => {
 
     const titleBlurHandler = ({ nativeEvent }) => dispatch(updateEvent({ ...event, title: nativeEvent.text }));
 
-    const imageLoadHandler = isImageLoading ? () => {
-        setIsImageLoading(false);
-        onLayout();
-    } : () => {};
-
     return (
         <View style={styles.container}>
             <Animated.View style={clipContainerAnimatedStyles}>
@@ -69,12 +60,7 @@ const EventScreen = () => {
                         <Animated.View style={animatedEventContainerStyles}>
                             <TapGestureHandler ref={imageTap} simultaneousHandlers={imagePan} onActivated={tapGestureActiveHandler}>
                                 <Animated.View style={animatedImageStyles}>
-                                    <FastImage
-                                        source={event.image}
-                                        style={styles.image}
-                                        resizeMode='cover'
-                                        onLoad={imageLoadHandler}
-                                    />
+                                    <FastImage source={event.image} style={styles.image} resizeMode='cover' />
                                 </Animated.View>
                             </TapGestureHandler>
                             <Timer
@@ -108,16 +94,13 @@ const EventScreen = () => {
                             <HeaderButton onPress={shareHandler}>
                                 <SFSymbol
                                     name='square.and.arrow.up'
-                                    // weight='heavy'
-                                    // scale='medium'
-                                    // color=''
                                     size={20}
                                     resizeMode='center'
-                                    // multicolor={false}
                                     style={{ width: 32, height: 32 }}
                                 />
                             </HeaderButton>
                         )}
+                        contentStyle={animatedHeaderContentStyles}
                     />
                 </Animated.View>
             </Animated.View>

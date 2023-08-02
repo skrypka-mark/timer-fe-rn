@@ -1,20 +1,20 @@
 import React from 'react';
-import { View, Animated } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { useHeaderHeight } from '../../hooks/useHeaderHeight';
 import { BlurView } from '@react-native-community/blur';
 import { styles } from './EventHeaderBackground.styles';
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
-const EventHeaderBackground = ({ style, leftButton, rightButton }) => {
+const EventHeaderBackground = ({ leftButton, rightButton, contentStyle, style }) => {
     const headerHeight = useHeaderHeight();
 
     return (
         <AnimatedBlurView style={[styles.header, style, { height: headerHeight }]} blurType='regular'>
-            <View style={styles.headerWrapper}>
+            <Animated.View style={[styles.headerWrapper, contentStyle]}>
                 { leftButton && leftButton() }
                 { rightButton && rightButton() }
-            </View>
+            </Animated.View>
         </AnimatedBlurView>
     );
 };

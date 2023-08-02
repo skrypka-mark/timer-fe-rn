@@ -8,6 +8,7 @@ import EditEventTimerScreen from '../screens/EditEventTimerScreen';
 import EditSettingsRowScreen from '../screens/EditSettingsRowScreen';
 import EditEventScreen from '../screens/EditEventScreen';
 import BuiltInEventsListScreen from '../screens/BuiltInEventsListScreen';
+import SearchScreen from '../screens/SearchScreen';
 
 const NativeStack = createNativeStackNavigator();
 
@@ -137,6 +138,18 @@ const AppNavigation = () => {
                     // headerTitleStyle: { fontSize: fontSizes.font18, fontWeight: fontWeights.bold },
                 }}
                 component={EditEventScreen}
+            />
+            <NativeStack.Screen
+                name='search'
+                options={{
+                    title: null,
+                    contentStyle: { backgroundColor: 'transparent' },
+                    presentation: 'transparentModal',
+                    animation: 'fade',
+                    headerTransparent: true,
+                    headerShown: false
+                }}
+                component={SearchScreen}
             />
         </NativeStack.Navigator>
     );

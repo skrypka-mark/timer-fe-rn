@@ -21,15 +21,15 @@ const initialState = {
         id: undefined,
         title: '',
         timer: {
-            date: null,
-            time: null,
+            date: JSON.stringify(new Date()),
+            time: JSON.stringify(new Date()),
             repeat: {
                 amount: repeatPickerValues.amounts[0],
                 label: repeatPickerValues.labels[2]
             },
             // time: { days: null, hours: null, minutes: null, seconds: null },
             fontFamily: fontFamilies[0],
-            fontColor: '',
+            fontColor: '#000',
             backgroundColor: '',
             backgroundOpacity: 0.1,
             displayUnits: {
@@ -557,7 +557,7 @@ const eventsSlice = createSlice({
                 createdAt: ''
             },
         ],
-        emptyEvent: {},
+        emptyEvent: initialState.emptyEvent,
         openEventId: null,
         eventsListAppearence: listAppearences.DETAIL
     },
@@ -567,11 +567,7 @@ const eventsSlice = createSlice({
             state.events = [...state.events, payload];
         },
         addEmptyEvent: (state, { payload }) => {
-            if(payload) {
-                state.emptyEvent = payload;
-                return;
-            }
-            state.emptyEvent = initialState.emptyEvent;
+            state.emptyEvent = payload;
         },
         editEvent: (state, { payload }) => {
             const eventToEdit = state.emptyEvent;

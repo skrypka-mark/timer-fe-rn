@@ -19,7 +19,7 @@ const NewEventContainer = () => {
 
     const { emptyEvent: newEvent } = useSelector(eventsSelector);
     const [error, setError] = useState({ message: '' });
-    const [isPreventRemove, setIsPreventRemove] = useState(true);
+    // const [isPreventRemove, setIsPreventRemove] = useState(true);
     const scrollY = useSharedValue(0);
 
     const scrollHandler = useAnimatedScrollHandler(e => {
@@ -55,10 +55,10 @@ const NewEventContainer = () => {
     //     }
     // });
     useEffect(() => {
-        dispatch(addEmptyEvent());
+        // dispatch(addEmptyEvent());
 
-        dispatch(editEvent({ type: CHANGE_DATE, value: JSON.stringify(new Date()) }));
-        dispatch(editEvent({ type: CHANGE_TIME, value: JSON.stringify(new Date()) }));
+        // dispatch(editEvent({ type: CHANGE_DATE, value: JSON.stringify(new Date()) }));
+        // dispatch(editEvent({ type: CHANGE_TIME, value: JSON.stringify(new Date()) }));
         dispatch(editEvent({ type: CHANGE_FONT_COLOR, value: { fontColor: theme.colors.text } }));
 
         return () => {

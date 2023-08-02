@@ -47,7 +47,6 @@ const EventsListScreen = ({ events, appearence, scrollViewRef, scrollViewStyle, 
                 style={[eventsListContainerAnimatedStyles, style]}
                 share={shareHandler}
                 isTitleEditable
-                scrollHandler={scrollHandler}
             />
         </AnimatedScrollViewGestureHandler>
     );

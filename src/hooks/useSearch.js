@@ -1,15 +1,20 @@
-import { useEffect, useState, useReducer } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import _ from 'lodash';
 
 export const useSearch = (data, field) => {
     const [searchValue, setSearchValue] = useState('');
-    const [searchResult, setSearchResult] = useState(data);
+    const [searchResult, setSearchResult] = useState([]);
+    const prevSearchResult = useRef([]);
+
+    const resetSearchResult = () => {
+        setSearchResult([]);
+    };
 
     useEffect(() => {
-        setSearchResult(data?.filter(item => item[field]?.slice(0, searchValue.length)?.toUpperCase() === searchValue.toUpperCase()));
+        const result = data?.filter(item => item[field]?.slice(0, searchValue.length)?.toUpperCase() === searchValue.toUpperCase());
+        setSearchResult(_.isEqual(result, data) ? prevSearchResult.current : result);
+        prevSearchResult.current = result;
     }, [searchValue]);
-    useEffect(() => {
-        setSearchResult(data);
-    }, [data]);
 
-    return [searchResult, setSearchValue];
+    return [searchResult, setSearchValue, { searchValue, resetSearchResult }];
 };
