@@ -17,7 +17,7 @@ import EditTimerBottomBar from '../../components/EditTimerBottomBar';
 import FontPicker from './components/FontPicker';
 import SliderPicker from './components/SliderPicker';
 import ColorPicker from './components/ColorPicker';
-import { convertColorWithAlpha } from '../../utils/convertColorWithAlpha';
+import { convertColorWithAlpha } from '../../helpers/utils/convertColorWithAlpha';
 import {
     CHANGE_FONT_FAMILY, CHANGE_FONT_COLOR,
     CHANGE_BACKGROUND_COLOR, CHANGE_BACKGROUND_OPACITY

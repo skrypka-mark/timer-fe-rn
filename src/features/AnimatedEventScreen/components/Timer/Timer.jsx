@@ -4,7 +4,7 @@ import { useTheme } from '@react-navigation/native';
 import Animated from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
 import TimerUnits from '../../../../components/TimerUnits';
-import { convertColorWithAlpha } from '../../../../utils/convertColorWithAlpha';
+import { convertColorWithAlpha } from '../../../../helpers/utils/convertColorWithAlpha';
 import { fontSizes } from '../../../../theme/fonts';
 import { styles } from './Timer.styles';
 

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getRandomId } from '../../utils/getRandomId';
+import { getRandomId, convertColorWithAlpha } from '../../helpers/utils';
 import { firebaseStorageURL } from '../../lib/firebase/config';
 import {
     EDIT_EVENT, EDIT_EMPTY_EVENT,
@@ -29,9 +29,9 @@ const initialState = {
             },
             // time: { days: null, hours: null, minutes: null, seconds: null },
             fontFamily: fontFamilies[0],
-            fontColor: '#000',
-            backgroundColor: '',
-            backgroundOpacity: 0.1,
+            fontColor: '#fff',
+            backgroundColor: convertColorWithAlpha('#000', 0.6),
+            backgroundOpacity: 0.6,
             displayUnits: {
                 years: false,
                 months: false,
@@ -110,118 +110,6 @@ const eventsSlice = createSlice({
             },
             {
                 id: getRandomId(),
-                title: 'New Year',
-                timer: {
-                    date: JSON.stringify(new Date('2023-12-30')),
-                    time: JSON.stringify(new Date('2023-12-30T24:00:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[6],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(0, 0, 0, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}new-year.jpg?alt=media&token=d4987fff-b2be-463e-b6cb-58882e60c64a` },
-                notification: true,
-                createdAt: ''
-            },
-            {
-                id: getRandomId(),
-                title: 'New Year',
-                timer: {
-                    date: JSON.stringify(new Date('2023-12-30')),
-                    time: JSON.stringify(new Date('2023-12-30T24:00:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[6],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(0, 0, 0, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}new-year.jpg?alt=media&token=d4987fff-b2be-463e-b6cb-58882e60c64a` },
-                notification: true,
-                createdAt: ''
-            },
-            {
-                id: getRandomId(),
-                title: 'New Year',
-                timer: {
-                    date: JSON.stringify(new Date('2023-12-30')),
-                    time: JSON.stringify(new Date('2023-12-30T24:00:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[6],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(0, 0, 0, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}new-year.jpg?alt=media&token=d4987fff-b2be-463e-b6cb-58882e60c64a` },
-                notification: true,
-                createdAt: ''
-            },
-            {
-                id: getRandomId(),
-                title: 'New Year',
-                timer: {
-                    date: JSON.stringify(new Date('2023-12-30')),
-                    time: JSON.stringify(new Date('2023-12-30T24:00:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[6],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(0, 0, 0, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}new-year.jpg?alt=media&token=d4987fff-b2be-463e-b6cb-58882e60c64a` },
-                notification: true,
-                createdAt: ''
-            },
-            {
-                id: getRandomId(),
                 title: 'Halloween',
                 timer: {
                     date: JSON.stringify(new Date('2023-07-25')),
@@ -247,315 +135,7 @@ const eventsSlice = createSlice({
                 image: { uri: `${firebaseStorageURL}halloween.jpg?alt=media&token=99fb76e4-1cec-4601-a2c2-c61a5f50bc9a` },
                 notification: true,
                 createdAt: ''
-            },
-            {
-                id: getRandomId(),
-                title: 'Halloween',
-                timer: {
-                    date: JSON.stringify(new Date('2023-07-25')),
-                    time: JSON.stringify(new Date('2023-07-25T03:24:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[5],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(22, 252, 222, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}halloween.jpg?alt=media&token=99fb76e4-1cec-4601-a2c2-c61a5f50bc9a` },
-                notification: true,
-                createdAt: ''
-            },
-            {
-                id: getRandomId(),
-                title: 'Halloween',
-                timer: {
-                    date: JSON.stringify(new Date('2023-07-25')),
-                    time: JSON.stringify(new Date('2023-07-25T03:24:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[5],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(22, 252, 222, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}halloween.jpg?alt=media&token=99fb76e4-1cec-4601-a2c2-c61a5f50bc9a` },
-                notification: true,
-                createdAt: ''
-            },
-            {
-                id: getRandomId(),
-                title: 'Halloween',
-                timer: {
-                    date: JSON.stringify(new Date('2023-07-25')),
-                    time: JSON.stringify(new Date('2023-07-25T03:24:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[5],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(22, 252, 222, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}halloween.jpg?alt=media&token=99fb76e4-1cec-4601-a2c2-c61a5f50bc9a` },
-                notification: true,
-                createdAt: ''
-            },
-            {
-                id: getRandomId(),
-                title: 'Halloween',
-                timer: {
-                    date: JSON.stringify(new Date('2023-07-25')),
-                    time: JSON.stringify(new Date('2023-07-25T03:24:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[5],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(22, 252, 222, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}halloween.jpg?alt=media&token=99fb76e4-1cec-4601-a2c2-c61a5f50bc9a` },
-                notification: true,
-                createdAt: ''
-            },
-            {
-                id: getRandomId(),
-                title: 'Halloween',
-                timer: {
-                    date: JSON.stringify(new Date('2023-07-25')),
-                    time: JSON.stringify(new Date('2023-07-25T03:24:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[5],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(22, 252, 222, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}halloween.jpg?alt=media&token=99fb76e4-1cec-4601-a2c2-c61a5f50bc9a` },
-                notification: true,
-                createdAt: ''
-            },
-            {
-                id: getRandomId(),
-                title: 'Halloween',
-                timer: {
-                    date: JSON.stringify(new Date('2023-07-25')),
-                    time: JSON.stringify(new Date('2023-07-25T03:24:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[5],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(22, 252, 222, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}halloween.jpg?alt=media&token=99fb76e4-1cec-4601-a2c2-c61a5f50bc9a` },
-                notification: true,
-                createdAt: ''
-            },
-            {
-                id: getRandomId(),
-                title: 'Halloween',
-                timer: {
-                    date: JSON.stringify(new Date('2023-07-25')),
-                    time: JSON.stringify(new Date('2023-07-25T03:24:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[5],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(22, 252, 222, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}halloween.jpg?alt=media&token=99fb76e4-1cec-4601-a2c2-c61a5f50bc9a` },
-                notification: true,
-                createdAt: ''
-            },
-            {
-                id: getRandomId(),
-                title: 'Halloween',
-                timer: {
-                    date: JSON.stringify(new Date('2023-07-25')),
-                    time: JSON.stringify(new Date('2023-07-25T03:24:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[5],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(22, 252, 222, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}halloween.jpg?alt=media&token=99fb76e4-1cec-4601-a2c2-c61a5f50bc9a` },
-                notification: true,
-                createdAt: ''
-            },
-            {
-                id: getRandomId(),
-                title: 'Halloween',
-                timer: {
-                    date: JSON.stringify(new Date('2023-07-25')),
-                    time: JSON.stringify(new Date('2023-07-25T03:24:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[5],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(22, 252, 222, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}halloween.jpg?alt=media&token=99fb76e4-1cec-4601-a2c2-c61a5f50bc9a` },
-                notification: true,
-                createdAt: ''
-            },
-            {
-                id: getRandomId(),
-                title: 'Halloween',
-                timer: {
-                    date: JSON.stringify(new Date('2023-07-25')),
-                    time: JSON.stringify(new Date('2023-07-25T03:24:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[5],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(22, 252, 222, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}halloween.jpg?alt=media&token=99fb76e4-1cec-4601-a2c2-c61a5f50bc9a` },
-                notification: true,
-                createdAt: ''
-            },
-            {
-                id: getRandomId(),
-                title: 'Halloween',
-                timer: {
-                    date: JSON.stringify(new Date('2023-07-25')),
-                    time: JSON.stringify(new Date('2023-07-25T03:24:00')),
-                    repeat: {
-                        amount: repeatPickerValues.amounts[0],
-                        label: repeatPickerValues.labels[2]
-                    },
-                    fontFamily: fontFamilies[5],
-                    fontColor: '#fff',
-                    backgroundColor: 'rgba(22, 252, 222, .1)',
-                    backgroundOpacity: 0.1,
-                    displayUnits: {
-                        years: false,
-                        months: false,
-                        weeks: false,
-                        days: true,
-                        hours: true,
-                        minutes: true,
-                        seconds: true
-                    }
-                },
-                image: { uri: `${firebaseStorageURL}halloween.jpg?alt=media&token=99fb76e4-1cec-4601-a2c2-c61a5f50bc9a` },
-                notification: true,
-                createdAt: ''
-            },
+            }
         ],
         emptyEvent: initialState.emptyEvent,
         openEventId: null,
@@ -632,16 +212,17 @@ const eventsSlice = createSlice({
                 ...state.events.slice(eventToRemoveIndex + 1)
             ];
         },
-
-        saveEmptyEvent: (state, { payload }) => {
+        saveEvent: (state, { payload }) => {
             const { id } = payload;
             const eventToSaveIndex = state.events.findIndex(event => event.id === id);
             if(eventToSaveIndex !== -1) {
-                state.events[eventToSaveIndex] = state.emptyEvent;
+                state.events[eventToSaveIndex] = payload;
             } else {
-                state.events = [...state.events, state.emptyEvent];
+                payload.id = getRandomId();
+                state.events = [...state.events, payload];
             }
         },
+
         resetEmptyEvent: state => {
             state.emptyEvent = initialState.emptyEvent;
         },
@@ -670,7 +251,7 @@ export const {
     editEvent,
     updateEvent,
     removeEvent,
-    saveEmptyEvent,
+    saveEvent,
     resetEmptyEvent,
     setOpenEventId,
     resetOpenEventId,

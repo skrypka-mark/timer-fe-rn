@@ -1,19 +1,24 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import Animated from 'react-native-reanimated';
 import { ScrollView } from 'react-native-gesture-handler';
 import Share from 'react-native-share';
 import { captureRef } from 'react-native-view-shot';
-import { useKeyboardAwareStyles } from '../../hooks/useKeyboardAwareStyles';
 import EventsListDetail from '../../components/EventsListDetail';
 import EventsListRegular from '../../components/EventsListRegular';
 import { listAppearences } from '../../stores/events/events.reducer';
 
 const AnimatedScrollViewGestureHandler = Animated.createAnimatedComponent(ScrollView);
 
-const EventsListScreen = ({ events, appearence, scrollViewRef, scrollViewStyle, style, scrollHandler, children }) => {
-    const eventsListContainerAnimatedStyles = useKeyboardAwareStyles();
-
-    const ListComponent = appearence === listAppearences.REGULAR ? EventsListRegular : EventsListDetail;
+const EventsListScreen = ({
+    events,
+    appearence,
+    scrollViewRef,
+    scrollViewStyle,
+    offsetBottom,
+    scrollHandler,
+    children
+}) => {
+    const ListComponent = useMemo(() => appearence === listAppearences.REGULAR ? EventsListRegular : EventsListDetail, [appearence]);
 
     const shareHandler = async (title, ref) => {
         const url = await captureRef(ref, {
@@ -36,6 +41,7 @@ const EventsListScreen = ({ events, appearence, scrollViewRef, scrollViewStyle, 
     return (
         <AnimatedScrollViewGestureHandler
             style={scrollViewStyle}
+            contentContainerStyle={{ paddingBottom: offsetBottom }}
             ref={scrollViewRef}
             // contentInsetAdjustmentBehavior='scrollableAxes'
             scrollEventThrottle={16}
@@ -44,7 +50,6 @@ const EventsListScreen = ({ events, appearence, scrollViewRef, scrollViewStyle, 
             { children }
             <ListComponent
                 events={events}
-                style={[eventsListContainerAnimatedStyles, style]}
                 share={shareHandler}
                 isTitleEditable
             />

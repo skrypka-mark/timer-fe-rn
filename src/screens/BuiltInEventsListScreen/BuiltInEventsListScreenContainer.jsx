@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useMemo } from 'react';
-import { View } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme, useFocusEffect } from '@react-navigation/native';
 import { useHeaderHeight } from '@react-navigation/elements';
 import Animated, {
     useSharedValue,
@@ -19,7 +19,7 @@ import { useSearch } from '../../hooks/useSearch';
 import { eventsSelector } from '../../stores/events/events.selector';
 import BuiltInEventsListScreen from './BuiltInEventsListScreen';
 import HeaderBackground from '../../components/HeaderBackground';
-import { getRandomId } from '../../utils/getRandomId';
+import { getRandomId } from '../../helpers/utils/getRandomId';
 import { fontFamilies, repeatPickerValues } from '../../constants';
 
 const BuiltInEventsListScreenContainer = () => {
@@ -161,11 +161,15 @@ const BuiltInEventsListScreenContainer = () => {
     ], []);
 
     const { eventsListAppearence } = useSelector(eventsSelector);
+
     const prevBuiltinEventsSearchRef = useRef(events);
+    const searchBarRef = useRef(null);
+
     const [builtinEventsSearch, setBuiltinEventsSearchValue] = useSearch(events, 'title');
     const sharedValue = useSharedValue(1);
     const scrollY = useSharedValue(0);
     const searchBarSharedValue = useSharedValue(0);
+    const searchBarOpacity = useSharedValue(1);
 
     const scrollHandler = useAnimatedScrollHandler(e => {
         // console.log('====================================');
@@ -175,8 +179,17 @@ const BuiltInEventsListScreenContainer = () => {
         searchBarSharedValue.value = e.contentOffset.y;
     });
 
+    const searchBarPressHandler = () => {
+        searchBarRef.current?.measure((x, y, width, height, pageX, pageY) => {
+            searchBarOpacity.value = withTiming(0, { duration: 300 });
+
+            const searchBarSpecs = { pageX, pageY };
+            navigation.navigate('search', { data: events, searchBarSpecs });
+        });
+    };
+
     const searchBarContainerAnimatedStyles = useAnimatedStyle(() => ({
-        // opacity: interpolate(searchBarSharedValue.value, [-headerHeight, -headerHeight / 3], [1, 0], Extrapolate.CLAMP),
+        opacity: searchBarOpacity.value,
         // transform: [{ scale: interpolate(searchBarSharedValue.value, [-headerHeight, -headerHeight / 2], [1, 0.9], Extrapolate.CLAMP) }],
 
         // opacity: interpolate(searchBarSharedValue.value, [-headerHeight, -headerHeight / 3], [1, 0], Extrapolate.CLAMP),
@@ -186,6 +199,9 @@ const BuiltInEventsListScreenContainer = () => {
         // ]
     }));
 
+    useFocusEffect(() => {
+        searchBarOpacity.value = withTiming(1, { duration: 300 });
+    });
     useLayoutEffect(() => {
         navigation.setOptions({
             // headerSearchBarOptions: {
@@ -206,20 +222,20 @@ const BuiltInEventsListScreenContainer = () => {
             )
         });
     }, [navigation]);
-    useEffect(() => {
-        if(!_.isEqual(prevBuiltinEventsSearchRef.current.map(({ title }) => title), builtinEventsSearch.map(({ title }) => title)) && builtinEventsSearch?.length)
-            sharedValue.value = withSequence(withTiming(0, { duration: 100 }), withTiming(1));
-        if(!builtinEventsSearch?.length)
-            sharedValue.value = withTiming(0, { duration: 200 });
-        prevBuiltinEventsSearchRef.current = builtinEventsSearch;
-    }, [builtinEventsSearch]);
+    // useEffect(() => {
+    //     if(!_.isEqual(prevBuiltinEventsSearchRef.current.map(({ title }) => title), builtinEventsSearch.map(({ title }) => title)) && builtinEventsSearch?.length)
+    //         sharedValue.value = withSequence(withTiming(0, { duration: 100 }), withTiming(1));
+    //     if(!builtinEventsSearch?.length)
+    //         sharedValue.value = withTiming(0, { duration: 200 });
+    //     prevBuiltinEventsSearchRef.current = builtinEventsSearch;
+    // }, [builtinEventsSearch]);
 
     const eventsListContainerAnimatedStyles = useAnimatedStyle(() => ({
         opacity: sharedValue.value
     }));
 
     const BuiltInEventsListScreenProps = {
-        events: builtinEventsSearch,
+        events,
         appearence: eventsListAppearence,
         style: eventsListContainerAnimatedStyles,
         scrollHandler
@@ -227,11 +243,9 @@ const BuiltInEventsListScreenContainer = () => {
     return (
         <BuiltInEventsListScreen { ...BuiltInEventsListScreenProps }>
             <Animated.View style={searchBarContainerAnimatedStyles}>
-                <SearchBar
-                    placeholder='Search'
-                    hideBackground={true}
-                    onChangeText={setBuiltinEventsSearchValue}
-                />
+                <Pressable onPress={searchBarPressHandler} onLongPress={searchBarPressHandler} ref={searchBarRef}>
+                    <SearchBar hideBackground={true} editable={false} />
+                </Pressable>
             </Animated.View>
         </BuiltInEventsListScreen>
     );

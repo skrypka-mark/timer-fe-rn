@@ -1,13 +1,17 @@
 import React, { memo } from 'react';
 import { View, Text } from 'react-native';
+import { ReText } from 'react-native-redash';
 import { styles } from './TimerUnits.styles';
 
 const TimerUnit = ({ value, unit, short, style, unitStyle, color }) => {
     if(short) return (
         <View style={{ flexDirection: 'row' }}>
-            <Text style={[styles.timerText, style, color && { color }]} adjustsFontSizeToFit numberOfLines={1}>
-                { value }
-            </Text>
+            <ReText
+                style={[styles.timerText, style, color && { color }]}
+                text={value}
+                adjustsFontSizeToFit
+                numberOfLines={1}
+            />
             <Text style={[styles.timerText, style, color && { color }, unitStyle]} adjustsFontSizeToFit numberOfLines={1}>
                 { unit }
             </Text>
@@ -15,9 +19,12 @@ const TimerUnit = ({ value, unit, short, style, unitStyle, color }) => {
     );
     return (
         <View style={styles.timerTextBox}>
-            <Text style={[styles.timerText, style, color ? { color } : {}]} adjustsFontSizeToFit numberOfLines={1}>
-                { value }
-            </Text>
+            <ReText
+                style={[styles.timerText, style, color ? { color } : {}]}
+                text={value}
+                adjustsFontSizeToFit
+                numberOfLines={1}
+            />
             <Text style={[styles.timerUnitText, style, color ? { color } : {}]} adjustsFontSizeToFit numberOfLines={1}>
                 { unit }
             </Text>

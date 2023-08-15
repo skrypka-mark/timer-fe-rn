@@ -7,6 +7,7 @@ import { SFSymbol } from 'react-native-sfsymbols';
 import FastImage from 'react-native-fast-image';
 import Timer from '../../features/AnimatedEventScreen/components/Timer';
 import SharableEventShot from '../SharableEventShot';
+import { getCountdownTime } from '../../helpers/utils';
 import { eventContextMenuItems } from '../../constants';
 import { SCREEN_PADDING } from '../../theme';
 import { styles } from './EventsListItemRegular.styles';
@@ -76,7 +77,7 @@ const EventsListItemRegular = ({ event, share, isContextMenuEnabled, isTitleEdit
                     JSON.stringify({
                         title: event?.title ?? '',
                         // date: 'LL LTS',
-                        timer: useCountdownTimer(event?.timer).duration.toString(),
+                        timer: getCountdownTime(event?.timer).duration.toString(),
                         image: event?.image?.uri ?? ''
                     }),
                     status => console.log(status)
@@ -148,16 +149,14 @@ const EventsListItemRegular = ({ event, share, isContextMenuEnabled, isTitleEdit
                             onMenuWillShow={() => setIsContextButtonMenuOpen(true)}
                             onMenuWillHide={() => setIsContextButtonMenuOpen(false)}
                         >
-                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-                                <SFSymbol
-                                    name='ellipsis'
-                                    scale='medium'
-                                    size={16}
-                                    resizeMode='center'
-                                    color={isContextButtonMenuOpen ? theme.colors.textSecondary : theme.colors.text}
-                                    style={{ width: 16, height: 16 }}
-                                />
-                            </View>
+                            <SFSymbol
+                                name='ellipsis'
+                                scale='medium'
+                                size={16}
+                                resizeMode='center'
+                                color={isContextButtonMenuOpen ? theme.colors.textSecondary : theme.colors.text}
+                                style={{ width: 16, height: 16 }}
+                            />
                         </ContextMenuButton>
                     </View>
                 </ContextMenuView>

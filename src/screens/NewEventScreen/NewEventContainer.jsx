@@ -1,15 +1,15 @@
-import React, { useEffect, useLayoutEffect, useState, useRef } from 'react';
-import { Alert } from 'react-native';
+import React, { useEffect, useLayoutEffect, useState, useRef, useCallback } from 'react';
+import { Alert, InteractionManager } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation, useTheme, UNSTABLE_usePreventRemove, usePreventRemoveContext } from '@react-navigation/native';
+import { useNavigation, useTheme, useFocusEffect, UNSTABLE_usePreventRemove, usePreventRemoveContext } from '@react-navigation/native';
 import { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import moment from 'moment';
 // import { editNewEvent, saveNewEvent, setNewEvent, resetNewEvent } from '../../stores/new-event/new-event.reducer';
-import { addEmptyEvent, editEvent, saveEmptyEvent, resetEmptyEvent } from '../../stores/events/events.reducer';
+import { addEmptyEvent, editEvent, saveEvent, resetEmptyEvent } from '../../stores/events/events.reducer';
 import { eventsSelector } from '../../stores/events/events.selector';
 import HeaderBackground from '../../components/HeaderBackground';
 import NewEventScreen from './NewEventScreen';
-import { convertColorWithAlpha } from '../../utils/convertColorWithAlpha';
+import { convertColorWithAlpha } from '../../helpers/utils/convertColorWithAlpha';
 import { CHANGE_DATE, CHANGE_TIME, CHANGE_BACKGROUND_COLOR, CHANGE_FONT_COLOR } from '../../constants';
 
 const NewEventContainer = () => {
@@ -25,6 +25,17 @@ const NewEventContainer = () => {
     const scrollHandler = useAnimatedScrollHandler(e => {
         scrollY.value = e.contentOffset.y;
     });
+
+    const saveNewEventHandler = event => {
+        if(!event.title) return setError({ message: 'Name must be specified' });
+
+        navigation.goBack();
+
+        InteractionManager.runAfterInteractions(() => {
+            event.createdAt = moment().format('DD-MM-YYYY');
+            dispatch(saveEvent(event));
+        });
+    };
     
     // usePreventRemoveContext();
     // UNSTABLE_usePreventRemove(isPreventRemove, ({ data }) => {
@@ -59,20 +70,32 @@ const NewEventContainer = () => {
 
         // dispatch(editEvent({ type: CHANGE_DATE, value: JSON.stringify(new Date()) }));
         // dispatch(editEvent({ type: CHANGE_TIME, value: JSON.stringify(new Date()) }));
-        dispatch(editEvent({ type: CHANGE_FONT_COLOR, value: { fontColor: theme.colors.text } }));
-
-        return () => {
-            dispatch(resetEmptyEvent());
-        };
     }, []);
+    useFocusEffect(
+        useCallback(() => {
+            const task = InteractionManager.runAfterInteractions(() => {
+                dispatch(resetEmptyEvent());
+            });
+
+            return () => task.cancel();
+        }, [])
+    );
     useEffect(() => {
-        dispatch(editEvent({
-            type: CHANGE_BACKGROUND_COLOR,
-            value: {
-                backgroundColor: convertColorWithAlpha(theme.colors.background, newEvent?.timer?.backgroundOpacity)
-            }
-        }));
-    }, [newEvent]);
+        // if(!newEvent) return;
+
+        // dispatch(editEvent({ type: CHANGE_FONT_COLOR, value: { fontColor: theme.colors.text } }));
+
+        // dispatch(editEvent({
+        //     type: CHANGE_BACKGROUND_COLOR,
+        //     value: {
+        //         backgroundColor: convertColorWithAlpha(theme.colors.background, newEvent?.timer?.backgroundOpacity)
+        //     }
+        // }));
+
+        // return () => {
+        //     dispatch(resetEmptyEvent());
+        // };
+    }, []);
     useEffect(() => {
         if(error.message) {
             Alert.alert('Error', error.message);
@@ -104,14 +127,6 @@ const NewEventContainer = () => {
             )
         });
     }, [navigation, newEvent]);
-
-    const saveNewEventHandler = event => {
-        if(!event.title) return setError({ message: 'Name must be specified' });
-
-        event.createdAt = moment().format('DD-MM-YYYY');
-        dispatch(saveEmptyEvent(event));
-        navigation.goBack();
-    };
 
     const NewEventScreenProps = { newEvent, scrollHandler };
     return <NewEventScreen { ...NewEventScreenProps } />;

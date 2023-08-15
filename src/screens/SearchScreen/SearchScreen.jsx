@@ -19,8 +19,9 @@ const SearchScreen = ({
     wrapperStyles,
     blurViewStyles,
     searchBarStyles,
-    scrollViewRef,
+    searchBarRef,
     scrollViewStyle,
+    scrollViewWrapperStyle,
     scrollHandler,
     cancelButtonPress,
     searchChangeHandler,
@@ -31,17 +32,11 @@ const SearchScreen = ({
     const insets = useSafeAreaInsets();
     const eventsListContainerAnimatedStyles = useKeyboardAwareStyles(insets.bottom * 4);
 
-    const searchBarRef = useRef(null);
-
-    useEffect(() => {
-        searchBarRef.current?.focus();
-    }, []);
-
-    const backdropPressHandler = () => {
-        cancelButtonPress();
-        searchBarRef.current?.clearText();
-        searchBarRef.current?.blur();
-    };
+    // const backdropPressHandler = () => {
+    //     cancelButtonPress();
+    //     searchBarRef.current?.clearText();
+    //     searchBarRef.current?.blur();
+    // };
 
     return (
         <PanGestureHandler onGestureEvent={panGestureEventHandler}>
@@ -53,8 +48,10 @@ const SearchScreen = ({
                     <Animated.View style={searchBarStyles}>
                         <Pressable onPress={searchBarPressHandler}>
                             <SearchBar
-                                placeholder='Search'
                                 hideBackground={true}
+                                // barStyle='black'
+                                // textFieldBackgroundColor='black'
+                                // searchBarStyle='prominent'
                                 ref={searchBarRef}
                                 onChangeText={searchChangeHandler}
                                 onCancelButtonPress={cancelButtonPress}
@@ -70,12 +67,12 @@ const SearchScreen = ({
                             showsVerticalScrollIndicator={false}
                             onScroll={scrollHandler}
                         >
-                            {/* <Animated.View style={{ paddingBottom: insets.bottom * 4 }}> */}
+                            <Animated.View style={scrollViewWrapperStyle}>
                                 <EventsListRegular
                                     events={searchResult}
                                     style={eventsListContainerAnimatedStyles}
                                 />
-                            {/* </Animated.View> */}
+                            </Animated.View>
                         </AnimatedScrollViewGestureHandler>
                     {/* </AnimatedPressable> */}
                 </Animated.View>

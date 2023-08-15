@@ -14,24 +14,22 @@ export const styles = StyleSheet.create({
     },
     image: {
         width: 53,
-        height: 53,
-        borderRadius: 5
+        height: 53
     },
     textContainer: {
         flexDirection: 'column',
         gap: 2,
-        marginLeft: 15
+        marginLeft: 16
     },
     title: {
-        fontWeight: fontWeights.low,
-        fontSize: fontSizes.font14
+        fontSize: fontSizes.font16,
+        fontWeight: fontWeights.low
     },
     timer: {
-        // width: '100%',
         gap: 8
     },
     timerText: {
-        fontSize: fontSizes.font14,
+        fontSize: fontSizes.font12,
         fontWeight: fontWeights.normal
     },
 

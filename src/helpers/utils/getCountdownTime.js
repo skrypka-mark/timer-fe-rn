@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const useCountdownTimer = timer => {
+export const getCountdownTime = timer => {
     const displayUnits = timer?.displayUnits;
     const eventDate = timer?.date ? moment(JSON.parse(timer.date)) : moment();
     const eventTime = timer?.time ? moment(JSON.parse(timer.time)) : moment();

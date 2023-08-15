@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@react-navigation/native';
 import Animated from 'react-native-reanimated';
@@ -52,4 +52,4 @@ const EventsListDetail = ({ events, style, share, isContextMenuEnabled = true, i
     );
 };
 
-export default EventsListDetail;
+export default memo(EventsListDetail);

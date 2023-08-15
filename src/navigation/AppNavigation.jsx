@@ -147,7 +147,8 @@ const AppNavigation = () => {
                     presentation: 'transparentModal',
                     animation: 'fade',
                     headerTransparent: true,
-                    headerShown: false
+                    headerShown: false,
+                    freezeOnBlur: true
                 }}
                 component={SearchScreen}
             />

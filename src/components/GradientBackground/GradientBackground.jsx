@@ -11,11 +11,11 @@ const GradientBackground = () => {
 
     const blueTranslateX = animatedValue.interpolate({
         inputRange: [0, 1],
-        outputRange: [0, 200]
+        outputRange: [0, 121]
     });
     const blueTranslateY = animatedValue.interpolate({
         inputRange: [0, .3, .6, .8, .9, 1],
-        outputRange: [0, -60, -30, 10, -20, -40]
+        outputRange: [0, -12, -18, 10, -21, -12]
     });
     // const blueAnimatedStyles = useAnimatedStyle(() => ({
     //     transform: [
@@ -24,23 +24,23 @@ const GradientBackground = () => {
     //     ]
     // }));
 
-    const yellowTranslateX = animatedValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, -100]
-    });
-    const yellowTranslateY = animatedValue.interpolate({
-        inputRange: [0, .3, .6, 1],
-        outputRange: [0, 20, 30, 10]
-    });
+    // const yellowTranslateX = animatedValue.interpolate({
+    //     inputRange: [0, 1],
+    //     outputRange: [0, -100]
+    // });
+    // const yellowTranslateY = animatedValue.interpolate({
+    //     inputRange: [0, .3, .6, 1],
+    //     outputRange: [0, 20, 30, 10]
+    // });
     
-    const orangeTranslateX = animatedValue.interpolate({
-        inputRange: [0, .6, 1],
-        outputRange: [0, 10, -20]
-    });
-    const orangeTranslateY = animatedValue.interpolate({
-        inputRange: [0, .3, .5, .8, 1],
-        outputRange: [0, 10, 30, 5, -10]
-    });
+    // const orangeTranslateX = animatedValue.interpolate({
+    //     inputRange: [0, .6, 1],
+    //     outputRange: [0, 10, -20]
+    // });
+    // const orangeTranslateY = animatedValue.interpolate({
+    //     inputRange: [0, .3, .5, .8, 1],
+    //     outputRange: [0, 10, 30, 5, -10]
+    // });
 
     const pinkTranslateX = animatedValue.interpolate({
         inputRange: [0, .2, .4, .5, .7, 1],
@@ -54,19 +54,19 @@ const GradientBackground = () => {
     const ellipses = [
         {
             image: require('../../assets/bg-ellipses/blue.png'),
-            style: { bottom: -45, left: -30, width: 140, height: 310, transform: [{ translateX: blueTranslateX }, { translateY: blueTranslateY }] }
+            style: { bottom: -45, left: -30, width: 139, height: 311, transform: [{ translateX: blueTranslateX }, { translateY: blueTranslateY }] }
         },
-        {
-            image: require('../../assets/bg-ellipses/yellow.png'),
-            style: { top: -30, right: -25, width: 140, height: 310, transform: [{ translateX: yellowTranslateX }, { translateY: yellowTranslateY }] }
-        },
-        {
-            image: require('../../assets/bg-ellipses/orange.png'),
-            style: { top: -22, left: 165, width: 110, height: 180, transform: [{ translateX: orangeTranslateX }, { translateY: orangeTranslateY }] }
-        },
+        // {
+        //     image: require('../../assets/bg-ellipses/yellow.png'),
+        //     style: { top: -30, right: -25, width: 140, height: 310, transform: [{ translateX: yellowTranslateX }, { translateY: yellowTranslateY }] }
+        // },
+        // {
+        //     image: require('../../assets/bg-ellipses/orange.png'),
+        //     style: { top: -22, left: 165, width: 110, height: 180, transform: [{ translateX: orangeTranslateX }, { translateY: orangeTranslateY }] }
+        // },
         {
             image: require('../../assets/bg-ellipses/pink.png'),
-            style: { top: 170, right: 0, width: 121, height: 255, transform: [{ translateX: pinkTranslateX }, { translateY: pinkTranslateY }] }
+            style: { top: -80, right: -25, width: 158, height: 255, transform: [{ translateX: pinkTranslateX }, { translateY: pinkTranslateY }] }
         }
     ];
 
@@ -110,6 +110,7 @@ const GradientBackground = () => {
                 StyleSheet.absoluteFillObject,
                 // { backgroundColor: theme.dark ? '#09061A' : 'white' }
             ]}
+            pointerEvents='none'
         >
             { ellipses.map(ellipse => renderEllipse(ellipse)) }
         </View>

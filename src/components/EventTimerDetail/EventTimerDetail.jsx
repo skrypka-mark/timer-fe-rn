@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import Animated from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
-import { useCountdownTimer } from '../../../../hooks/useCountdownTimer';
+import { getCountdownTime } from '../../../../helpers/utils';
 import TimerUnits from '../../../../components/TimerUnits';
 import { styles } from './Timer.styles';
 
@@ -20,11 +20,11 @@ const EventTimerDetail = ({
 }) => {
     const theme = useTheme();
 
-    const [timerData, setTimerData] = useState(useCountdownTimer(timer).timeLeft);
+    const [timerData, setTimerData] = useState(getCountdownTime(timer).timeLeft);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            const { timeLeft, duration } = useCountdownTimer(timer);
+            const { timeLeft, duration } = getCountdownTime(timer);
 
             if(duration <= 0) return clearInterval(interval);
 

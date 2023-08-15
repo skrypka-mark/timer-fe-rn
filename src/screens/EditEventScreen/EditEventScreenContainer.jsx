@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation, useRoute, useTheme } from '@react-navigation/native';
 import { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
-import { addEmptyEvent, editEvent, saveEmptyEvent, resetEmptyEvent } from '../../stores/events/events.reducer';
+import { addEmptyEvent, editEvent, saveEvent, resetEmptyEvent } from '../../stores/events/events.reducer';
 import { eventsSelector } from '../../stores/events/events.selector';
 import EditEventScreen from './EditEventScreen';
 import HeaderBackground from '../../components/HeaderBackground';
@@ -27,7 +27,7 @@ const EditEventScreenContainer = () => {
     const saveEventHandler = event => {
         if(!event.title) return setError({ message: 'Name must be specified' });
 
-        dispatch(saveEmptyEvent(event));
+        dispatch(saveEvent(event));
         navigation.goBack();
     };
     

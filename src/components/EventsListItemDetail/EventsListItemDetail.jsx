@@ -4,7 +4,7 @@ import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import Animated, { interpolate, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { ContextMenuView } from 'react-native-ios-context-menu';
-import { useCountdownTimer } from '../../hooks/useCountdownTimer';
+import { getCountdownTime } from '../../helpers/utils';
 import FastImage from 'react-native-fast-image';
 import Timer from '../../features/AnimatedEventScreen/components/Timer';
 import SharableEventShot from '../SharableEventShot';
@@ -23,10 +23,8 @@ const EventsListItemDetail = ({ event, share, remove, isContextMenuEnabled, isTi
 
     const eventRef = useRef(null);
     const imageRef = useRef(null);
-    // const animatedValue = useRef(new Animated.Value(1)).current;
     const animatedValue = useSharedValue(0);
     const opacityAnimatedValue = useSharedValue(1);
-    // const [activeTimerId, setActiveTimerId] = useState(null);
 
     useEffect(() => {
         if(isScreenFocused) {
@@ -41,7 +39,6 @@ const EventsListItemDetail = ({ event, share, remove, isContextMenuEnabled, isTi
             const imageSpecs = { width, height, pageX, pageY, borderRadius: BORDER_RADIUS };
             navigation.navigate('event', { event, imageSpecs, isTitleEditable });
         });
-        // setActiveTimerId(event?.id);
     };
     const removeHandler = id => {
         animatedValue.value = withTiming(1, { duration: 300 }, finished => finished && runOnJS(remove)(id));
@@ -59,18 +56,6 @@ const EventsListItemDetail = ({ event, share, remove, isContextMenuEnabled, isTi
         opacity: interpolate(animatedValue.value, [0, .8], [1, 0]),
         borderRadius: BORDER_RADIUS
     }));
-
-    // useEffect(() => {
-    //     navigation.addListener('focus', () => setActiveTimerId(null));
-    //     return () => navigation.removeListener('focus', () => setActiveTimerId(null));
-    // }, []);
-    // useEffect(() => {
-    //     Animated.timing(animatedValue, {
-    //         toValue: Number(activeTimerId !== event?.id),
-    //         duration: 200,
-    //         useNativeDriver: true
-    //     }).start();
-    // }, [activeTimerId]);
 
     return (
         <Fragment>
@@ -100,7 +85,7 @@ const EventsListItemDetail = ({ event, share, remove, isContextMenuEnabled, isTi
                                         JSON.stringify({
                                             title: event?.title ?? '',
                                             // date: 'LL LTS',
-                                            timer: useCountdownTimer(event?.timer).duration.toString(),
+                                            timer: getCountdownTime(event?.timer).duration.toString(),
                                             image: event?.image?.uri ?? ''
                                         }),
                                         status => console.log(status)

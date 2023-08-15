@@ -38,6 +38,7 @@ const SearchScreenContainer = () => {
     const theme = useTheme();
     const headerHeight = useHeaderHeight();
     const insets = useSafeAreaInsets();
+    const isFocused = useIsFocused();
 
     const { data, searchBarSpecs } = route.params;
 
@@ -45,9 +46,11 @@ const SearchScreenContainer = () => {
 
     const [searchResult, setSearchValue, { searchValue, resetSearchResult }] = useSearch(data, 'title');
     const prevSearchResultRef = useRef(data);
+    const searchBarRef = useRef(null);
 
     const sharedValue = useSharedValue(0);
     const searchBarOpacity = useSharedValue(1);
+    const scrollViewOpacity = useSharedValue(1);
     const scrollY = useSharedValue(0);
 
     // const scrollReleaseCallback = e => {
@@ -62,21 +65,9 @@ const SearchScreenContainer = () => {
     const scrollHandler = useAnimatedScrollHandler({
         // onEndDrag: scrollReleaseCallback,
         // onMomentumEnd: scrollReleaseCallback,
-        onScroll: e => {
-            scrollY.value = e.contentOffset.y;
-        }
-    });
-    const panGestureEventHandler = useAnimatedGestureHandler({
-        onActive: e => {
-            sharedValue.value = interpolate(e.translationY, [0, height / 4], [1, 0]);
-        },
-        onEnd: () => {
-            if(sharedValue.value < 0.4) {
-                sharedValue.value = withTiming(0);
-            } else {
-                sharedValue.value = withTiming(1);
-            }
-        },
+        // onScroll: e => {
+        //     scrollY.value = e.contentOffset.y;
+        // }
     });
 
     const cancelButtonPress = () => {
@@ -84,30 +75,45 @@ const SearchScreenContainer = () => {
             // searchBarOpacity.value = withTiming(0, { duration: 100 });
             navigation.goBack();
         };
-        sharedValue.value = withTiming(0, null, finished => finished && runOnJS(cancelCallback)());
+
+        searchBarRef.current?.clearText();
+        searchBarRef.current?.blur();
+        sharedValue.value = withTiming(0, { duration: 150 }, finished => finished && runOnJS(cancelCallback)());
     };
     const searchBarPressHandler = () => {
-        sharedValue.value = withTiming(1);
+        sharedValue.value = withTiming(1, { duration: 300 });
     };
 
-    const isFocused = useIsFocused();
+    const panGestureEventHandler = useAnimatedGestureHandler({
+        onActive: e => {
+            sharedValue.value = interpolate(e.translationY, [0, height / 4], [1, 0]);
+        },
+        onEnd: () => {
+            if(sharedValue.value < .5) {
+                runOnJS(cancelButtonPress)();
+            } else {
+                sharedValue.value = withTiming(1);
+            }
+        },
+    });
 
     useEffect(() => {
         if(isFocused) {
-            sharedValue.value = withTiming(1);
+            searchBarRef.current?.focus();
+            sharedValue.value = withTiming(1, { duration: 300 });
         }
     }, [isFocused]);
     useEffect(() => {
         if(!_.isEqual(prevSearchResultRef.current.map(({ title }) => title), searchResult.map(({ title }) => title)) && searchResult?.length)
-            sharedValue.value = withSequence(withTiming(0, { duration: 150 }), withTiming(1, { duration: 300 }));
-        if(!searchResult?.length)
-            sharedValue.value = withTiming(0, { duration: 200 });
+            scrollViewOpacity.value = withSequence(withTiming(0, { duration: 150 }), withTiming(1, { duration: 300 }));
+        // if(!searchResult?.length)
+        //     scrollViewOpacity.value = withTiming(0, { duration: 300 });
         
         prevSearchResultRef.current = searchResult;
     }, [searchResult]);
     useEffect(() => {
         if(!searchValue) {
-            sharedValue.value = withTiming(0, null, finished => finished && runOnJS(resetSearchResult)());
+            scrollViewOpacity.value = withTiming(0, { duration: 150 }, finished => finished && runOnJS(resetSearchResult)());
         }
     }, [searchValue]);
 
@@ -153,13 +159,14 @@ const SearchScreenContainer = () => {
     const searchBarStyles = useAnimatedStyle(() => ({
         paddingTop: insets.top + searchBarSpecs.pageY - (SEARCHBAR_CONTAINER_PADDING * 2),
         marginTop: -(insets.top + searchBarSpecs.pageY),
-        backgroundColor: `rgba(0, 0, 0, ${interpolate(sharedValue.value, [0, 1], [0, .2])})`,
+        // backgroundColor: `rgba(255, 255, 255, ${interpolate(sharedValue.value, [0, 1], [0, .1])})`,
         opacity: searchBarOpacity.value
     }));
     const scrollViewStyle = useAnimatedStyle(() => ({
-        // height: '100%',
-        // transform: [{ scale: interpolate(sharedValue.value, [0, 1], [.9, 1]) }],
         opacity: sharedValue.value
+    }));
+    const scrollViewWrapperStyle = useAnimatedStyle(() => ({
+        opacity: scrollViewOpacity.value
     }));
 
     const SearchScreenProps = {
@@ -169,6 +176,8 @@ const SearchScreenContainer = () => {
         blurViewStyles,
         searchBarStyles,
         scrollViewStyle,
+        scrollViewWrapperStyle,
+        searchBarRef,
         scrollHandler,
         cancelButtonPress,
         searchChangeHandler: setSearchValue,

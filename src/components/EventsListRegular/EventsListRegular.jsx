@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Animated from 'react-native-reanimated';
 import { nanoid } from 'nanoid/non-secure';
 import EventsListItemRegular from '../EventsListItemRegular';
@@ -20,4 +20,4 @@ const EventsListRegular = ({ events, style, share, isContextMenuEnabled = true, 
     );
 };
 
-export default EventsListRegular;
+export default memo(EventsListRegular);
